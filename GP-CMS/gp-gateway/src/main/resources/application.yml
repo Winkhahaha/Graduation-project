@@ -1,0 +1,10 @@
+server:
+  port: 9527
+
+spring:
+  application:
+    name: gp-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848

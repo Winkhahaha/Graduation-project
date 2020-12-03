@@ -3,11 +3,18 @@ server:
 spring:
   application:
     name: student-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
   datasource:
     druid:
-      url: jdbc:mysql://www.mineok.cloud:3306/education?characterEncoding=utf-8
+      url: jdbc:mysql://127.0.0.1:3306/education?characterEncoding=utf-8
       username: root
-      password: Gm7681396.
+      password: root
       driverClassName: com.mysql.jdbc.Driver
       initialSize: 5  #初始建立连接数量
       minIdle: 5  #最小连接数量
@@ -17,6 +24,10 @@ spring:
       testOnReturn: false #归还连接时检测连接是否有效
       timeBetweenEvictionRunsMillis: 60000 #配置间隔检测连接是否有效的时间（单位是毫秒）
       minEvictableIdleTimeMillis: 300000  #连接在连接池的最小生存时间（毫秒）
+      stat-view-servlet:
+        enabled: false
+      web-stat-filter:
+        enabled: false
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
