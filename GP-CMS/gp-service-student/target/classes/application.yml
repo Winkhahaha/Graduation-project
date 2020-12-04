@@ -2,7 +2,7 @@ server:
   port: 8011
 spring:
   application:
-    name: student-service
+    name: gp-test-student-service
   cloud:
     nacos:
       discovery:
@@ -24,10 +24,7 @@ spring:
       testOnReturn: false #归还连接时检测连接是否有效
       timeBetweenEvictionRunsMillis: 60000 #配置间隔检测连接是否有效的时间（单位是毫秒）
       minEvictableIdleTimeMillis: 300000  #连接在连接池的最小生存时间（毫秒）
-      stat-view-servlet:
-        enabled: false
-      web-stat-filter:
-        enabled: false
+
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml

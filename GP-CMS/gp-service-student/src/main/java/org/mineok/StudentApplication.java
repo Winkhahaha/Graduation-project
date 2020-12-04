@@ -15,7 +15,6 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableDiscoveryClient
 @SpringBootApplication
 @MapperScan("org.mineok.dao")
-//@ComponentScan("org.mineok.common")
 public class StudentApplication {
     public static void main(String[] args) {
         SpringApplication.run(StudentApplication.class, args);

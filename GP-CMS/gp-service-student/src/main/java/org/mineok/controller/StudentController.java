@@ -1,22 +1,14 @@
 package org.mineok.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.mineok.common.utils.PageUtils;
+import org.mineok.common.utils.R;
 import org.mineok.entity.StudentEntity;
 import org.mineok.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import org.mineok.common.utils.PageUtils;
-import org.mineok.common.utils.R;
+import java.util.Arrays;
+import java.util.Map;
 
 
 
@@ -38,7 +30,7 @@ public class StudentController {
      */
     @RequestMapping("/list")
     //@ApiOperation("获取学生列表")
-    @RequiresPermissions("test:student:list")
+//    @RequiresPermissions("test:student:list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = studentService.queryPage(params);
 
@@ -50,7 +42,7 @@ public class StudentController {
      * 信息
      */
     @RequestMapping("/info/{id}")
-    @RequiresPermissions("test:student:info")
+//    @RequiresPermissions("test:student:info")
     public R info(@PathVariable("id") Integer id){
 		StudentEntity student = studentService.getById(id);
 
@@ -61,7 +53,7 @@ public class StudentController {
      * 保存
      */
     @RequestMapping("/save")
-    @RequiresPermissions("test:student:save")
+//    @RequiresPermissions("test:student:save")
     public R save(@RequestBody StudentEntity student){
 		studentService.save(student);
 
@@ -72,7 +64,7 @@ public class StudentController {
      * 修改
      */
     @RequestMapping("/update")
-    @RequiresPermissions("test:student:update")
+//    @RequiresPermissions("test:student:update")
     public R update(@RequestBody StudentEntity student){
 		studentService.updateById(student);
 
@@ -83,7 +75,7 @@ public class StudentController {
      * 删除
      */
     @RequestMapping("/delete")
-    @RequiresPermissions("test:student:delete")
+//    @RequiresPermissions("test:student:delete")
     public R delete(@RequestBody Integer[] ids){
 		studentService.removeByIds(Arrays.asList(ids));
 
