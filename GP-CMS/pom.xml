@@ -13,6 +13,7 @@
         <module>gp-common</module>
         <module>gp-service-student</module>
         <module>gp-gateway</module>
+        <module>gp-main-service-cousumer</module>
     </modules>
 
     <dependencyManagement>
