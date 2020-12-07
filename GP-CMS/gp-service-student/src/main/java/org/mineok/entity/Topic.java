@@ -31,7 +31,11 @@ public class Topic implements Serializable {
 	/**
 	 * 选题名称
 	 */
-	private String tname;
+	private String topicName;
+	/**
+	 * 课题来源
+	 */
+	private String source;
 	/**
 	 * 创建时间
 	 */
@@ -40,6 +44,10 @@ public class Topic implements Serializable {
 	 * 选题人数上限
 	 */
 	private Integer toplimit;
+	/**
+	 * 已选人数
+	 */
+	private Integer selected;
 	/**
 	 * 选题状态:0可选,1不可选
 	 */

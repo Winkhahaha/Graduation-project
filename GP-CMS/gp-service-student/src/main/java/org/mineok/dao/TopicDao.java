@@ -1,11 +1,11 @@
 package org.mineok.dao;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.mineok.entity.Topic;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
-import org.mineok.vo.TopicVO;
+import org.mineok.vo.TopicV;
+import org.mineok.vo.TopicVo;
 
 import java.util.List;
 
@@ -19,6 +19,6 @@ import java.util.List;
 @Mapper
 public interface TopicDao extends BaseMapper<Topic> {
 
-    List<TopicVO> topicListCanChose(IPage<TopicVO> page);
+    List<TopicVo> topicListCanChose(IPage<TopicVo> page);
 	
 }

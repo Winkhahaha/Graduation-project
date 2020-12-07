@@ -4,7 +4,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mineok.dao.TopicDao;
-import org.mineok.vo.TopicVO;
+import org.mineok.vo.TopicV;
+import org.mineok.vo.TopicVo;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -32,7 +33,7 @@ public class TopicTest {
     public void test_topicVO_topicList() {
         // System.out.println(topicDao.topicListCanChose());
         // 多表分页查询测试
-        Page<TopicVO> page = new Page<TopicVO>(1, 10);
+        Page<TopicVo> page = new Page<TopicVo>(1, 10);
         page.setRecords(topicDao.topicListCanChose(page));
         System.out.println(page.getRecords());
         System.out.println(page.getTotal());

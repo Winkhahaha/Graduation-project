@@ -4,12 +4,17 @@
 <mapper namespace="org.mineok.dao.TopicDao">
 
 
-    <resultMap type="org.mineok.vo.TopicVO" id="topListMap">
-        <result property="toname" column="课题名称"/>
+    <resultMap type="org.mineok.vo.TopicVo" id="topListMap">
+        <result property="id" column="序号"/>
+        <result property="topicName" column="课题名称"/>
+		<result property="type" column="课题类型"/>
+		<result property="source" column="课题来源"/>
         <result property="tname" column="指导教师"/>
         <result property="hiredate" column="教师入职日期"/>
         <result property="science" column="专业限制"/>
+		<result property="department" column="所属院系"/>
         <result property="toplimit" column="人数上限"/>
+		<result property="selected" column="已选人数"/>
         <result property="status" column="课题状态"/>
         <result property="createtime" column="发布时间"/>
     </resultMap>
@@ -17,15 +22,22 @@
 
     <select id="topicListCanChose" resultMap="topListMap">
 		SELECT
-	t.tname 课题名称,
+	t.id 序号,
+	t.topic_name 课题名称,
+	t.type 课题类型,
+	t.source 课题来源,
+	t.department 所属院系,
 	t.science 专业限制,
 	t.createtime 发布时间,
 	te.tname 指导教师,
 	te.hiredate 教师入职日期,
 	t.toplimit 人数上限,
+	t.selected 已选人数,
 	t.`status` 课题状态
 FROM
 	tb_topic t
 LEFT JOIN tb_teacher te ON t.tid = te.tid
+ORDER BY
+	t.id
 	</select>
 </mapper>

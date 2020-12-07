@@ -1,12 +1,9 @@
 package org.mineok.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.mineok.common.utils.PageUtils;
 import org.mineok.entity.Topic;
-import org.mineok.vo.TopicVO;
 
-import java.util.List;
 import java.util.Map;
 
 /**
