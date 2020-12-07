@@ -36,9 +36,10 @@ public class TopicServiceImpl extends ServiceImpl<TopicDao, Topic> implements To
 
     @Override
     public PageUtils getTopics(Map<String, Object> params) {
-        Page<TopicVO> page = new Page<TopicVO>(
-                Long.parseLong(params.get("page").toString())
-                , Long.parseLong(params.get("limit").toString()));
+//        Page<TopicVO> page = new Page<TopicVO>(
+//                Long.parseLong(params.get("page").toString())
+//                , Long.parseLong(params.get("limit").toString()));
+        IPage<TopicVO> page = new Query<TopicVO>().getPage(params);
         page.setRecords(topicDao.topicListCanChose(page));
         return new PageUtils(page);
     }
