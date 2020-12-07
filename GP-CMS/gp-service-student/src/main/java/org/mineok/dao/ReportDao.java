@@ -1,18 +1,17 @@
 package org.mineok.dao;
 
-
+import org.mineok.entity.Report;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
-import org.mineok.entity.Student;
 
 /**
  * 
  * 
- * @author G
+ * @author GaoMing
  * @email mineok@foxmail.com
- * @date 2020-11-25 20:14:11
+ * @date 2020-12-07 14:30:27
  */
 @Mapper
-public interface StudentDao extends BaseMapper<Student> {
+public interface ReportDao extends BaseMapper<Report> {
 	
 }

@@ -1,7 +1,7 @@
 package org.mineok.service.impl;
 
 import org.mineok.dao.StudentDao;
-import org.mineok.entity.StudentEntity;
+import org.mineok.entity.Student;
 import org.mineok.service.StudentService;
 import org.springframework.stereotype.Service;
 
@@ -15,16 +15,24 @@ import org.mineok.common.utils.Query;
 
 
 @Service
-public class StudentServiceImpl extends ServiceImpl<StudentDao, StudentEntity> implements StudentService {
+public class StudentServiceImpl extends ServiceImpl<StudentDao, Student> implements StudentService {
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        IPage<StudentEntity> page = this.page(
-                new Query<StudentEntity>().getPage(params),
-                new QueryWrapper<StudentEntity>()
+        IPage<Student> page = this.page(
+                new Query<Student>().getPage(params),
+                new QueryWrapper<Student>()
         );
 
         return new PageUtils(page);
     }
+
+    @Override
+    public Student findByStuId(String stuId) {
+        QueryWrapper<Student> wrapper = new QueryWrapper<Student>();
+        wrapper.eq("stu_id", stuId);
+        return baseMapper.selectOne(wrapper);
+    }
+
 
 }

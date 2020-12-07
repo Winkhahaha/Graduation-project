@@ -2,26 +2,25 @@ package org.mineok.controller;
 
 import org.mineok.common.utils.PageUtils;
 import org.mineok.common.utils.R;
-import org.mineok.entity.StudentEntity;
+import org.mineok.entity.Student;
 import org.mineok.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 
 
-
 /**
- * 
- *
  * @author G
  * @email mineok@foxmail.com
  * @date 2020-11-25 20:14:11
  */
 @RestController
-@RequestMapping("test/student")
+@RequestMapping("/student")
 public class StudentController {
+
     @Autowired
     private StudentService studentService;
 
@@ -29,9 +28,7 @@ public class StudentController {
      * 列表
      */
     @RequestMapping("/list")
-    //@ApiOperation("获取学生列表")
-//    @RequiresPermissions("test:student:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = studentService.queryPage(params);
 
         return R.ok().put("page", page);
@@ -43,10 +40,19 @@ public class StudentController {
      */
     @RequestMapping("/info/{id}")
 //    @RequiresPermissions("test:student:info")
-    public R info(@PathVariable("id") Integer id){
-		StudentEntity student = studentService.getById(id);
+    public R info(@PathVariable("id") Integer id) {
+        Student student = studentService.getById(id);
 
         return R.ok().put("student", student);
+    }
+
+    /*
+        获取登录用户(学生/教师)的信息
+     */
+    @RequestMapping("/sys/info/{stuId}")
+    public R infoByStuId(@PathVariable("stuId") String stuId) {
+        Student student = studentService.findByStuId(stuId);
+        return R.ok().put("student", Collections.singletonList(student));
     }
 
     /**
@@ -54,8 +60,8 @@ public class StudentController {
      */
     @RequestMapping("/save")
 //    @RequiresPermissions("test:student:save")
-    public R save(@RequestBody StudentEntity student){
-		studentService.save(student);
+    public R save(@RequestBody Student student) {
+        studentService.save(student);
 
         return R.ok();
     }
@@ -65,8 +71,8 @@ public class StudentController {
      */
     @RequestMapping("/update")
 //    @RequiresPermissions("test:student:update")
-    public R update(@RequestBody StudentEntity student){
-		studentService.updateById(student);
+    public R update(@RequestBody Student student) {
+        studentService.updateById(student);
 
         return R.ok();
     }
@@ -76,8 +82,8 @@ public class StudentController {
      */
     @RequestMapping("/delete")
 //    @RequiresPermissions("test:student:delete")
-    public R delete(@RequestBody Integer[] ids){
-		studentService.removeByIds(Arrays.asList(ids));
+    public R delete(@RequestBody Integer[] ids) {
+        studentService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
     }

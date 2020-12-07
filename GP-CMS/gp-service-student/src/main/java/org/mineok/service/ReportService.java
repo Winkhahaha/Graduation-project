@@ -2,20 +2,19 @@ package org.mineok.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.mineok.common.utils.PageUtils;
-import org.mineok.entity.Student;
+import org.mineok.entity.Report;
 
 import java.util.Map;
 
 /**
- * 学生
+ * 
+ * 开题报告
  * @author GaoMing
  * @email mineok@foxmail.com
- * @date 2020-11-25 20:14:11
+ * @date 2020-12-07 14:30:27
  */
-public interface StudentService extends IService<Student> {
+public interface ReportService extends IService<Report> {
 
     PageUtils queryPage(Map<String, Object> params);
-
-    Student findByStuId(String stuId);
 }
 

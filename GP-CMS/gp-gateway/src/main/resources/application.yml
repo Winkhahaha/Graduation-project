@@ -17,7 +17,39 @@ spring:
         - id: stu_route
           uri: lb://gp-test-student-service
           predicates:
-            - Path=/api/test/**
+            - Path=/api/student/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+
+        # 配置teacher-service服务
+        - id: teacher_route
+          uri: lb://gp-test-student-service
+          predicates:
+            - Path=/api/teacher/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+
+        # 配置topic-service服务
+        - id: topic_route
+          uri: lb://gp-test-student-service
+          predicates:
+            - Path=/api/topic/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+
+        # 配置report-service服务
+        - id: report_route
+          uri: lb://gp-test-student-service
+          predicates:
+            - Path=/api/report/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+
+        # 配置result-service服务
+        - id: result_route
+          uri: lb://gp-test-student-service
+          predicates:
+            - Path=/api/result/**
           filters:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
 
