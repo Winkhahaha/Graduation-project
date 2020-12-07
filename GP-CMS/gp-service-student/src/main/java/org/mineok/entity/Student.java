@@ -44,5 +44,12 @@ public class Student implements Serializable {
 	 * 专业
 	 */
 	private String science;
-
+	/**
+	 * 选题Id
+	 */
+	private Integer topicId;
+	/**
+	 * 选题状态
+	 */
+	private Integer topicStatus;
 }

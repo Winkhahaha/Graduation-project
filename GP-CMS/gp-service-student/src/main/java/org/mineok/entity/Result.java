@@ -23,7 +23,7 @@ public class Result implements Serializable {
 	 * 
 	 */
 	@TableId
-	private Integer id;
+	private Integer resultId;
 	/**
 	 * 成果名称
 	 */

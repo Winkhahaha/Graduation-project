@@ -23,7 +23,7 @@ public class Topic implements Serializable {
 	 * 
 	 */
 	@TableId
-	private Integer id;
+	private Integer topicId;
 	/**
 	 * 课题老师工号
 	 */

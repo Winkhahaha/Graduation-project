@@ -5,7 +5,7 @@
 
 
     <resultMap type="org.mineok.vo.TopicVo" id="topListMap">
-        <result property="id" column="序号"/>
+        <result property="topicId" column="序号"/>
         <result property="topicName" column="课题名称"/>
 		<result property="type" column="课题类型"/>
 		<result property="source" column="课题来源"/>
@@ -22,7 +22,7 @@
 
     <select id="topicListCanChose" resultMap="topListMap">
 		SELECT
-	t.id 序号,
+	t.topic_id 序号,
 	t.topic_name 课题名称,
 	t.type 课题类型,
 	t.source 课题来源,
@@ -36,8 +36,8 @@
 	t.`status` 课题状态
 FROM
 	tb_topic t
-LEFT JOIN tb_teacher te ON t.tid = te.tid
+LEFT JOIN tb_teacher te ON t.topic_id = te.tid
 ORDER BY
-	t.id
+	t.topic_id
 	</select>
 </mapper>

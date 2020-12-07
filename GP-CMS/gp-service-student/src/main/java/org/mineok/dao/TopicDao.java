@@ -1,10 +1,9 @@
 package org.mineok.dao;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import org.mineok.entity.Topic;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.ibatis.annotations.Mapper;
-import org.mineok.vo.TopicV;
+import org.mineok.entity.Topic;
 import org.mineok.vo.TopicVo;
 
 import java.util.List;

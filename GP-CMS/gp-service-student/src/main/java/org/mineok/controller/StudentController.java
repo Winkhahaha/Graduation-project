@@ -3,7 +3,9 @@ package org.mineok.controller;
 import org.mineok.common.utils.PageUtils;
 import org.mineok.common.utils.R;
 import org.mineok.entity.Student;
+import org.mineok.entity.Topic;
 import org.mineok.service.StudentService;
+import org.mineok.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +25,8 @@ public class StudentController {
 
     @Autowired
     private StudentService studentService;
+    @Autowired
+    private TopicService topicService;
 
     /**
      * 列表
@@ -84,8 +88,13 @@ public class StudentController {
 //    @RequiresPermissions("test:student:delete")
     public R delete(@RequestBody Integer[] ids) {
         studentService.removeByIds(Arrays.asList(ids));
-
         return R.ok();
     }
+
+    @RequestMapping("/chose/topic/{stuId}/{topicId}")
+    public R choseTopic(@PathVariable("stuId") String stuId, @PathVariable("topicId") Integer topicId) {
+        return studentService.choseTopic(stuId, topicId);
+    }
+
 
 }

@@ -8,7 +8,6 @@ import org.mineok.common.utils.Query;
 import org.mineok.dao.TopicDao;
 import org.mineok.entity.Topic;
 import org.mineok.service.TopicService;
-import org.mineok.vo.TopicV;
 import org.mineok.vo.TopicVo;
 import org.springframework.stereotype.Service;
 

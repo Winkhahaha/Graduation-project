@@ -23,7 +23,7 @@ public class Report implements Serializable {
 	 * 
 	 */
 	@TableId
-	private Integer id;
+	private Integer reportId;
 	/**
 	 * 开题报告名称
 	 */
