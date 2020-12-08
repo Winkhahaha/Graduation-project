@@ -36,7 +36,7 @@
 	t.`status` 课题状态
 FROM
 	tb_topic t
-LEFT JOIN tb_teacher te ON t.topic_id = te.tid
+LEFT JOIN tb_teacher te ON t.tid = te.tid
 ORDER BY
 	t.topic_id
 	</select>

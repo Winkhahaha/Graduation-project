@@ -3,7 +3,9 @@ package org.mineok;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mineok.common.utils.R;
 import org.mineok.dao.TopicDao;
+import org.mineok.service.StudentService;
 import org.mineok.vo.TopicVo;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -24,6 +26,9 @@ public class TopicTest {
     @Resource
     TopicDao topicDao;
 
+    @Resource
+    StudentService studentService;
+
     /**
      * 多表查询topic- techer
      * 分页
@@ -36,5 +41,11 @@ public class TopicTest {
         page.setRecords(topicDao.topicListCanChose(page));
         System.out.println(page.getRecords());
         System.out.println(page.getTotal());
+    }
+
+    @Test
+    public void test_Mytopic(){
+        R r = studentService.myTopic("17060211101");
+        System.out.println(r.get("myTopic"));
     }
 }

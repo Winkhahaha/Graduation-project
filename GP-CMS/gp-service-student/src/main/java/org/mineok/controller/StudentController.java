@@ -6,6 +6,7 @@ import org.mineok.entity.Student;
 import org.mineok.entity.Topic;
 import org.mineok.service.StudentService;
 import org.mineok.service.TopicService;
+import org.mineok.vo.TopicVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -94,6 +95,17 @@ public class StudentController {
     @RequestMapping("/chose/topic/{stuId}/{topicId}")
     public R choseTopic(@PathVariable("stuId") String stuId, @PathVariable("topicId") Integer topicId) {
         return studentService.choseTopic(stuId, topicId);
+    }
+
+    @RequestMapping("/cancel/topic/{stuId}/{topicId}")
+    public R cancelTopic(@PathVariable("stuId") String stuId, @PathVariable("topicId") Integer topicId) {
+        return studentService.cancelTopic(stuId, topicId);
+    }
+
+
+    @RequestMapping("/myTopic/{stuId}")
+    public R myTopic(@PathVariable("stuId") String stuId) {
+        return studentService.myTopic(stuId);
     }
 
 

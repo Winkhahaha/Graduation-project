@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.mineok.common.utils.PageUtils;
 import org.mineok.common.utils.R;
 import org.mineok.entity.Student;
+import org.mineok.vo.TopicVo;
 
 import java.util.Map;
 
@@ -20,6 +21,13 @@ public interface StudentService extends IService<Student> {
 
     Student findByStuId(String stuId);
 
+    // 学生:选题
     R choseTopic(String stuId, Integer topicId);
+
+    // 学生:取消选题
+    R cancelTopic(String stuId,Integer topicId);
+
+    // 学生:我的选题
+    R myTopic(String stuId);
 }
 

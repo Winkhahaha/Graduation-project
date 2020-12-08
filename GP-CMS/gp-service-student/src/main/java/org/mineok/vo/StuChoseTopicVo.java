@@ -10,11 +10,11 @@ import java.util.Date;
  * @Author Gaoming
  * @Email mineok@foxmail.com
  * @Date 2020/12/07/ 20:50
- * @Description 选题列表信息 - VO
+ * @Description 学生选题列表信息 - VO
  */
 @Data
 @ToString
-public class TopicVo extends Topic {
+public class StuChoseTopicVo extends Topic {
 
     /**
      * 指导教师姓名
@@ -25,7 +25,7 @@ public class TopicVo extends Topic {
      */
     private Date hiredate;
     /**
-     * 学生选题状态
+     * 当前选题状态
      */
     private Integer topicStatus;
 }
