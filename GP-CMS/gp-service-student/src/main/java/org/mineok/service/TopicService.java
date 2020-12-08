@@ -25,5 +25,6 @@ public interface TopicService extends IService<Topic> {
     // 教师反选 - 题目列表
     R getInvertTopicsByTeacherId(String tid);
 
+    R topicInfo(Integer topicId);
 }
 

@@ -77,5 +77,13 @@ public class Topic implements Serializable {
 	 * 学号
 	 */
 	private String stuId;
+	/**
+	 * 培养目标
+	 */
+	private String stuTarget;
+	/**
+	 * 备注
+	 */
+	private String remarks;
 
 }

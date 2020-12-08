@@ -7,11 +7,14 @@ import org.apache.http.HttpStatus;
 import org.mineok.common.utils.PageUtils;
 import org.mineok.common.utils.Query;
 import org.mineok.common.utils.R;
+import org.mineok.dao.TeacherDao;
 import org.mineok.dao.TopicDao;
+import org.mineok.entity.Teacher;
 import org.mineok.entity.Topic;
 import org.mineok.service.TopicService;
 import org.mineok.vo.InvertTopicVo;
 import org.mineok.vo.TopicVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -24,6 +27,8 @@ public class TopicServiceImpl extends ServiceImpl<TopicDao, Topic> implements To
 
     @Resource
     private TopicDao topicDao;
+    @Resource
+    private TeacherDao teacherDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -52,6 +57,27 @@ public class TopicServiceImpl extends ServiceImpl<TopicDao, Topic> implements To
             return R.error(HttpStatus.SC_INTERNAL_SERVER_ERROR, "没有待反选的题目！");
         }
         return R.ok().put("invertTopic", list);
+    }
+
+    /**
+     * 获取选题详情
+     *
+     * @param topicId
+     * @return
+     */
+    @Override
+    public R topicInfo(Integer topicId) {
+        Topic topic = topicDao.selectById(topicId);
+        Teacher teacher = teacherDao.selectOne(new QueryWrapper<Teacher>().eq("tid", topic.getTid()));
+        if (teacher == null || topic == null) {
+            return R.error(HttpStatus.SC_NOT_FOUND, "系统异常:参数错误！");
+        }
+        TopicVo vo = new TopicVo();
+        BeanUtils.copyProperties(topic, vo);
+        // 关联老师信息
+        vo.setTname(teacher.getTname());
+        vo.setPhone(teacher.getPhone());
+        return R.ok().put("topic",vo);
     }
 
 }

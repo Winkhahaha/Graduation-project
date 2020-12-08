@@ -21,6 +21,10 @@ public class TopicVo extends Topic {
      */
     private String tname;
     /**
+     * 指导老师联系电话
+     */
+    private String phone;
+    /**
      * 教师入职日期
      */
     private Date hiredate;

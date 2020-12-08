@@ -7,6 +7,7 @@ import org.mineok.StudentApplication;
 import org.mineok.common.utils.R;
 import org.mineok.dao.TopicDao;
 import org.mineok.service.StudentService;
+import org.mineok.service.TopicService;
 import org.mineok.vo.TopicVo;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -26,7 +27,8 @@ public class TopicTest {
 
     @Resource
     TopicDao topicDao;
-
+    @Resource
+    TopicService topicService;
     @Resource
     StudentService studentService;
 
@@ -53,5 +55,11 @@ public class TopicTest {
     @Test
     public void test_InvertTopicList() {
         System.out.println(topicDao.invertTopicList("1701"));
+    }
+
+    @Test
+    public void test_topicInfo(){
+        Object topicInfo = topicService.topicInfo(1).get("topicInfo");
+        System.out.println(topicInfo);
     }
 }

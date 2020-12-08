@@ -44,15 +44,18 @@ public class TopicController {
         return R.ok().put("page", page);
     }
 
-
     /**
      * 信息
      */
-    @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") Integer id) {
-        Topic topic = topicService.getById(id);
-        return R.ok().put("topic", topic);
+    @RequestMapping("/info/{topicId}")
+    public R info(@PathVariable("topicId") Integer topicId) {
+        return topicService.topicInfo(topicId);
     }
+//    @RequestMapping("/info/{id}")
+//    public R info(@PathVariable("id") Integer id) {
+//        Topic topic = topicService.getById(id);
+//        return R.ok().put("topic", topic);
+//    }
 
     /**
      * 保存
