@@ -49,7 +49,7 @@ public class Student implements Serializable {
 	 */
 	private Integer topicId;
 	/**
-	 * 学生选题状态:0待选题,1等待老师反选,2反选成功,-1反选失败,下一轮选题
+	 * 学生选题状态(结果):0待选题,1等待老师反选,2反选成功,-1反选失败,下一轮选题
 	 */
 	private Integer topicStatus;
 }

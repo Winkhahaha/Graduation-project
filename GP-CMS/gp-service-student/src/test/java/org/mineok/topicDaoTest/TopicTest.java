@@ -1,8 +1,9 @@
-package org.mineok;
+package org.mineok.topicDaoTest;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mineok.StudentApplication;
 import org.mineok.common.utils.R;
 import org.mineok.dao.TopicDao;
 import org.mineok.service.StudentService;
@@ -44,8 +45,13 @@ public class TopicTest {
     }
 
     @Test
-    public void test_Mytopic(){
+    public void test_Mytopic() {
         R r = studentService.myTopic("17060211101");
         System.out.println(r.get("myTopic"));
+    }
+
+    @Test
+    public void test_InvertTopicList() {
+        System.out.println(topicDao.invertTopicList("1701"));
     }
 }

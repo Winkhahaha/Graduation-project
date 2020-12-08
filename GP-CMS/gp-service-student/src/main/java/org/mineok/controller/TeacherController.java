@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 import org.mineok.service.TeacherService;
+import org.mineok.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +29,8 @@ public class TeacherController {
 
     @Autowired
     private TeacherService teacherService;
+    @Autowired
+    private TopicService topicService;
 
     /**
      * 列表
@@ -38,6 +41,30 @@ public class TeacherController {
         PageUtils page = teacherService.queryPage(params);
 
         return R.ok().put("page", page);
+    }
+
+    /**
+     * 当前老师待反选题目列表
+     */
+    @RequestMapping("/invert/list/{tid}")
+    public R invertList(@PathVariable("tid") String tid) {
+        return topicService.getInvertTopicsByTeacherId(tid);
+    }
+
+    /**
+     * 反选
+     */
+    @RequestMapping("/invert/{stuId}/{topicId}")
+    public R invertList(@PathVariable("stuId") String stuId, @PathVariable("topicId") Integer topicId) {
+        return teacherService.invertStu(stuId, topicId);
+    }
+
+    /**
+     * 驳回学生申请
+     */
+    @RequestMapping("/reject/{stuId}")
+    public R rejectList(@PathVariable("stuId") String stuId) {
+        return teacherService.rejectStu(stuId);
     }
 
 

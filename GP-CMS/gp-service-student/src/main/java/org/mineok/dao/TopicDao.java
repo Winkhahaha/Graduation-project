@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.ibatis.annotations.Mapper;
 import org.mineok.entity.Topic;
+import org.mineok.vo.InvertTopicVo;
 import org.mineok.vo.TopicVo;
 
 import java.util.List;
@@ -19,5 +20,7 @@ import java.util.List;
 public interface TopicDao extends BaseMapper<Topic> {
 
     List<TopicVo> topicListCanChose(IPage<TopicVo> page);
+
+    List<InvertTopicVo> invertTopicList(String tid);
 	
 }

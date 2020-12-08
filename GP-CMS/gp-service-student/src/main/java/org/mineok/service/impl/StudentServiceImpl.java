@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.mineok.common.utils.PageUtils;
 import org.mineok.common.utils.Query;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 
@@ -52,6 +53,13 @@ public class StudentServiceImpl extends ServiceImpl<StudentDao, Student> impleme
         return baseMapper.selectOne(wrapper);
     }
 
+    /**
+     * 选题
+     *
+     * @param stuId
+     * @param topicId
+     * @return
+     */
     @Override
     public R choseTopic(String stuId, Integer topicId) {
         Student student = this.findByStuId(stuId);
@@ -64,6 +72,9 @@ public class StudentServiceImpl extends ServiceImpl<StudentDao, Student> impleme
         }
         if (topic.getSelected() >= topic.getToplimit()) {
             return R.error(HttpStatus.SC_BAD_REQUEST, "选题人数已达上限！");
+        }
+        if (!StringUtils.isEmpty(topic.getStuId())) {
+            return R.error(HttpStatus.SC_BAD_REQUEST, "该课题已被反选，不可选择！");
         }
         // 学生选择该题目,等待老师反选
         // 选择后不能再选其他题目,并且等待反选期间也不可选择其他题目
@@ -80,6 +91,13 @@ public class StudentServiceImpl extends ServiceImpl<StudentDao, Student> impleme
         return R.ok("选题成功！");
     }
 
+    /**
+     * 取消选题
+     *
+     * @param stuId
+     * @param topicId
+     * @return
+     */
     @Override
     public R cancelTopic(String stuId, Integer topicId) {
         Student student = this.findByStuId(stuId);
@@ -99,8 +117,8 @@ public class StudentServiceImpl extends ServiceImpl<StudentDao, Student> impleme
             student.setTopicId(0);
             // 该选题所选人数-1
             topic.setSelected(topic.getSelected() - 1);
-            // 判断所选人数是否小于人数限制,若小于则将选题设为"可选状态"
-            if (topic.getToplimit() > topic.getSelected()) {
+            // 判断所选人数是否小于人数限制,若小于并且当前课题无人被反选则将选题设为"可选状态"
+            if (topic.getToplimit() > topic.getSelected() && StringUtils.isEmpty(topic.getStuId())) {
                 topic.setStatus(0);
             }
             studentDao.updateById(student);
@@ -120,7 +138,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentDao, Student> impleme
             // 未反选成功,tb_topic还不会存在学生id,所以间接查询
             topic = topicDao.selectById(student.getTopicId());
         }
-        if (topic == null){
+        if (topic == null) {
             return R.error(HttpStatus.SC_NOT_FOUND, "系统异常:参数错误！");
         }
         Teacher teacher = teacherDao.selectOne(new QueryWrapper<Teacher>().eq("tid", topic.getTid()));

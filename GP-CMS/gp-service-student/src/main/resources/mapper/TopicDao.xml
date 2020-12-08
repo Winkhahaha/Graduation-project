@@ -7,14 +7,14 @@
     <resultMap type="org.mineok.vo.TopicVo" id="topListMap">
         <result property="topicId" column="序号"/>
         <result property="topicName" column="课题名称"/>
-		<result property="type" column="课题类型"/>
-		<result property="source" column="课题来源"/>
+        <result property="type" column="课题类型"/>
+        <result property="source" column="课题来源"/>
         <result property="tname" column="指导教师"/>
         <result property="hiredate" column="教师入职日期"/>
         <result property="science" column="专业限制"/>
-		<result property="department" column="所属院系"/>
+        <result property="department" column="所属院系"/>
         <result property="toplimit" column="人数上限"/>
-		<result property="selected" column="已选人数"/>
+        <result property="selected" column="已选人数"/>
         <result property="status" column="课题状态"/>
         <result property="createtime" column="发布时间"/>
     </resultMap>
@@ -40,4 +40,35 @@ LEFT JOIN tb_teacher te ON t.tid = te.tid
 ORDER BY
 	t.topic_id
 	</select>
+
+    <resultMap type="org.mineok.vo.InvertTopicVo" id="invertListMap">
+        <result property="topicId" column="课题编号"/>
+        <result property="topicName" column="课题名称"/>
+        <result property="topicScience" column="课题专业要求"/>
+        <result property="name" column="学生姓名"/>
+        <result property="stuId" column="学号"/>
+        <result property="science" column="所属专业"/>
+        <result property="gender" column="性别"/>
+        <result property="topicStatus" column="选题结果"/>
+    </resultMap>
+
+    <select id="invertTopicList" resultMap="invertListMap">
+        SELECT
+        s.`name` 学生姓名,
+        s.gender 性别,
+        s.stu_id 学号,
+        s.science 所属专业,
+        s.topic_status 选题结果,
+        t.topic_id 课题编号,
+        t.topic_name 课题名称,
+        t.science 课题专业要求
+        FROM
+        tb_student s
+        LEFT JOIN tb_topic t ON s.topic_id = t.topic_id
+        WHERE s.topic_status > -1
+        <if test="_parameter !=null and _parameter!=''">
+        AND    t.tid = #{tid}
+        </if>
+        ORDER BY t.topic_id
+    </select>
 </mapper>

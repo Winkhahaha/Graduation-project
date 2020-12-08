@@ -50,6 +50,7 @@ public class Topic implements Serializable {
 	private Integer selected;
 	/**
 	 * 选题状态:0可选,1不可选
+	 * 不可选有两种状态:1.人数达到上限 2.该题目老师已反选一人
 	 */
 	private Integer status;
 	/**
