@@ -3,8 +3,10 @@ package org.mineok.service.impl;
 import org.apache.http.HttpStatus;
 import org.mineok.common.utils.R;
 import org.mineok.dao.DirectorDao;
+import org.mineok.dao.TeacherDao;
 import org.mineok.dao.TopicDao;
 import org.mineok.entity.Director;
+import org.mineok.entity.Teacher;
 import org.mineok.entity.Topic;
 import org.mineok.service.DirectorService;
 import org.mineok.vo.TopicVo;
@@ -30,6 +32,8 @@ public class DirectorServiceImpl extends ServiceImpl<DirectorDao, Director> impl
 
     @Resource
     private TopicDao topicDao;
+    @Resource
+    private TeacherDao teacherDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -51,8 +55,7 @@ public class DirectorServiceImpl extends ServiceImpl<DirectorDao, Director> impl
     }
 
     /**
-     *
-     * @param params 通过params.get("appStatus")获取页面状态码,判断是 待审批 驳回 审批成功三个页面哪一个发来的请求
+     * @param params     通过params.get("appStatus")获取页面状态码,判断是 待审批 驳回 审批成功三个页面哪一个发来的请求
      * @param directorId
      * @return
      */
@@ -98,6 +101,30 @@ public class DirectorServiceImpl extends ServiceImpl<DirectorDao, Director> impl
         topic.setApprovalStatus(-1);
         topicDao.updateById(topic);
         return R.ok("已驳回该审批！");
+    }
+
+    @Override
+    public R teacherList(String directorId) {
+        Director director = baseMapper.selectOne(new QueryWrapper<Director>().eq("director_id", directorId));
+        if (ObjectUtils.isEmpty(director)) {
+            return R.error("系统异常:参数错误！");
+        }
+        List<Teacher> list = teacherDao.selectList(new QueryWrapper<Teacher>().eq("dept_id", director.getDeptId()));
+        if (CollectionUtils.isEmpty(list)) {
+            return R.error("系统异常:参数错误！");
+        }
+        return R.ok().put("teacherList", list);
+    }
+
+    @Override
+    public R setTopicCount(Integer topicCount, String tid) {
+        Teacher teacher = teacherDao.selectOne(new QueryWrapper<Teacher>().eq("tid", tid));
+        if (ObjectUtils.isEmpty(teacher)) {
+            return R.error("系统异常:参数错误！");
+        }
+        teacher.setTopicCount(topicCount);
+        teacherDao.updateById(teacher);
+        return R.ok("设置成功！");
     }
 
 }

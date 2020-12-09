@@ -52,5 +52,9 @@ public class Teacher implements Serializable {
 	 * 上级审批学院id
 	 */
 	private Integer deptId;
+	/**
+	 * 可上报的课题数目限制
+	 */
+	private Integer topicCount;
 
 }

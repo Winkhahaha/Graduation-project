@@ -44,7 +44,6 @@ public class StudentController {
      * 信息
      */
     @RequestMapping("/info/{id}")
-//    @RequiresPermissions("test:student:info")
     public R info(@PathVariable("id") Integer id) {
         Student student = studentService.getById(id);
 
@@ -64,7 +63,6 @@ public class StudentController {
      * 保存
      */
     @RequestMapping("/save")
-//    @RequiresPermissions("test:student:save")
     public R save(@RequestBody Student student) {
         studentService.save(student);
 
@@ -75,7 +73,6 @@ public class StudentController {
      * 修改
      */
     @RequestMapping("/update")
-//    @RequiresPermissions("test:student:update")
     public R update(@RequestBody Student student) {
         studentService.updateById(student);
 
@@ -86,7 +83,6 @@ public class StudentController {
      * 删除
      */
     @RequestMapping("/delete")
-//    @RequiresPermissions("test:student:delete")
     public R delete(@RequestBody Integer[] ids) {
         studentService.removeByIds(Arrays.asList(ids));
         return R.ok();

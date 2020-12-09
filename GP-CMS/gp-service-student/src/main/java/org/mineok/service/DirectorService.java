@@ -27,5 +27,11 @@ public interface DirectorService extends IService<Director> {
     // 驳回课题
     R cancelApprovalTopic(Integer topicId);
 
+    // 获取负责人管理的老师
+    R teacherList(String directorId);
+
+    // 设置老师的最大课题数
+    R setTopicCount(Integer topicCount, String tid);
+
 }
 

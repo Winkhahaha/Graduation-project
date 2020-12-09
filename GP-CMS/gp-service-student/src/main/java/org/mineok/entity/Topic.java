@@ -93,4 +93,5 @@ public class Topic implements Serializable {
 	 * 课题所归属学院id
 	 */
 	private Integer deptId;
+
 }

@@ -91,4 +91,22 @@ public class DirectorController {
         return directorService.cancelApprovalTopic(topicId);
     }
 
+    /**
+     * 获取负责人负责的老师
+     */
+
+    @RequestMapping("/teacher/list/{directorId}")
+    public R teacherList(@PathVariable("directorId") String directorId) {
+        return directorService.teacherList(directorId);
+    }
+
+    /**
+     * 设置所负责教师的课题数
+     */
+
+    @RequestMapping("/set/topicCount/{tid}")
+    public R setTopicCount(@RequestParam("topicCount") Integer topicCount, @PathVariable("tid") String tid) {
+        return directorService.setTopicCount(topicCount, tid);
+    }
+
 }

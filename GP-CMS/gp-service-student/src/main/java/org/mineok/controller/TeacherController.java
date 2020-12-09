@@ -69,7 +69,7 @@ public class TeacherController {
 
 
     /**
-     * 当前登录老师的信息
+     * 根据工号(登录用户名)查询老师的信息
      */
     @RequestMapping("/info/{tid}")
     public R info(@PathVariable("tid") String tid) {
