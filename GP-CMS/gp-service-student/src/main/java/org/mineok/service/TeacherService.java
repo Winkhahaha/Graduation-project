@@ -23,5 +23,14 @@ public interface TeacherService extends IService<Teacher> {
 
     // 驳回学生选题
     R rejectStu(String stuId);
+
+    // 获取当前教师个人信息
+    R teacherInfo(String tid);
+
+    // 教师提交课题审核
+    R submitApproval(String tid, Integer topicId);
+
+    // 取消审批
+    R cancelApproval(Integer topicId);
 }
 

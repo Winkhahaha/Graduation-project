@@ -37,6 +37,7 @@
 FROM
 	tb_topic t
 LEFT JOIN tb_teacher te ON t.tid = te.tid
+WHERE t.approval_status = 2
 ORDER BY
 	t.topic_id
 	</select>

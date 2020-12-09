@@ -85,5 +85,12 @@ public class Topic implements Serializable {
 	 * 备注
 	 */
 	private String remarks;
-
+	/**
+	 * 审批状态:-1未通过,0待提交审核,1审核中2审核通过
+	 */
+	private Integer approvalStatus;
+	/**
+	 * 课题所归属学院id
+	 */
+	private Integer deptId;
 }

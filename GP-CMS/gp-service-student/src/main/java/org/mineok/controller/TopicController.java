@@ -38,6 +38,16 @@ public class TopicController {
         return R.ok().put("page", page);
     }
 
+    /**
+     * 当前老师所管理的课题列表
+     * @param tid
+     * @return
+     */
+    @RequestMapping("/teacher/list/{tid}")
+    public R listByTeacher(@PathVariable("tid") String tid) {
+        return topicService.getTopicByTeacherId(tid);
+    }
+
     @RequestMapping("/chose/list")
     public R topicsList(@RequestParam Map<String, Object> params) {
         PageUtils page = topicService.getTopics(params);

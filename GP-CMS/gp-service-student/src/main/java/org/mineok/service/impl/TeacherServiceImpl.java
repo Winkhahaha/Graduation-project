@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.Map;
 
 
@@ -79,6 +80,64 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherDao, Teacher> impleme
         studentDao.updateById(student);
 //        topicDao.updateById(topic);
         return R.ok("已驳回该学生选题申请！");
+    }
+
+    @Override
+    public R teacherInfo(String tid) {
+        Teacher teacher = baseMapper.selectOne(new QueryWrapper<Teacher>().eq("tid", tid));
+        if (teacher == null) {
+            return R.error();
+        }
+        return R.ok().put("teacher", Collections.singletonList(teacher));
+    }
+
+    /**
+     * 提交审批
+     *
+     * @param tid
+     * @param topicId
+     * @return
+     */
+    @Override
+    public R submitApproval(String tid, Integer topicId) {
+        Teacher teacher = baseMapper.selectOne(new QueryWrapper<Teacher>().eq("tid", tid));
+        Topic topic = topicDao.selectById(topicId);
+        if (teacher == null || topic == null) {
+            return R.error(HttpStatus.SC_NOT_FOUND, "系统异常:参数错误！");
+        }
+        if (topic.getApprovalStatus().equals(1)){
+            return R.error( "已提交审批，请勿重复操作！");
+        }
+        if (topic.getApprovalStatus().equals(2)){
+            return R.error( "审批已通过，请勿重复操作！");
+        }
+        if (topic.getApprovalStatus().equals(-1)){
+            return R.error( "审批未通过，请先取消该次审批并进行课题修改后再进行提交！");
+        }
+        // 提交审批:为课题关联审批学院,系统自动发配到审批人的课题列表
+        topic.setDeptId(teacher.getDeptId());
+        // 设置课题状态为:等待审批
+        topic.setApprovalStatus(1);
+        topicDao.updateById(topic);
+        return R.ok("审批已提交至负责人！");
+    }
+
+    @Override
+    public R cancelApproval(Integer topicId) {
+        Topic topic = topicDao.selectById(topicId);
+        if (topic == null) {
+            return R.error(HttpStatus.SC_NOT_FOUND, "系统异常:参数错误！");
+        }
+        if (topic.getApprovalStatus().equals(0)) {
+            return R.error("请先提交审批！");
+        }
+        if (topic.getApprovalStatus().equals(2)) {
+            return R.error("该课题已通过审批，无法取消！");
+        }
+        topic.setApprovalStatus(0);
+        topic.setDeptId(0);
+        topicDao.updateById(topic);
+        return R.ok("取消审批成功！");
     }
 
 }

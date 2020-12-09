@@ -69,12 +69,11 @@ public class TeacherController {
 
 
     /**
-     * 信息
+     * 当前登录老师的信息
      */
-    @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") Integer id) {
-        Teacher teacher = teacherService.getById(id);
-        return R.ok().put("teacher", teacher);
+    @RequestMapping("/info/{tid}")
+    public R info(@PathVariable("tid") String tid) {
+        return teacherService.teacherInfo(tid);
     }
 
     /**
@@ -102,6 +101,27 @@ public class TeacherController {
     public R delete(@RequestBody Integer[] ids) {
         teacherService.removeByIds(Arrays.asList(ids));
         return R.ok();
+    }
+
+    /**
+     * 提交审批
+     * @param tid
+     * @param topicId
+     * @return
+     */
+    @RequestMapping("/approval/submit/{tid}/{topicId}")
+    public R submitApproval(@PathVariable("tid") String tid, @PathVariable("topicId") Integer topicId) {
+        return teacherService.submitApproval(tid, topicId);
+    }
+
+    /**
+     * 取消审批
+     * @param topicId
+     * @return
+     */
+    @RequestMapping("/approval/cancel/{topicId}")
+    public R cancelApproval(@PathVariable("topicId") Integer topicId) {
+        return teacherService.cancelApproval(topicId);
     }
 
 }

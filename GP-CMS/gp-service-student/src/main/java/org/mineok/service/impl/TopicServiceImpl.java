@@ -60,7 +60,7 @@ public class TopicServiceImpl extends ServiceImpl<TopicDao, Topic> implements To
     }
 
     /**
-     * 获取选题详情
+     * 获取选题详情(关联教师信息)
      *
      * @param topicId
      * @return
@@ -77,7 +77,22 @@ public class TopicServiceImpl extends ServiceImpl<TopicDao, Topic> implements To
         // 关联老师信息
         vo.setTname(teacher.getTname());
         vo.setPhone(teacher.getPhone());
-        return R.ok().put("topic",vo);
+        return R.ok().put("topic", vo);
+    }
+
+    /**
+     * 获取当前老师的所有选题
+     *
+     * @param tid
+     * @return
+     */
+    @Override
+    public R getTopicByTeacherId(String tid) {
+        List<Topic> topicList = topicDao.selectList(new QueryWrapper<Topic>().eq("tid", tid));
+        if (topicList.isEmpty() || topicList.size() <= 0) {
+            return R.error(HttpStatus.SC_NOT_FOUND, "系统异常:参数错误！");
+        }
+        return R.ok().put("topicList", topicList);
     }
 
 }

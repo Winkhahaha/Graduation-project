@@ -48,5 +48,9 @@ public class Teacher implements Serializable {
 	 * 隶属学院/部门
 	 */
 	private String dept;
+	/**
+	 * 上级审批学院id
+	 */
+	private Integer deptId;
 
 }
