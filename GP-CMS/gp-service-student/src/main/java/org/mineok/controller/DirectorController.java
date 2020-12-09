@@ -17,7 +17,7 @@ import java.util.Map;
  * @date 2020-12-09 15:33:56
  */
 @RestController
-@RequestMapping("//director")
+@RequestMapping("/director")
 public class DirectorController {
     @Autowired
     private DirectorService directorService;
@@ -26,7 +26,6 @@ public class DirectorController {
      * 列表
      */
     @RequestMapping("/list")
-    //@RequiresPermissions("/:director:list")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = directorService.queryPage(params);
         return R.ok().put("page", page);
@@ -36,10 +35,9 @@ public class DirectorController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") Integer id) {
-        Director director = directorService.getById(id);
-        return R.ok().put("director", director);
+    @RequestMapping("/info/{directorId}")
+    public R info(@PathVariable("directorId") String directorId) {
+        return directorService.dirInfoByDirId(directorId);
     }
 
     /**
@@ -67,6 +65,30 @@ public class DirectorController {
     public R delete(@RequestBody Integer[] ids) {
         directorService.removeByIds(Arrays.asList(ids));
         return R.ok();
+    }
+
+    /**
+     * 获取当前审批列表
+     */
+    @RequestMapping("/approval/list/{directorId}")
+    public R approvalTopicList(@RequestParam Map<String, Object> params, @PathVariable("directorId") String directorId) {
+        return directorService.approvalTopicList(params, directorId);
+    }
+
+    /**
+     * 确认审批课题
+     */
+    @RequestMapping("/commit/topic/{topicId}")
+    public R commitTopic(@PathVariable("topicId") Integer topicId) {
+        return directorService.commitApprovalTopic(topicId);
+    }
+
+    /**
+     * 驳回课题
+     */
+    @RequestMapping("/reject/topic/{topicId}")
+    public R cancelTopic(@PathVariable("topicId") Integer topicId) {
+        return directorService.cancelApprovalTopic(topicId);
     }
 
 }
