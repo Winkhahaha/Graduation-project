@@ -109,4 +109,9 @@ public class DirectorController {
         return directorService.setTopicCount(topicCount, tid);
     }
 
+    @RequestMapping("/add/opinions/{topicId}")
+    public R setTopicCount(@RequestParam("opinions") String opinions, @PathVariable("topicId") Integer topicId) {
+        return directorService.addOpinions(opinions, topicId);
+    }
+
 }

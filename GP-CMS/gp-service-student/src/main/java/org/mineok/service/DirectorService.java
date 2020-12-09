@@ -33,5 +33,8 @@ public interface DirectorService extends IService<Director> {
     // 设置老师的最大课题数
     R setTopicCount(Integer topicCount, String tid);
 
+    // 添加审批意见
+    R addOpinions(String opinions, Integer topicId);
+
 }
 

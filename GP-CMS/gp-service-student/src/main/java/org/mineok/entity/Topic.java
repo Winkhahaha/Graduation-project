@@ -93,5 +93,9 @@ public class Topic implements Serializable {
 	 * 课题所归属学院id
 	 */
 	private Integer deptId;
+	/**
+	 * 审批意见/驳回理由
+	 */
+	private String opinions;
 
 }

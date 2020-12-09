@@ -67,6 +67,9 @@ public class StudentServiceImpl extends ServiceImpl<StudentDao, Student> impleme
         if (student == null || topic == null) {
             return R.error(HttpStatus.SC_NOT_FOUND, "系统异常:参数错误！");
         }
+        if (student.getTopicStatus() < 0) {
+            return R.error(HttpStatus.SC_BAD_REQUEST, "存在反选失败的题目，请前往我的选题进行查看！");
+        }
         if (student.getTopicStatus() > 0) {
             return R.error(HttpStatus.SC_BAD_REQUEST, "存在已选择的题目，请前往我的选题进行查看！");
         }

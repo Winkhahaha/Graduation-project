@@ -23,6 +23,7 @@ import org.mineok.common.utils.PageUtils;
 import org.mineok.common.utils.Query;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 
@@ -97,7 +98,11 @@ public class DirectorServiceImpl extends ServiceImpl<DirectorDao, Director> impl
         if (ObjectUtils.isEmpty(topic)) {
             return R.error("系统异常:参数错误！");
         }
-        // 设置审批通过状态
+        if (StringUtils.isEmpty(topic.getOpinions())){
+            return R.error("驳回申请前必须添加审批意见！");
+
+        }
+        // 设置审批驳回状态
         topic.setApprovalStatus(-1);
         topicDao.updateById(topic);
         return R.ok("已驳回该审批！");
@@ -125,6 +130,17 @@ public class DirectorServiceImpl extends ServiceImpl<DirectorDao, Director> impl
         teacher.setTopicCount(topicCount);
         teacherDao.updateById(teacher);
         return R.ok("设置成功！");
+    }
+
+    @Override
+    public R addOpinions(String opinions, Integer topicId) {
+        Topic topic = topicDao.selectById(topicId);
+        if (ObjectUtils.isEmpty(topic)) {
+            return R.error("系统异常:参数错误！");
+        }
+        topic.setOpinions(opinions);
+        topicDao.updateById(topic);
+        return R.ok("审批意见添加成功！");
     }
 
 }
