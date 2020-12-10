@@ -1,5 +1,7 @@
 package org.mineok.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -37,7 +39,7 @@ public class Topic implements Serializable {
 	 */
 	private String source;
 	/**
-	 * 创建时间
+	 * 创建时间:插入数据时自动添加时间
 	 */
 	private Date createtime;
 	/**

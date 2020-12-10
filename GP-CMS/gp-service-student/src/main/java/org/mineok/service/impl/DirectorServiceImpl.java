@@ -88,6 +88,8 @@ public class DirectorServiceImpl extends ServiceImpl<DirectorDao, Director> impl
         }
         // 设置审批通过状态
         topic.setApprovalStatus(2);
+        // 设置课题状态为可选
+        topic.setStatus(0);
         topicDao.updateById(topic);
         return R.ok("已确认该审批！");
     }
@@ -98,7 +100,7 @@ public class DirectorServiceImpl extends ServiceImpl<DirectorDao, Director> impl
         if (ObjectUtils.isEmpty(topic)) {
             return R.error("系统异常:参数错误！");
         }
-        if (StringUtils.isEmpty(topic.getOpinions())){
+        if (StringUtils.isEmpty(topic.getOpinions())) {
             return R.error("驳回申请前必须添加审批意见！");
 
         }

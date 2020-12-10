@@ -28,5 +28,6 @@ public interface TopicService extends IService<Topic> {
     R topicInfo(Integer topicId);
 
     R getTopicByTeacherId(String tid);
+
 }
 

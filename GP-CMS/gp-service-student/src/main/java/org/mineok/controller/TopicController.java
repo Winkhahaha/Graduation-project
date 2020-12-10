@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.mineok.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,8 +73,11 @@ public class TopicController {
      */
     @RequestMapping("/save")
     public R save(@RequestBody Topic topic) {
+        if (ObjectUtils.isEmpty(topic)){
+            return R.error("系统异常！");
+        }
         topicService.save(topic);
-        return R.ok();
+        return R.ok("添加成功！");
     }
 
     /**
@@ -81,8 +85,11 @@ public class TopicController {
      */
     @RequestMapping("/update")
     public R update(@RequestBody Topic topic) {
+        if (ObjectUtils.isEmpty(topic)){
+            return R.error("系统异常！");
+        }
         topicService.updateById(topic);
-        return R.ok();
+        return R.ok("修改成功！");
     }
 
     /**

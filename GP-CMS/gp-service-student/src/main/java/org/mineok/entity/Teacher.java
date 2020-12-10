@@ -56,5 +56,9 @@ public class Teacher implements Serializable {
 	 * 可上报的课题数目限制
 	 */
 	private Integer topicCount;
+	/**
+	 *当前已设置的题目数(只能小于等于topicCount)
+	 */
+	private Integer currentCount;
 
 }
