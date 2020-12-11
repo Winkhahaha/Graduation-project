@@ -20,27 +20,28 @@
     </resultMap>
 
 
-    <select id="topicListCanChose" resultMap="topListMap">
-		SELECT
-	t.topic_id 序号,
-	t.topic_name 课题名称,
-	t.type 课题类型,
-	t.source 课题来源,
-	t.department 所属院系,
-	t.science 专业限制,
-	t.createtime 发布时间,
-	te.tname 指导教师,
-	te.hiredate 教师入职日期,
-	t.toplimit 人数上限,
-	t.selected 已选人数,
-	t.`status` 课题状态
-FROM
-	tb_topic t
-LEFT JOIN tb_teacher te ON t.tid = te.tid
-WHERE t.approval_status = 2
-ORDER BY
-	t.topic_id
-	</select>
+    <select id="topicListCanChose" resultMap="topListMap" parameterType="int">
+        SELECT
+        t.topic_id 序号,
+        t.topic_name 课题名称,
+        t.type 课题类型,
+        t.source 课题来源,
+        t.department 所属院系,
+        t.science 专业限制,
+        t.createtime 发布时间,
+        te.tname 指导教师,
+        te.hiredate 教师入职日期,
+        t.toplimit 人数上限,
+        t.selected 已选人数,
+        t.`status` 课题状态
+        FROM
+        tb_topic t
+        LEFT JOIN tb_teacher te ON t.tid = te.tid
+        WHERE t.approval_status = 2
+            AND t.dept_id = #{deptId}
+        ORDER BY
+        te.tname
+    </select>
 
     <resultMap type="org.mineok.vo.InvertTopicVo" id="invertListMap">
         <result property="topicId" column="课题编号"/>
@@ -68,7 +69,7 @@ ORDER BY
         LEFT JOIN tb_topic t ON s.topic_id = t.topic_id
         WHERE s.topic_status > -1
         <if test="_parameter !=null and _parameter!=''">
-        AND    t.tid = #{tid}
+            AND t.tid = #{tid}
         </if>
         ORDER BY t.topic_id
     </select>

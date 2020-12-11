@@ -7,8 +7,10 @@ import org.apache.http.HttpStatus;
 import org.mineok.common.utils.PageUtils;
 import org.mineok.common.utils.Query;
 import org.mineok.common.utils.R;
+import org.mineok.dao.StudentDao;
 import org.mineok.dao.TeacherDao;
 import org.mineok.dao.TopicDao;
+import org.mineok.entity.Student;
 import org.mineok.entity.Teacher;
 import org.mineok.entity.Topic;
 import org.mineok.service.TopicService;
@@ -16,6 +18,8 @@ import org.mineok.vo.InvertTopicVo;
 import org.mineok.vo.TopicVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -29,6 +33,8 @@ public class TopicServiceImpl extends ServiceImpl<TopicDao, Topic> implements To
     private TopicDao topicDao;
     @Resource
     private TeacherDao teacherDao;
+    @Resource
+    private StudentDao studentDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -41,20 +47,28 @@ public class TopicServiceImpl extends ServiceImpl<TopicDao, Topic> implements To
     }
 
     @Override
-    public PageUtils getTopics(Map<String, Object> params) {
+    public R getTopics(Map<String, Object> params,String stuId) {
 //        Page<TopicVO> page = new Page<TopicVO>(
 //                Long.parseLong(params.get("page").toString())
 //                , Long.parseLong(params.get("limit").toString()));
         IPage<TopicVo> page = new Query<TopicVo>().getPage(params);
-        page.setRecords(topicDao.topicListCanChose(page));
-        return new PageUtils(page);
+        Student student = studentDao.selectOne(new QueryWrapper<Student>().eq("stu_id", stuId));
+        if (ObjectUtils.isEmpty(student)) {
+            return R.error("系统异常！");
+        }
+        List<TopicVo> topicVos = topicDao.topicListCanChose(page,student.getDeptId());
+        if (CollectionUtils.isEmpty(topicVos)) {
+            return R.error("系统异常！");
+        }
+        page.setRecords(topicVos);
+        return R.ok().put("page",new PageUtils(page));
     }
 
     @Override
     public R getInvertTopicsByTeacherId(String tid) {
         List<InvertTopicVo> list = topicDao.invertTopicList(tid);
-        if (list.isEmpty() || list.size() <= 0) {
-            return R.error(HttpStatus.SC_INTERNAL_SERVER_ERROR, "没有待反选的题目！");
+        if (CollectionUtils.isEmpty(list)) {
+            return R.error(HttpStatus.SC_INTERNAL_SERVER_ERROR, "暂无待反选的题目！");
         }
         return R.ok().put("invertTopic", list);
     }
@@ -89,7 +103,7 @@ public class TopicServiceImpl extends ServiceImpl<TopicDao, Topic> implements To
     @Override
     public R getTopicByTeacherId(String tid) {
         List<Topic> topicList = topicDao.selectList(new QueryWrapper<Topic>().eq("tid", tid));
-        if (topicList.isEmpty() || topicList.size() <= 0) {
+        if (CollectionUtils.isEmpty(topicList)) {
             return R.error(HttpStatus.SC_NOT_FOUND, "系统异常:参数错误！");
         }
         return R.ok().put("topicList", topicList);

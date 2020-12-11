@@ -20,7 +20,7 @@ public interface TopicService extends IService<Topic> {
 
     PageUtils queryPage(Map<String, Object> params);
 
-    PageUtils getTopics(Map<String, Object> params);
+    R getTopics(Map<String, Object> params , String stuId);
 
     // 教师反选 - 题目列表
     R getInvertTopicsByTeacherId(String tid);

@@ -3,6 +3,7 @@ package org.mineok.dao;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.mineok.entity.Topic;
 import org.mineok.vo.InvertTopicVo;
 import org.mineok.vo.TopicVo;
@@ -19,7 +20,7 @@ import java.util.List;
 @Mapper
 public interface TopicDao extends BaseMapper<Topic> {
 
-    List<TopicVo> topicListCanChose(IPage<TopicVo> page);
+    List<TopicVo> topicListCanChose(IPage<TopicVo> page , @Param("deptId") Integer deptId);
 
     List<InvertTopicVo> invertTopicList(String tid);
 	

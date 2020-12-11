@@ -41,6 +41,7 @@ public class TopicController {
 
     /**
      * 当前老师所管理的课题列表
+     *
      * @param tid
      * @return
      */
@@ -49,10 +50,17 @@ public class TopicController {
         return topicService.getTopicByTeacherId(tid);
     }
 
-    @RequestMapping("/chose/list")
-    public R topicsList(@RequestParam Map<String, Object> params) {
-        PageUtils page = topicService.getTopics(params);
-        return R.ok().put("page", page);
+    /**
+     * 根据学生的院系展现对应的选题
+     * @param params
+     * @param stuId
+     * @return
+     */
+    @RequestMapping("/chose/list/{stuId}")
+    public R topicsList(@RequestParam Map<String, Object> params, @PathVariable("stuId") String stuId) {
+//        PageUtils page = topicService.getTopics(params,stuId);
+//        return R.ok().put("page", page);
+        return topicService.getTopics(params, stuId);
     }
 
     /**
@@ -73,7 +81,7 @@ public class TopicController {
      */
     @RequestMapping("/save")
     public R save(@RequestBody Topic topic) {
-        if (ObjectUtils.isEmpty(topic)){
+        if (ObjectUtils.isEmpty(topic)) {
             return R.error("系统异常！");
         }
         topicService.save(topic);
@@ -85,7 +93,7 @@ public class TopicController {
      */
     @RequestMapping("/update")
     public R update(@RequestBody Topic topic) {
-        if (ObjectUtils.isEmpty(topic)){
+        if (ObjectUtils.isEmpty(topic)) {
             return R.error("系统异常！");
         }
         topicService.updateById(topic);
