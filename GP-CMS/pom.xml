@@ -14,6 +14,7 @@
         <module>gp-service-student</module>
         <module>gp-gateway</module>
         <module>gp-main-service-cousumer</module>
+        <module>gp-fastDFS-service</module>
     </modules>
 
     <dependencyManagement>

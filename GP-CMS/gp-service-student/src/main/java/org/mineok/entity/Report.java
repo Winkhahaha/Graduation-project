@@ -43,7 +43,7 @@ public class Report implements Serializable {
 	/**
 	 * 报告审批状态:0待审核/-1不通过/1通过
 	 */
-	private Integer status;
+	private Integer approvalStatus;
 	/**
 	 * 教师审批意见/备注
 	 */
@@ -52,5 +52,8 @@ public class Report implements Serializable {
 	 * 文件地址
 	 */
 	private String dataUrl;
-
+	/**
+	 * 报告对应的课题id
+	 */
+	private Integer topicId;
 }
