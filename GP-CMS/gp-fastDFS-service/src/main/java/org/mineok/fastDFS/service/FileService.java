@@ -92,7 +92,7 @@ public class FileService {
         StorageClient1 storageClient1 = new StorageClient1(trackerServer, storeStorage);
         // 下载文件
         byte[] bytes = storageClient1.download_file1(fileId);
-        LOGGER.info(fileId + " The file has been downloaded!");
+        LOGGER.info(fileId + " The file has been obtained from fastDFS!");
         // 为文件拼装路径名称
         StringBuilder path = new StringBuilder();
         // 1.拼接文件所在服务器文件夹
@@ -105,37 +105,8 @@ public class FileService {
         // 输出流输出文件
         FileOutputStream fileOutputStream = new FileOutputStream(new File(path.toString()));
         fileOutputStream.write(bytes);
-        LOGGER.info("The file has been generated: " + path.toString());
-//        downloadFileTobrowser(response, path.toString());
-        LOGGER.info("The file begins to download in the browser!");
+        LOGGER.info("The temporary file has been generated on the server: " + path.toString());
         return path.toString();
-    }
-
-    /**
-     * @param response
-     * @param filePath fastdfs保存在服务器中的文件路径
-     */
-    public void downloadFileTobrowser(HttpServletResponse response, String filePath) throws IOException {
-//        File file = new File(filePath);
-//        Path path = Paths.get(filePathInServer, file.getName());
-//        if (file.exists()) {
-//            // 开始往浏览器运行
-//            // 1.获取文件后缀
-//            String fileSuffix = file.getName().substring(file.getName().lastIndexOf(".") + 1);
-//            // 2.设置contentType ,只有指定contentType才能下载
-//            response.setContentType("application/" + fileSuffix);
-//            // 3.添加http头信息,因为fileName的编码格式是UTF-8
-//            // 但是http头信息只识别 ISO8859-1 的编码格式,因此要对fileName重新编码
-//            try {
-////                response.addHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes("UTF-8"), "ISO8859-1"));
-//            } catch (UnsupportedEncodingException e) {
-//                e.printStackTrace();
-//            }
-//            Files.copy(path, response.getOutputStream());
-////            ServletOutputStream outputStream = response.getOutputStream();
-////            outputStream.write(data);
-////            outputStream.close();
-//        }
     }
 
 

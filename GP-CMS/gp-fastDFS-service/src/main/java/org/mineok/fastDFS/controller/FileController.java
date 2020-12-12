@@ -3,6 +3,8 @@ package org.mineok.fastDFS.controller;
 import org.csource.common.MyException;
 import org.mineok.common.utils.R;
 import org.mineok.fastDFS.service.FileService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +36,9 @@ public class FileController {
     @Value("${filePath}")
     String filePathInServer;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileService.class);
+
+
     @RequestMapping("/upload")
     public R uploadFile(@RequestParam("file") MultipartFile file) throws IOException, MyException {
         return fileService.upload(file);
@@ -41,12 +46,15 @@ public class FileController {
 
     @RequestMapping("/download")
     public void downloadFile(HttpServletResponse response,
-                          @RequestParam("fileId") String fileId) throws IOException, MyException {
-        String filePath = fileService.fdfs_download("开题报告", fileId);
+                             @RequestParam("fileName") String fileName,
+                             @RequestParam("fileId") String fileId
+    ) throws IOException, MyException {
+        // 从服务器获取文件并下载至用户浏览器
+        String filePath = fileService.fdfs_download(fileName, fileId);
+        // 准备传递至浏览器
         File file = new File(filePath);
         Path path = Paths.get(filePathInServer, file.getName());
         if (file.exists()) {
-            // 开始往浏览器运行
             // 1.获取文件后缀
             String fileSuffix = file.getName().substring(file.getName().lastIndexOf(".") + 1);
             // 2.设置contentType ,只有指定contentType才能下载
@@ -59,14 +67,11 @@ public class FileController {
                 e.printStackTrace();
             }
             Files.copy(path, response.getOutputStream());
-//            ServletOutputStream outputStream = response.getOutputStream();
-//            outputStream.write(data);
-//            outputStream.close();
+            LOGGER.info("The file begins to download in the browser!");
         }
+        // 执行到浏览器后,删除服务器中的临时文件
+        file.delete();
+        LOGGER.info("Temporary files in the server have been deleted!");
     }
 
-//    @RequestMapping("/download/test")
-//    public void download(HttpServletResponse response) throws IOException, MyException {
-//        fileService.downloadFileTobrowser(response, "开题报告", "");
-//    }
 }
