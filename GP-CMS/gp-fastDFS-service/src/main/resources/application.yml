@@ -38,3 +38,6 @@ spring:
       # 最大支持请求大小
       max-request-size: 300MB
 
+filePath:
+  E:\CodeRepositories\Graduation-project\GP-CMS\gp-fastDFS-service\downloadFiles
+
