@@ -53,22 +53,33 @@ public class ReportController {
     /**
      * 修改
      */
-    @RequestMapping("/update")
-    public R update(@RequestBody Report report) {
-        reportService.updateById(report);
-        return R.ok();
-    }
+//    @RequestMapping("/update")
+//    public R update(@RequestBody Report report) {
+//        reportService.updateById(report);
+//        return R.ok();
+//    }
 
     /**
      * 删除
      */
-    @RequestMapping("/delete")
-    public R delete(@RequestBody Integer[] ids) {
-        reportService.removeByIds(Arrays.asList(ids));
-        return R.ok();
+//    @RequestMapping("/delete")
+//    public R delete(@RequestBody Integer[] ids) {
+//        reportService.removeByIds(Arrays.asList(ids));
+//        return R.ok();
+//    }
+
+    /*
+        报告详情
+     */
+    @RequestMapping("/info/{reportInfo}")
+    public R getStuReport(@PathVariable("reportInfo") Integer reportInfo) {
+        return reportService.getReportInfo(reportInfo);
     }
 
-    @RequestMapping("/info/{stuId}")
+    /*
+        学生开题报告列表:Vo展示数据
+     */
+    @RequestMapping("/stu/{stuId}")
     public R getStuReport(@PathVariable("stuId") String stuId) {
         return reportService.getStuReport(stuId);
     }
@@ -78,9 +89,19 @@ public class ReportController {
         return reportService.saveReportBefore(stuId);
     }
 
+    @RequestMapping("/save/{stuId}")
+    public R saveReport(@RequestBody Report report, @PathVariable("stuId") String stuId) {
+        return reportService.saveReport(report, stuId);
+    }
+
     @RequestMapping("/update/before/{reportId}")
     public R updateReportBefore(@PathVariable("reportId") Integer reportId) {
         return reportService.updateReportBefore(reportId);
+    }
+
+    @RequestMapping("/update")
+    public R updateReport(@RequestBody Report report) {
+        return reportService.updateReport(report);
     }
 
     @RequestMapping("/delete/before/{reportId}")

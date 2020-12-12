@@ -63,6 +63,9 @@ public class ReportServiceImpl extends ServiceImpl<ReportDao, Report> implements
         Topic topic = topicDao.selectById(student.getTopicId());
         Teacher teacher = this.getTeacherByQuery(topic.getTid());
         Report report = this.getReportByQuery(stuId);
+        if (ObjectUtils.isEmpty(topic) || ObjectUtils.isEmpty(teacher) || ObjectUtils.isEmpty(report)) {
+            return R.error("系统异常！");
+        }
         ReportVo reportVo = new ReportVo();
         BeanUtils.copyProperties(report, reportVo);
         reportVo.setTopicName(topic.getTopicName());
@@ -72,12 +75,49 @@ public class ReportServiceImpl extends ServiceImpl<ReportDao, Report> implements
     }
 
     @Override
+    public R getReportInfo(Integer reportId) {
+        Report report = baseMapper.selectById(reportId);
+        if (ObjectUtils.isEmpty(report)) {
+            return R.error("系统异常！");
+        }
+//        Topic topic = topicDao.selectById(report.getTopicId());
+//        Teacher teacher = this.getTeacherByQuery(report.getTid());
+//        Student student = this.getStuByQuery(report.getStuId());
+//        if (ObjectUtils.isEmpty(topic) || ObjectUtils.isEmpty(teacher) || ObjectUtils.isEmpty(student)) {
+//            return R.error("系统异常！");
+//        }
+//        // 创建Vo,为Vo赋值
+//        ReportVo reportVo = new ReportVo();
+//        BeanUtils.copyProperties(report, reportVo);
+//        reportVo.setTopicName(topic.getTopicName());
+//        reportVo.setStuName(student.getName());
+//        reportVo.setTname(teacher.getTname());
+        return R.ok().put("report", report);
+    }
+
+    @Override
     public R saveReportBefore(String stuId) {
         Report report = this.getReportByQuery(stuId);
         if (!ObjectUtils.isEmpty(report)) {
             return R.error("已添加开题报告！");
         }
         return R.ok();
+    }
+
+    @Override
+    public R saveReport(Report report, String stuId) {
+        Student student = this.getStuByQuery(stuId);
+        if (ObjectUtils.isEmpty(student) || ObjectUtils.isEmpty(report)) {
+            return R.error("系统异常！");
+        }
+        // 获取学生当前的选题
+        Topic topic = topicDao.selectById(student.getTopicId());
+        report.setStuId(student.getStuId());
+        report.setTopicId(student.getTopicId());
+        // 根据选题设置教师属性
+        report.setTid(topic.getTid());
+        baseMapper.insert(report);
+        return R.ok("添加成功！");
     }
 
     @Override
@@ -94,6 +134,15 @@ public class ReportServiceImpl extends ServiceImpl<ReportDao, Report> implements
             return R.error("已审批成功，暂不能修改！");
         }
         return R.ok();
+    }
+
+    @Override
+    public R updateReport(Report report) {
+        if (ObjectUtils.isEmpty(report)) {
+            return R.error("系统异常！");
+        }
+        baseMapper.updateById(report);
+        return R.ok("修改成功！");
     }
 
     @Override
