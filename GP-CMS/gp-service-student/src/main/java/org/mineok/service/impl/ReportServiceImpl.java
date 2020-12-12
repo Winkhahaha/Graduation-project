@@ -20,12 +20,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Service("reportService")
@@ -80,18 +78,6 @@ public class ReportServiceImpl extends ServiceImpl<ReportDao, Report> implements
         if (ObjectUtils.isEmpty(report)) {
             return R.error("系统异常！");
         }
-//        Topic topic = topicDao.selectById(report.getTopicId());
-//        Teacher teacher = this.getTeacherByQuery(report.getTid());
-//        Student student = this.getStuByQuery(report.getStuId());
-//        if (ObjectUtils.isEmpty(topic) || ObjectUtils.isEmpty(teacher) || ObjectUtils.isEmpty(student)) {
-//            return R.error("系统异常！");
-//        }
-//        // 创建Vo,为Vo赋值
-//        ReportVo reportVo = new ReportVo();
-//        BeanUtils.copyProperties(report, reportVo);
-//        reportVo.setTopicName(topic.getTopicName());
-//        reportVo.setStuName(student.getName());
-//        reportVo.setTname(teacher.getTname());
         return R.ok().put("report", report);
     }
 
@@ -176,4 +162,122 @@ public class ReportServiceImpl extends ServiceImpl<ReportDao, Report> implements
         return baseMapper.selectOne(new QueryWrapper<Report>().eq("stu_id", stuId));
     }
 
+    @Override
+    public R submitReprtApproval(Integer reportId) {
+        Report report = baseMapper.selectById(reportId);
+        if (ObjectUtils.isEmpty(report)) {
+            return R.error("系统异常！");
+        }
+        report.setApprovalStatus(1);
+        baseMapper.updateById(report);
+        return R.ok("审批已提交至指导老师！");
+    }
+
+    @Override
+    public R beforeSubmitReprtApproval(Integer reportId) {
+        Report report = baseMapper.selectById(reportId);
+        if (ObjectUtils.isEmpty(report)) {
+            return R.error("系统异常！");
+        }
+        if (report.getApprovalStatus().equals(1)) {
+            return R.error("已提交审批，请勿重复操作！");
+        }
+        if (report.getApprovalStatus().equals(2)) {
+            return R.error("审批已通过，请勿重复操作！");
+        }
+        if (report.getApprovalStatus().equals(-1)) {
+            return R.error("审批未通过，请先取消该次审批并进行课题修改后再进行提交！");
+        }
+        return R.ok();
+    }
+
+    @Override
+    public R beforeCancelReportApproval(Integer reportId) {
+        Report report = baseMapper.selectById(reportId);
+        if (ObjectUtils.isEmpty(report)) {
+            return R.error("系统异常！");
+        }
+        if (report.getApprovalStatus().equals(0)) {
+            return R.error("请先提交审批！");
+        }
+        if (report.getApprovalStatus().equals(2)) {
+            return R.error("该开题报告已通过审批，无法取消！");
+        }
+        return R.ok();
+    }
+
+    @Override
+    public R cancelReportApproval(Integer reportId) {
+        Report report = baseMapper.selectById(reportId);
+        if (ObjectUtils.isEmpty(report)) {
+            return R.error("系统异常！");
+        }
+        report.setApprovalStatus(0);
+        baseMapper.updateById(report);
+        return R.ok("取消审批成功！");
+    }
+
+    @Override
+    public R getStuReportList(Integer appStatus, String tid) {
+        Teacher teacher = this.getTeacherByQuery(tid);
+        // 根据页面传来的不同的审批状态码呈现不同的列表
+        List<Report> reportList = baseMapper.selectList(new QueryWrapper<Report>().
+                eq("tid", tid).eq("approval_status", appStatus));
+        if (ObjectUtils.isEmpty(teacher) || CollectionUtils.isEmpty(reportList)) {
+            return R.error("系统异常！");
+        }
+        List<ReportVo> reportVos = new ArrayList<ReportVo>();
+        for (Report report : reportList) {
+            Student student = this.getStuByQuery(report.getStuId());
+            Topic topic = topicDao.selectById(report.getTopicId());
+            ReportVo reportVo = new ReportVo();
+            BeanUtils.copyProperties(report, reportVo);
+            reportVo.setTopicName(topic.getTopicName());
+            reportVo.setStuName(student.getName());
+            reportVo.setTname(teacher.getTname());
+            reportVos.add(reportVo);
+            reportVo = null;
+            student = null;
+            topic = null;
+        }
+        return R.ok().put("stuReportList", reportVos);
+    }
+
+    @Override
+    public R addOpinions(String opinions, Integer reportId) {
+        Report report = baseMapper.selectById(reportId);
+        if (ObjectUtils.isEmpty(report)) {
+            return R.error("系统异常:参数错误！");
+        }
+        report.setOpinions(opinions);
+        baseMapper.updateById(report);
+        return R.ok("审批意见添加成功！");
+    }
+
+    @Override
+    public R commitApproval(Integer reportId) {
+        Report report = baseMapper.selectById(reportId);
+        if (ObjectUtils.isEmpty(report)) {
+            return R.error("系统异常:参数错误！");
+        }
+        // 设置审批通过状态
+        report.setApprovalStatus(2);
+        baseMapper.updateById(report);
+        return R.ok("已确认该报告审批！");
+    }
+
+    @Override
+    public R rejectApproval(Integer reportId) {
+        Report report = baseMapper.selectById(reportId);
+        if (ObjectUtils.isEmpty(report)) {
+            return R.error("系统异常:参数错误！");
+        }
+        if (StringUtils.isEmpty(report.getOpinions())) {
+            return R.error("驳回申请前必须添加审批意见！");
+        }
+        // 设置审批驳回状态
+        report.setApprovalStatus(-1);
+        baseMapper.updateById(report);
+        return R.ok("已驳回该开题报告！");
+    }
 }

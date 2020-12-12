@@ -114,4 +114,49 @@ public class ReportController {
         return reportService.deleteReport(reportId);
     }
 
+    /**
+     * 学生:提交/取消报告审批
+     */
+    @RequestMapping("/stu/approval/submit/before/{reportId}")
+    public R submitApprovalBefore(@PathVariable("reportId") Integer reportId) {
+        return reportService.beforeSubmitReprtApproval(reportId);
+    }
+
+    @RequestMapping("/stu/approval/submit/{reportId}")
+    public R submitApproval(@PathVariable("reportId") Integer reportId) {
+        return reportService.submitReprtApproval(reportId);
+    }
+
+    @RequestMapping("/stu/approval/cancel/before/{reportId}")
+    public R cancelApprovalBefore(@PathVariable("reportId") Integer reportId) {
+        return reportService.beforeCancelReportApproval(reportId);
+    }
+
+    @RequestMapping("/stu/approval/cancel/{reportId}")
+    public R cancelApproval(@PathVariable("reportId") Integer reportId) {
+        return reportService.cancelReportApproval(reportId);
+    }
+
+    /**
+     * 教师:查看报告列表/审批/驳回/添加审批意见
+     */
+    @RequestMapping("/teacher/approval/list/{tid}")
+    public R approvalList(@RequestParam("appStatus") Integer appStatus, @PathVariable("tid") String tid) {
+        return reportService.getStuReportList(appStatus, tid);
+    }
+
+    @RequestMapping("/teacher/add/opinions/{reportId}")
+    public R addopinions(@RequestParam("opinions") String opinions, @PathVariable("reportId") Integer reportId) {
+        return reportService.addOpinions(opinions, reportId);
+    }
+
+    @RequestMapping("/teacher/commit/approval/{reportId}")
+    public R commitapproval(@PathVariable("reportId") Integer reportId) {
+        return reportService.commitApproval(reportId);
+    }
+
+    @RequestMapping("/teacher/reject/approval/{reportId}")
+    public R rejectapproval(@PathVariable("reportId") Integer reportId) {
+        return reportService.rejectApproval(reportId);
+    }
 }
