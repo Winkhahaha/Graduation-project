@@ -70,7 +70,7 @@ public class ResultController {
 //    }
 
     /*
-        报告详情
+        毕设详情
      */
     @RequestMapping("/info/{resultInfo}")
     public R getStuResult(@PathVariable("resultInfo") Integer resultInfo) {
@@ -78,7 +78,7 @@ public class ResultController {
     }
 
     /*
-        学生开题报告列表:Vo展示数据
+        学生毕设列表:Vo展示数据
      */
     @RequestMapping("/stu/{stuId}")
     public R getStuResult(@PathVariable("stuId") String stuId) {
@@ -179,5 +179,11 @@ public class ResultController {
     @RequestMapping("/director/reject/approval/{resultId}")
     public R rejectFinalApproval(@PathVariable("resultId") Integer resultId) {
         return resultService.rejectFinalApproval(resultId);
+    }
+
+    // 获取所有通过终审的毕设成果
+    @RequestMapping("/stu/final/list")
+    public R approvalList(@RequestParam Map<String, Object> params) {
+        return resultService.queryResultsByApproval(params);
     }
 }

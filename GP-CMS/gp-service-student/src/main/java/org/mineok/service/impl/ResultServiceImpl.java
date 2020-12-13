@@ -10,6 +10,7 @@ import org.mineok.dao.*;
 import org.mineok.entity.*;
 import org.mineok.service.ResultService;
 import org.mineok.vo.ResultVo;
+import org.mineok.vo.TopicVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -45,9 +46,43 @@ public class ResultServiceImpl extends ServiceImpl<ResultDao, Result> implements
         return new PageUtils(page);
     }
 
+    public ResultVo createResultVoByResult(Result result) {
+        if (ObjectUtils.isEmpty(result)) {
+            return null;
+        }
+        Student student = this.getStuByQuery(result.getStuId());
+        Topic topic = topicDao.selectById(result.getTopicId());
+        Teacher teacher = this.getTeacherByQuery(result.getTid());
+        ResultVo resultVo = new ResultVo();
+        BeanUtils.copyProperties(result, resultVo);
+        resultVo.setTopicName(topic.getTopicName());
+        resultVo.setStuName(student.getName());
+        resultVo.setTname(teacher.getTname());
+        return resultVo;
+    }
+
+    @Override
+    public R queryResultsByApproval(Map<String, Object> params) {
+        IPage<ResultVo> page = new Query<ResultVo>().getPage(params);
+        // 得到所有通过终审的毕设列表
+        List<Result> resultList = baseMapper.selectList(new QueryWrapper<Result>().eq("approval_status", 3));
+        if (CollectionUtils.isEmpty(resultList)) {
+            return R.error("系统异常！");
+        }
+        List<ResultVo> resultVos = new ArrayList<ResultVo>();
+        for (Result result : resultList) {
+            ResultVo vo = this.createResultVoByResult(result);
+            if (!ObjectUtils.isEmpty(vo)) {
+                resultVos.add(vo);
+            }
+        }
+        page.setRecords(resultVos);
+        return R.ok().put("page", new PageUtils(page));
+    }
+
     /*
-        补充方法
-     */
+            补充方法
+         */
     private Student getStuByQuery(String stuId) {
         return studentDao.selectOne(new QueryWrapper<Student>().eq("stu_id", stuId));
     }
@@ -247,24 +282,25 @@ public class ResultServiceImpl extends ServiceImpl<ResultDao, Result> implements
     public R getStuResultList(Integer appStatus, String tid) {
         Teacher teacher = this.getTeacherByQuery(tid);
         // 根据页面传来的不同的审批状态码呈现不同的列表
-        List<Result> resultList = baseMapper.selectList(new QueryWrapper<Result>().
-                eq("tid", tid).eq("approval_status", appStatus));
+        List<Result> resultList = null;
+        if (appStatus.equals(2)) {
+            // 教师的提交终审列表,应该既包含终审中,也包含终审成功
+            resultList = baseMapper.selectList(new QueryWrapper<Result>().
+                    eq("tid", tid).eq("approval_status", 2).or()
+            .eq("approval_status", 3));
+        } else {
+            resultList = baseMapper.selectList(new QueryWrapper<Result>().
+                    eq("tid", tid).eq("approval_status", appStatus));
+        }
         if (ObjectUtils.isEmpty(teacher) || CollectionUtils.isEmpty(resultList)) {
             return R.error("系统异常！");
         }
         List<ResultVo> resultVos = new ArrayList<ResultVo>();
         for (Result result : resultList) {
-            Student student = this.getStuByQuery(result.getStuId());
-            Topic topic = topicDao.selectById(result.getTopicId());
-            ResultVo resultVo = new ResultVo();
-            BeanUtils.copyProperties(result, resultVo);
-            resultVo.setTopicName(topic.getTopicName());
-            resultVo.setStuName(student.getName());
-            resultVo.setTname(teacher.getTname());
-            resultVos.add(resultVo);
-            resultVo = null;
-            student = null;
-            topic = null;
+            ResultVo vo = this.createResultVoByResult(result);
+            if (!ObjectUtils.isEmpty(vo)) {
+                resultVos.add(vo);
+            }
         }
         return R.ok().put("stuResultList", resultVos);
     }
