@@ -51,12 +51,13 @@ public class TopicServiceImpl extends ServiceImpl<TopicDao, Topic> implements To
 //        Page<TopicVO> page = new Page<TopicVO>(
 //                Long.parseLong(params.get("page").toString())
 //                , Long.parseLong(params.get("limit").toString()));
+        String key = params.get("key").toString();
         IPage<TopicVo> page = new Query<TopicVo>().getPage(params);
         Student student = studentDao.selectOne(new QueryWrapper<Student>().eq("stu_id", stuId));
         if (ObjectUtils.isEmpty(student)) {
             return R.error("系统异常！");
         }
-        List<TopicVo> topicVos = topicDao.topicListCanChose(page,student.getDeptId());
+        List<TopicVo> topicVos = topicDao.topicListCanChose(page,student.getDeptId(),key);
         if (CollectionUtils.isEmpty(topicVos)) {
             return R.error("系统异常！");
         }

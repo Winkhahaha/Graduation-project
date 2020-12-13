@@ -39,6 +39,9 @@
         LEFT JOIN tb_teacher te ON t.tid = te.tid
         WHERE t.approval_status = 2
             AND t.dept_id = #{deptId}
+        <if test="key != null and key != ''">
+            AND CONCAT(`topic_name`, `tname`) LIKE CONCAT('%',#{key},'%')
+        </if>
         ORDER BY
         te.tname
     </select>

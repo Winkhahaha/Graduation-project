@@ -68,9 +68,12 @@ public class ResultServiceImpl extends ServiceImpl<ResultDao, Result> implements
         String key = params.get("key").toString();
         if (!StringUtils.isEmpty(key)) {
             resultList = baseMapper.selectList(new QueryWrapper<Result>().eq("approval_status", 3)
-                    .like("result_name", key));
+                    .like("result_name", key)
+                    .or()
+                    .like("stu_id", key)
+                    .orderByAsc("createtime"));
         } else {
-            resultList = baseMapper.selectList(new QueryWrapper<Result>().eq("approval_status", 3));
+            resultList = baseMapper.selectList(new QueryWrapper<Result>().eq("approval_status", 3).orderByAsc("createtime"));
         }
         // 得到所有通过终审的毕设列表
         if (CollectionUtils.isEmpty(resultList)) {
@@ -403,21 +406,4 @@ public class ResultServiceImpl extends ServiceImpl<ResultDao, Result> implements
         return R.ok("已驳回该毕设成果终审！");
     }
 
-    @Override
-    public R findResultByKey(Map<String, Object> params) {
-        IPage<ResultVo> page = new Query<ResultVo>().getPage(params);
-        List<Result> resultList = baseMapper.selectList(new QueryWrapper<Result>().like("result_name", params.get("key").toString()));
-        if (CollectionUtils.isEmpty(resultList)) {
-            return R.error("系统异常！");
-        }
-        List<ResultVo> resultVos = new ArrayList<ResultVo>();
-        for (Result result : resultList) {
-            ResultVo vo = this.createResultVoByResult(result);
-            if (!ObjectUtils.isEmpty(vo)) {
-                resultVos.add(vo);
-            }
-        }
-        page.setRecords(resultVos);
-        return R.ok().put("page", new PageUtils(page));
-    }
 }

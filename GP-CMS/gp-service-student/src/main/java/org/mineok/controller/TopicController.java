@@ -58,8 +58,6 @@ public class TopicController {
      */
     @RequestMapping("/chose/list/{stuId}")
     public R topicsList(@RequestParam Map<String, Object> params, @PathVariable("stuId") String stuId) {
-//        PageUtils page = topicService.getTopics(params,stuId);
-//        return R.ok().put("page", page);
         return topicService.getTopics(params, stuId);
     }
 

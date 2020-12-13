@@ -11,8 +11,6 @@ import org.mineok.vo.TopicVo;
 import java.util.List;
 
 /**
- * 
- * 
  * @author GaoMing
  * @email mineok@foxmail.com
  * @date 2020-12-07 14:30:27
@@ -20,8 +18,10 @@ import java.util.List;
 @Mapper
 public interface TopicDao extends BaseMapper<Topic> {
 
-    List<TopicVo> topicListCanChose(IPage<TopicVo> page , @Param("deptId") Integer deptId);
+    List<TopicVo> topicListCanChose(IPage<TopicVo> page,
+                                    @Param("deptId") Integer deptId,
+                                    @Param("key") String key);
 
     List<InvertTopicVo> invertTopicList(String tid);
-	
+
 }
