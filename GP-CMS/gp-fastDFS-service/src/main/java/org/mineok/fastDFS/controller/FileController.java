@@ -33,6 +33,7 @@ public class FileController {
 
     @Autowired
     FileService fileService;
+
     @Value("${filePath}")
     String filePathInServer;
 
@@ -69,9 +70,6 @@ public class FileController {
             Files.copy(path, response.getOutputStream());
             LOGGER.info("The file begins to download in the browser!");
         }
-        // 执行到浏览器后,删除服务器中的临时文件
-        file.delete();
-        LOGGER.info("Temporary files in the server have been deleted!");
     }
 
 }
