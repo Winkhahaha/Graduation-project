@@ -18,6 +18,7 @@ public interface ReportService extends IService<Report> {
 
     PageUtils queryPage(Map<String, Object> params);
 
+    // 获取当前学生的开题报告
     R getStuReport(String stuId);
 
     R getReportInfo(Integer reportId);

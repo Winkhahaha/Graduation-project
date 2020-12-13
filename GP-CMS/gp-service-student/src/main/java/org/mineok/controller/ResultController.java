@@ -33,40 +33,132 @@ public class ResultController {
     }
 
 
-    /**
-     * 信息
+//    /**
+//     * 信息
+//     */
+//    @RequestMapping("/info/{id}")
+//    public R info(@PathVariable("id") Integer id) {
+//        Result result = resultService.getById(id);
+//        return R.ok().put("result", result);
+//    }
+
+//    /**
+//     * 保存
+//     */
+//    @RequestMapping("/save")
+//    public R save(@RequestBody Result result) {
+//        resultService.save(result);
+//        return R.ok();
+//    }
+
+//    /**
+//     * 修改
+//     */
+//    @RequestMapping("/update")
+//    public R update(@RequestBody Result result) {
+//        resultService.updateById(result);
+//        return R.ok();
+//    }
+//
+//    /**
+//     * 删除
+//     */
+//    @RequestMapping("/delete")
+//    public R delete(@RequestBody Integer[] ids) {
+//        resultService.removeByIds(Arrays.asList(ids));
+//        return R.ok();
+//    }
+
+    /*
+        报告详情
      */
-    @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") Integer id) {
-        Result result = resultService.getById(id);
-        return R.ok().put("result", result);
+    @RequestMapping("/info/{resultInfo}")
+    public R getStuResult(@PathVariable("resultInfo") Integer resultInfo) {
+        return resultService.getResultInfo(resultInfo);
     }
 
-    /**
-     * 保存
+    /*
+        学生开题报告列表:Vo展示数据
      */
-    @RequestMapping("/save")
-    public R save(@RequestBody Result result) {
-        resultService.save(result);
-        return R.ok();
+    @RequestMapping("/stu/{stuId}")
+    public R getStuResult(@PathVariable("stuId") String stuId) {
+        return resultService.getStuResult(stuId);
     }
 
-    /**
-     * 修改
-     */
+    @RequestMapping("/save/before/{stuId}")
+    public R saveResultBefore(@PathVariable("stuId") String stuId) {
+        return resultService.saveResultBefore(stuId);
+    }
+
+    @RequestMapping("/save/{stuId}")
+    public R saveResult(@RequestBody Result result, @PathVariable("stuId") String stuId) {
+        return resultService.saveResult(result, stuId);
+    }
+
+    @RequestMapping("/update/before/{resultId}")
+    public R updateResultBefore(@PathVariable("resultId") Integer resultId) {
+        return resultService.updateResultBefore(resultId);
+    }
+
     @RequestMapping("/update")
-    public R update(@RequestBody Result result) {
-        resultService.updateById(result);
-        return R.ok();
+    public R updateResult(@RequestBody Result result) {
+        return resultService.updateResult(result);
+    }
+
+    @RequestMapping("/delete/before/{resultId}")
+    public R deleteBefore(@PathVariable("resultId") Integer resultId) {
+        return resultService.deleteResultBefore(resultId);
+    }
+
+    @RequestMapping("/delete/{resultId}")
+    public R deleteResult(@PathVariable("resultId") Integer resultId) {
+        return resultService.deleteResult(resultId);
     }
 
     /**
-     * 删除
+     * 学生:提交/取消报告审批
      */
-    @RequestMapping("/delete")
-    public R delete(@RequestBody Integer[] ids) {
-        resultService.removeByIds(Arrays.asList(ids));
-        return R.ok();
+    @RequestMapping("/stu/approval/submit/before/{resultId}")
+    public R submitApprovalBefore(@PathVariable("resultId") Integer resultId) {
+        return resultService.beforeSubmitReprtApproval(resultId);
+    }
+
+    @RequestMapping("/stu/approval/submit/{resultId}")
+    public R submitApproval(@PathVariable("resultId") Integer resultId) {
+        return resultService.submitReprtApproval(resultId);
+    }
+
+    @RequestMapping("/stu/approval/cancel/before/{resultId}")
+    public R cancelApprovalBefore(@PathVariable("resultId") Integer resultId) {
+        return resultService.beforeCancelResultApproval(resultId);
+    }
+
+    @RequestMapping("/stu/approval/cancel/{resultId}")
+    public R cancelApproval(@PathVariable("resultId") Integer resultId) {
+        return resultService.cancelResultApproval(resultId);
+    }
+
+    /**
+     * 教师:查看报告列表/审批/驳回/添加审批意见
+     */
+    @RequestMapping("/teacher/approval/list/{tid}")
+    public R approvalList(@RequestParam("appStatus") Integer appStatus, @PathVariable("tid") String tid) {
+        return resultService.getStuResultList(appStatus, tid);
+    }
+
+    @RequestMapping("/teacher/add/opinions/{resultId}")
+    public R addopinions(@RequestParam("opinions") String opinions, @PathVariable("resultId") Integer resultId) {
+        return resultService.addOpinions(opinions, resultId);
+    }
+
+    @RequestMapping("/teacher/commit/approval/{resultId}")
+    public R commitapproval(@PathVariable("resultId") Integer resultId) {
+        return resultService.commitApproval(resultId);
+    }
+
+    @RequestMapping("/teacher/reject/approval/{resultId}")
+    public R rejectapproval(@PathVariable("resultId") Integer resultId) {
+        return resultService.rejectApproval(resultId);
     }
 
 }

@@ -41,14 +41,14 @@ public class ReportController {
 //        return R.ok().put("report", report);
 //    }
 
-    /**
-     * 保存
-     */
-    @RequestMapping("/save")
-    public R save(@RequestBody Report report) {
-        reportService.save(report);
-        return R.ok();
-    }
+//    /**
+//     * 保存
+//     */
+//    @RequestMapping("/save")
+//    public R save(@RequestBody Report report) {
+//        reportService.save(report);
+//        return R.ok();
+//    }
 
     /**
      * 修改
