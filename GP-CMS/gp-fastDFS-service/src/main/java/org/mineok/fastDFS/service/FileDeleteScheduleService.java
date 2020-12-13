@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.io.File;
 
@@ -12,7 +13,7 @@ import java.io.File;
  * @Author Gaoming
  * @Email mineok@foxmail.com
  * @Date 2020/12/13/ 21:47
- * @Description 定时任务 - 删除/downloadFile下的文件
+ * @Description 定时任务
  */
 @Service
 public class FileDeleteScheduleService {
@@ -23,16 +24,18 @@ public class FileDeleteScheduleService {
     String filePathInServer;
 
     /**
-     * 设置定时任务:每天零点执行删除任务
-     * cron = "0/5 * * * * ? 每隔5秒
+     * 设置定时任务:每日零点删除/downloadFile下的临时文件
+     * cron = "0/5 * * * * ? 每隔5秒(测试用)
      */
     @Scheduled(cron = "0 0 0 * * ?")
     public void deleteEmailFileTask() {
         LOGGER.info("Timed task start --> Temporary files in the server are deleted!");
         File folder = new File(filePathInServer);
         File[] files = folder.listFiles();
-        for (int i = 0; i < files.length; i++) {
-            files[i].delete();
+        for (File file : files) {
+            if (!ObjectUtils.isEmpty(file)) {
+                file.delete();
+            }
         }
         LOGGER.info("Timed task end --> Temporary files in the server have been deleted!");
     }
