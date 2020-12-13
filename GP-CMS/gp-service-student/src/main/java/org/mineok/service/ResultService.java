@@ -22,7 +22,6 @@ public interface ResultService extends IService<Result> {
     // 展示所有通过终审的毕设成果
     R queryResultsByApproval(Map<String, Object> params);
 
-
     // 获取当前学生的毕设成果
     R getStuResult(String stuId);
 

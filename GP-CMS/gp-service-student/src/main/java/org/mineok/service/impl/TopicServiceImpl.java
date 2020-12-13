@@ -61,6 +61,7 @@ public class TopicServiceImpl extends ServiceImpl<TopicDao, Topic> implements To
             return R.error("系统异常！");
         }
         page.setRecords(topicVos);
+        page.setTotal(topicVos.size());
         return R.ok().put("page",new PageUtils(page));
     }
 
