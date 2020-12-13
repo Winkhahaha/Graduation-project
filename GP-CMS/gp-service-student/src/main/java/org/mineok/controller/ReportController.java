@@ -119,12 +119,12 @@ public class ReportController {
      */
     @RequestMapping("/stu/approval/submit/before/{reportId}")
     public R submitApprovalBefore(@PathVariable("reportId") Integer reportId) {
-        return reportService.beforeSubmitReprtApproval(reportId);
+        return reportService.beforeSubmitReportApproval(reportId);
     }
 
     @RequestMapping("/stu/approval/submit/{reportId}")
     public R submitApproval(@PathVariable("reportId") Integer reportId) {
-        return reportService.submitReprtApproval(reportId);
+        return reportService.submitReportApproval(reportId);
     }
 
     @RequestMapping("/stu/approval/cancel/before/{reportId}")

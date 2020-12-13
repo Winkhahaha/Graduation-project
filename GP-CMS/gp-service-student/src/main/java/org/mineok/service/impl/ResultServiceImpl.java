@@ -6,10 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.mineok.common.utils.PageUtils;
 import org.mineok.common.utils.Query;
 import org.mineok.common.utils.R;
-import org.mineok.dao.ResultDao;
-import org.mineok.dao.StudentDao;
-import org.mineok.dao.TeacherDao;
-import org.mineok.dao.TopicDao;
+import org.mineok.dao.*;
 import org.mineok.entity.*;
 import org.mineok.service.ResultService;
 import org.mineok.vo.ResultVo;
@@ -35,6 +32,8 @@ public class ResultServiceImpl extends ServiceImpl<ResultDao, Result> implements
     private TeacherDao teacherDao;
     @Resource
     private TopicDao topicDao;
+    @Resource
+    private DirectorDao directorDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -61,6 +60,11 @@ public class ResultServiceImpl extends ServiceImpl<ResultDao, Result> implements
         return baseMapper.selectOne(new QueryWrapper<Result>().eq("stu_id", stuId));
     }
 
+    private Director getDirectorByQuery(String directorId) {
+        return directorDao.selectOne(new QueryWrapper<Director>().eq("director_id", directorId));
+    }
+
+
     @Override
     public R getStuResult(String stuId) {
         Student student = this.getStuByQuery(stuId);
@@ -79,6 +83,22 @@ public class ResultServiceImpl extends ServiceImpl<ResultDao, Result> implements
         resultVo.setStuName(student.getName());
         resultVo.setTname(teacher.getTname());
         return R.ok().put("stuResult", Collections.singletonList(resultVo));
+    }
+
+    // 通过学生信息创建ResltVo查询
+    private ResultVo createResultVoByStudent(Student student) {
+        Result result = this.getResultByQuery(student.getStuId());
+        if (ObjectUtils.isEmpty(result)) {
+            return null;
+        }
+        Topic topic = topicDao.selectById(result.getTopicId());
+        Teacher teacher = this.getTeacherByQuery(result.getTid());
+        ResultVo resultVo = new ResultVo();
+        BeanUtils.copyProperties(result, resultVo);
+        resultVo.setTopicName(topic.getTopicName());
+        resultVo.setStuName(student.getName());
+        resultVo.setTname(teacher.getTname());
+        return resultVo;
     }
 
     @Override
@@ -126,7 +146,10 @@ public class ResultServiceImpl extends ServiceImpl<ResultDao, Result> implements
             return R.error("请先取消该次审批！");
         }
         if (result.getApprovalStatus() == 2) {
-            return R.error("已审批成功，暂不能修改！");
+            return R.error("终审中，暂不能修改！");
+        }
+        if (result.getApprovalStatus() == 3) {
+            return R.error("终审成功，不能修改！");
         }
         return R.ok();
     }
@@ -160,7 +183,7 @@ public class ResultServiceImpl extends ServiceImpl<ResultDao, Result> implements
     }
 
     @Override
-    public R submitReprtApproval(Integer resultId) {
+    public R submitResultApproval(Integer resultId) {
         Result result = baseMapper.selectById(resultId);
         if (ObjectUtils.isEmpty(result)) {
             return R.error("系统异常！");
@@ -171,7 +194,7 @@ public class ResultServiceImpl extends ServiceImpl<ResultDao, Result> implements
     }
 
     @Override
-    public R beforeSubmitReprtApproval(Integer resultId) {
+    public R beforeSubmitResultApproval(Integer resultId) {
         Result result = baseMapper.selectById(resultId);
         if (ObjectUtils.isEmpty(result)) {
             return R.error("系统异常！");
@@ -180,9 +203,12 @@ public class ResultServiceImpl extends ServiceImpl<ResultDao, Result> implements
             return R.error("已提交审批，请勿重复操作！");
         }
         if (result.getApprovalStatus().equals(2)) {
-            return R.error("审批已通过，请勿重复操作！");
+            return R.error("终审中，请勿重复操作！");
         }
-        if (result.getApprovalStatus().equals(-1)) {
+        if (result.getApprovalStatus().equals(3)) {
+            return R.error("终审已通过，请勿重复操作！");
+        }
+        if (result.getApprovalStatus() < 0) {
             return R.error("审批未通过，请先取消该次审批并进行课题修改后再进行提交！");
         }
         return R.ok();
@@ -198,7 +224,10 @@ public class ResultServiceImpl extends ServiceImpl<ResultDao, Result> implements
             return R.error("请先提交审批！");
         }
         if (result.getApprovalStatus().equals(2)) {
-            return R.error("该开题报告已通过审批，无法取消！");
+            return R.error("已提交终审，暂无法取消！");
+        }
+        if (result.getApprovalStatus().equals(3)) {
+            return R.error("终审已通过，暂无法取消！");
         }
         return R.ok();
     }
@@ -260,7 +289,7 @@ public class ResultServiceImpl extends ServiceImpl<ResultDao, Result> implements
         // 设置审批通过状态
         result.setApprovalStatus(2);
         baseMapper.updateById(result);
-        return R.ok("已确认该报告审批！");
+        return R.ok("已提交该毕设成果至负责人进行终审！");
     }
 
     @Override
@@ -275,6 +304,58 @@ public class ResultServiceImpl extends ServiceImpl<ResultDao, Result> implements
         // 设置审批驳回状态
         result.setApprovalStatus(-1);
         baseMapper.updateById(result);
-        return R.ok("已驳回该开题报告！");
+        return R.ok("已驳回该毕设成果审批！");
+    }
+
+    @Override
+    public R getFinalApprovalList(Integer appStatus, String directorId) {
+        Director director = this.getDirectorByQuery(directorId);
+        if (ObjectUtils.isEmpty(director)) {
+            return R.error("系统异常！");
+        }
+        // 获取院系Id
+        Integer deptId = director.getDeptId();
+        // 根据院系Id查找所有学生
+        List<Student> studentList = studentDao.selectList(new QueryWrapper<Student>().eq("dept_id", deptId));
+        if (CollectionUtils.isEmpty(studentList)) {
+            return R.error("系统异常！");
+        }
+        ArrayList<ResultVo> vos = new ArrayList<ResultVo>();
+        for (Student student : studentList) {
+            // 判断学生列表里面哪些学生已经有毕设成果记录
+            ResultVo vo = createResultVoByStudent(student);
+            // 根据审批状态呈现不同的Vo列表
+            if (!ObjectUtils.isEmpty(vo) && vo.getApprovalStatus().equals(appStatus)) {
+                vos.add(vo);
+            }
+        }
+        return R.ok().put("stuResultList", vos);
+    }
+
+    @Override
+    public R commitFinalApproval(Integer resultId) {
+        Result result = baseMapper.selectById(resultId);
+        if (ObjectUtils.isEmpty(result)) {
+            return R.error("系统异常:参数错误！");
+        }
+        // 设置审批通过状态
+        result.setApprovalStatus(3);
+        baseMapper.updateById(result);
+        return R.ok("终审通过！");
+    }
+
+    @Override
+    public R rejectFinalApproval(Integer resultId) {
+        Result result = baseMapper.selectById(resultId);
+        if (ObjectUtils.isEmpty(result)) {
+            return R.error("系统异常:参数错误！");
+        }
+        if (StringUtils.isEmpty(result.getOpinions())) {
+            return R.error("驳回终审前必须添加审批意见！");
+        }
+        // 设置审批驳回状态
+        result.setApprovalStatus(-2);
+        baseMapper.updateById(result);
+        return R.ok("已驳回该毕设成果终审！");
     }
 }

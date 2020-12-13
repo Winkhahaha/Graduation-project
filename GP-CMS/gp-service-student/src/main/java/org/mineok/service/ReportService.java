@@ -42,10 +42,10 @@ public interface ReportService extends IService<Report> {
     R deleteReport(Integer reportId);
 
     // 学生:提交开题报告审批
-    R submitReprtApproval(Integer reportId);
+    R submitReportApproval(Integer reportId);
 
     // 学生:提交开题报告审批之前
-    R beforeSubmitReprtApproval(Integer reportId);
+    R beforeSubmitReportApproval(Integer reportId);
 
     // 学生:取消审批
     R cancelReportApproval(Integer reportId);

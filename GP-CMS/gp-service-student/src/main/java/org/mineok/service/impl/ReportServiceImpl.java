@@ -163,7 +163,7 @@ public class ReportServiceImpl extends ServiceImpl<ReportDao, Report> implements
     }
 
     @Override
-    public R submitReprtApproval(Integer reportId) {
+    public R submitReportApproval(Integer reportId) {
         Report report = baseMapper.selectById(reportId);
         if (ObjectUtils.isEmpty(report)) {
             return R.error("系统异常！");
@@ -174,7 +174,7 @@ public class ReportServiceImpl extends ServiceImpl<ReportDao, Report> implements
     }
 
     @Override
-    public R beforeSubmitReprtApproval(Integer reportId) {
+    public R beforeSubmitReportApproval(Integer reportId) {
         Report report = baseMapper.selectById(reportId);
         if (ObjectUtils.isEmpty(report)) {
             return R.error("系统异常！");

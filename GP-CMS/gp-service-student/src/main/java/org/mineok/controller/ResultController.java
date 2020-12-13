@@ -120,12 +120,12 @@ public class ResultController {
      */
     @RequestMapping("/stu/approval/submit/before/{resultId}")
     public R submitApprovalBefore(@PathVariable("resultId") Integer resultId) {
-        return resultService.beforeSubmitReprtApproval(resultId);
+        return resultService.beforeSubmitResultApproval(resultId);
     }
 
     @RequestMapping("/stu/approval/submit/{resultId}")
     public R submitApproval(@PathVariable("resultId") Integer resultId) {
-        return resultService.submitReprtApproval(resultId);
+        return resultService.submitResultApproval(resultId);
     }
 
     @RequestMapping("/stu/approval/cancel/before/{resultId}")
@@ -152,13 +152,32 @@ public class ResultController {
     }
 
     @RequestMapping("/teacher/commit/approval/{resultId}")
-    public R commitapproval(@PathVariable("resultId") Integer resultId) {
+    public R commitApproval(@PathVariable("resultId") Integer resultId) {
         return resultService.commitApproval(resultId);
     }
 
     @RequestMapping("/teacher/reject/approval/{resultId}")
-    public R rejectapproval(@PathVariable("resultId") Integer resultId) {
+    public R rejectApproval(@PathVariable("resultId") Integer resultId) {
         return resultService.rejectApproval(resultId);
     }
 
+    /**
+     * 院系负责人:终审
+     */
+    @RequestMapping("/director/approval/list/{directorId}")
+    public R rejectapproval(@RequestParam("appStatus") Integer appStatus, @PathVariable("directorId") String directorId) {
+        return resultService.getFinalApprovalList(appStatus, directorId);
+    }
+
+    // 确认终审
+    @RequestMapping("/director/commit/approval/{resultId}")
+    public R commitFinalApproval(@PathVariable("resultId") Integer resultId) {
+        return resultService.commitFinalApproval(resultId);
+    }
+
+    // 驳回终审
+    @RequestMapping("/director/reject/approval/{resultId}")
+    public R rejectFinalApproval(@PathVariable("resultId") Integer resultId) {
+        return resultService.rejectFinalApproval(resultId);
+    }
 }
