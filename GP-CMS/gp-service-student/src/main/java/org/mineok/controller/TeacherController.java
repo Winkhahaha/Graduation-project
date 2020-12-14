@@ -35,17 +35,6 @@ public class TeacherController {
     private TopicService topicService;
 
     /**
-     * 列表
-     */
-    @RequestMapping("/list")
-    //@RequiresPermissions(":teacher:list")
-    public R list(@RequestParam Map<String, Object> params) {
-        PageUtils page = teacherService.queryPage(params);
-
-        return R.ok().put("page", page);
-    }
-
-    /**
      * 当前老师待反选题目列表
      */
     @RequestMapping("/invert/list/{tid}")
@@ -78,23 +67,6 @@ public class TeacherController {
         return teacherService.teacherInfo(tid);
     }
 
-    /**
-     * 保存
-     */
-    @RequestMapping("/save")
-    public R save(@RequestBody Teacher teacher) {
-        teacherService.save(teacher);
-        return R.ok();
-    }
-
-    /**
-     * 修改
-     */
-    @RequestMapping("/update")
-    public R update(@RequestBody Teacher teacher) {
-        teacherService.updateById(teacher);
-        return R.ok();
-    }
 
     /**
      * 根据当前教师的最大选题数进行课题新增
@@ -115,16 +87,6 @@ public class TeacherController {
         return teacherService.saveBefore(tid);
     }
 
-//    /**
-//     * 当前教师新增课题
-//     */
-//    @RequestMapping("/topic/save")
-//    public R save(@RequestBody Topic topic) {
-//        if (ObjectUtils.isEmpty(topic)) {
-//            return R.error("系统异常！");
-//        }
-//        return teacherService.saveByTopicCount(topic);
-//    }
 
     /**
      * 根据当前课题审批状态进行修改

@@ -31,17 +31,7 @@ public class TopicController {
     private TopicService topicService;
 
     /**
-     * 列表
-     */
-    @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params) {
-        PageUtils page = topicService.queryPage(params);
-        return R.ok().put("page", page);
-    }
-
-    /**
      * 当前老师所管理的课题列表
-     *
      * @param tid
      * @return
      */
@@ -67,44 +57,6 @@ public class TopicController {
     @RequestMapping("/info/{topicId}")
     public R info(@PathVariable("topicId") Integer topicId) {
         return topicService.topicInfo(topicId);
-    }
-//    @RequestMapping("/info/{id}")
-//    public R info(@PathVariable("id") Integer id) {
-//        Topic topic = topicService.getById(id);
-//        return R.ok().put("topic", topic);
-//    }
-
-    /**
-     * 保存
-     */
-    @RequestMapping("/save")
-    public R save(@RequestBody Topic topic) {
-        if (ObjectUtils.isEmpty(topic)) {
-            return R.error("系统异常！");
-        }
-        topicService.save(topic);
-        return R.ok("添加成功！");
-    }
-
-    /**
-     * 修改
-     */
-    @RequestMapping("/update")
-    public R update(@RequestBody Topic topic) {
-        if (ObjectUtils.isEmpty(topic)) {
-            return R.error("系统异常！");
-        }
-        topicService.updateById(topic);
-        return R.ok("修改成功！");
-    }
-
-    /**
-     * 删除
-     */
-    @RequestMapping("/delete")
-    public R delete(@RequestBody Integer[] ids) {
-        topicService.removeByIds(Arrays.asList(ids));
-        return R.ok();
     }
 
 }

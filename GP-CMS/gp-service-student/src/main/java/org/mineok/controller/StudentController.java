@@ -29,29 +29,8 @@ public class StudentController {
     @Autowired
     private TopicService topicService;
 
-    /**
-     * 列表
-     */
-    @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params) {
-        PageUtils page = studentService.queryPage(params);
-
-        return R.ok().put("page", page);
-    }
-
-
-    /**
-     * 信息
-     */
-    @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") Integer id) {
-        Student student = studentService.getById(id);
-
-        return R.ok().put("student", student);
-    }
-
     /*
-        获取登录用户(学生/教师)的信息
+        获取登录用户(学生)的信息
      */
     @RequestMapping("/sys/info/{stuId}")
     public R infoByStuId(@PathVariable("stuId") String stuId) {
@@ -59,34 +38,6 @@ public class StudentController {
         return R.ok().put("student", Collections.singletonList(student));
     }
 
-    /**
-     * 保存
-     */
-    @RequestMapping("/save")
-    public R save(@RequestBody Student student) {
-        studentService.save(student);
-
-        return R.ok();
-    }
-
-    /**
-     * 修改
-     */
-    @RequestMapping("/update")
-    public R update(@RequestBody Student student) {
-        studentService.updateById(student);
-
-        return R.ok();
-    }
-
-    /**
-     * 删除
-     */
-    @RequestMapping("/delete")
-    public R delete(@RequestBody Integer[] ids) {
-        studentService.removeByIds(Arrays.asList(ids));
-        return R.ok();
-    }
 
     @RequestMapping("/chose/topic/{stuId}/{topicId}")
     public R choseTopic(@PathVariable("stuId") String stuId, @PathVariable("topicId") Integer topicId) {

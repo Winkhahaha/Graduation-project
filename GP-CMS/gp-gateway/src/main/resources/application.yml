@@ -13,6 +13,13 @@ spring:
         locator:
           enabled: true
       routes:
+        # 配置admin-service服务
+        - id: admin_route
+          uri: lb://gp-test-student-service
+          predicates:
+            - Path=/api/admin/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
         # 配置student-service服务
         - id: stu_route
           uri: lb://gp-test-student-service

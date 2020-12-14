@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.io.File;
+import java.util.Objects;
 
 /**
  * @Author Gaoming
@@ -24,19 +25,23 @@ public class FileDeleteScheduleService {
     String filePathInServer;
 
     /**
-     * 设置定时任务:每日零点删除/downloadFile下的临时文件
+     * 设置定时任务:每隔5min删除/downloadFile下的临时文件
      * cron = "0/5 * * * * ? 每隔5秒(测试用)
      */
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0 */5 * * * ?")
     public void deleteEmailFileTask() {
         LOGGER.info("Timed task start --> Temporary files in the server are deleted!");
         File folder = new File(filePathInServer);
         File[] files = folder.listFiles();
-        for (File file : files) {
-            if (!ObjectUtils.isEmpty(file)) {
-                file.delete();
+        if (!ObjectUtils.isEmpty(files)) {
+            for (File file : files) {
+                if (!ObjectUtils.isEmpty(file)) {
+                    file.delete();
+                }
             }
+            LOGGER.info("Timed task end --> Temporary files in the server have been deleted!");
+            return;
         }
-        LOGGER.info("Timed task end --> Temporary files in the server have been deleted!");
+        LOGGER.info("There is no temporary file in the server!");
     }
 }

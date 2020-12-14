@@ -23,51 +23,6 @@ public class DirectorController {
     private DirectorService directorService;
 
     /**
-     * 列表
-     */
-    @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params) {
-        PageUtils page = directorService.queryPage(params);
-        return R.ok().put("page", page);
-    }
-
-
-    /**
-     * 信息
-     */
-    @RequestMapping("/info/{directorId}")
-    public R info(@PathVariable("directorId") String directorId) {
-        return directorService.dirInfoByDirId(directorId);
-    }
-
-    /**
-     * 保存
-     */
-    @RequestMapping("/save")
-    public R save(@RequestBody Director director) {
-        directorService.save(director);
-        return R.ok();
-    }
-
-    /**
-     * 修改
-     */
-    @RequestMapping("/update")
-    public R update(@RequestBody Director director) {
-        directorService.updateById(director);
-        return R.ok();
-    }
-
-    /**
-     * 删除
-     */
-    @RequestMapping("/delete")
-    public R delete(@RequestBody Integer[] ids) {
-        directorService.removeByIds(Arrays.asList(ids));
-        return R.ok();
-    }
-
-    /**
      * 获取当前审批列表
      */
     @RequestMapping("/approval/list/{directorId}")
