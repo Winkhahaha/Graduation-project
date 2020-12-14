@@ -298,6 +298,7 @@ public class ResultServiceImpl extends ServiceImpl<ResultDao, Result> implements
             // 教师的提交终审列表,应该既包含终审中,也包含终审成功
             resultList = baseMapper.selectList(new QueryWrapper<Result>().
                     eq("tid", tid).eq("approval_status", 2).or()
+                    .eq("tid", tid)
                     .eq("approval_status", 3));
         } else {
             resultList = baseMapper.selectList(new QueryWrapper<Result>().
