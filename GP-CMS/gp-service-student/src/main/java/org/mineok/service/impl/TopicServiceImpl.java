@@ -47,7 +47,7 @@ public class TopicServiceImpl extends ServiceImpl<TopicDao, Topic> implements To
     }
 
     @Override
-    public R getTopics(Map<String, Object> params,String stuId) {
+    public R getTopics(Map<String, Object> params, String stuId) {
 //        Page<TopicVO> page = new Page<TopicVO>(
 //                Long.parseLong(params.get("page").toString())
 //                , Long.parseLong(params.get("limit").toString()));
@@ -57,13 +57,13 @@ public class TopicServiceImpl extends ServiceImpl<TopicDao, Topic> implements To
         if (ObjectUtils.isEmpty(student)) {
             return R.error("系统异常！");
         }
-        List<TopicVo> topicVos = topicDao.topicListCanChose(page,student.getDeptId(),key);
+        List<TopicVo> topicVos = topicDao.topicListCanChose(page, student.getDeptId(), key);
         if (CollectionUtils.isEmpty(topicVos)) {
             return R.error("系统异常！");
         }
         page.setRecords(topicVos);
         page.setTotal(topicVos.size());
-        return R.ok().put("page",new PageUtils(page));
+        return R.ok().put("page", new PageUtils(page));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.mineok.controller;
 
+import org.mineok.common.annotation.SysLog;
 import org.mineok.common.utils.PageUtils;
 import org.mineok.common.utils.R;
 import org.mineok.entity.Student;

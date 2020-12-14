@@ -1,5 +1,6 @@
 package org.mineok.controller;
 
+import org.mineok.common.annotation.SysLog;
 import org.mineok.common.utils.PageUtils;
 import org.mineok.common.utils.R;
 import org.mineok.entity.*;
@@ -31,9 +32,21 @@ public class AdminController {
     private TeacherService teacherService;
     @Autowired
     private TopicService topicService;
+    @Autowired
+    private SysLogService logService;
+
+
+    // 获取gp-service-student日志数据
+    //@SysLog("查看系统日志")
+    @ResponseBody
+    @GetMapping("/log/list")
+    public R logList(@RequestParam Map<String, Object> params){
+        PageUtils page = logService.queryPage(params);
+        return R.ok().put("page", page);
+    }
 
     /**
-     * 列表
+     * 全盘操作表数据
      */
     @RequestMapping("/director/list")
     public R directorlist(@RequestParam Map<String, Object> params){
