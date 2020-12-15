@@ -3,6 +3,7 @@ package org.mineok.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import org.mineok.common.annotation.SysLog;
 import org.mineok.entity.Topic;
 import org.mineok.service.TeacherService;
 import org.mineok.service.TopicService;
@@ -62,6 +63,7 @@ public class TeacherController {
     /**
      * 根据工号(登录用户名)查询老师的信息
      */
+    @SysLog("教师个人信息")
     @RequestMapping("/info/{tid}")
     public R info(@PathVariable("tid") String tid) {
         return teacherService.teacherInfo(tid);
@@ -71,6 +73,7 @@ public class TeacherController {
     /**
      * 根据当前教师的最大选题数进行课题新增
      */
+    @SysLog("教师新增课题")
     @RequestMapping("/topic/save")
     public R saveByTopicCount(@RequestBody Topic topic) {
         return teacherService.saveByTopicCount(topic);
@@ -91,6 +94,7 @@ public class TeacherController {
     /**
      * 根据当前课题审批状态进行修改
      */
+    @SysLog("修改课题")
     @RequestMapping("/topic/update")
     public R updateByStatus(@RequestBody Topic topic) {
         return teacherService.updateByStatus(topic);

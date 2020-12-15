@@ -25,9 +25,9 @@ public class ReportController {
     /*
         报告详情
      */
-    @RequestMapping("/info/{reportInfo}")
-    public R getStuReport(@PathVariable("reportInfo") Integer reportInfo) {
-        return reportService.getReportInfo(reportInfo);
+    @RequestMapping("/info/{reportId}")
+    public R getStuReport(@PathVariable("reportId") Integer reportId) {
+        return reportService.getReportInfo(reportId);
     }
 
     /*

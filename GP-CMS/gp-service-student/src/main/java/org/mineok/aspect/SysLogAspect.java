@@ -18,6 +18,9 @@ import org.mineok.entity.SysLogInfo;
 import org.mineok.service.SysLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -60,37 +63,40 @@ public class SysLogAspect {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
 
-        SysLogInfo sysLog = new SysLogInfo();
+        SysLogInfo logInfo = new SysLogInfo();
         SysLog syslog = method.getAnnotation(SysLog.class);
         if (syslog != null) {
             // 注解上的描述
-            sysLog.setOperation(syslog.value());
+            logInfo.setOperation(syslog.value());
         }
-
         //请求的方法名
         String className = joinPoint.getTarget().getClass().getName();
         String methodName = signature.getName();
-        sysLog.setMethod(className + "." + methodName + "()");
-
+        logInfo.setMethod(className + "." + methodName + "()");
         // 获取请求的参数
         Object[] args = joinPoint.getArgs();
-//			String params = JSON.toJSONString(args);
         // 参数转为JSON串
         String params = new Gson().toJson(args);
         // 设置参数串
-        sysLog.setParams(params);
+        logInfo.setParams(params);
         // 获取当前登录用户名
-        Map map = (Map) args[0];
-        String userName = map.get("userName").toString();
+        String userName = null;
+        if (args[0] instanceof Map) {
+            // 部分用户名存在于@RequestParm(Map)中
+            Map map = (Map) args[0];
+            userName = map.get("userName").toString();
+        } else {
+            userName = "用户名记录在参数中！";
+        }
         //获取request
         HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
         // 设置IP地址
-        sysLog.setIp(IPUtils.getIpAddr(request));
+        logInfo.setIp(IPUtils.getIpAddr(request));
         // 设置用户名
-        sysLog.setUsername(userName);
-        sysLog.setTime(time);
-        sysLog.setCreateDate(new Date());
+        logInfo.setUsername(userName);
+        logInfo.setTime(time);
+        logInfo.setCreateDate(new Date());
         //保存系统日志
-        sysLogService.save(sysLog);
+        sysLogService.save(logInfo);
     }
 }
