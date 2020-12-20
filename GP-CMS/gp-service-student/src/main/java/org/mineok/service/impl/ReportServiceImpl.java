@@ -83,6 +83,11 @@ public class ReportServiceImpl extends ServiceImpl<ReportDao, Report> implements
 
     @Override
     public R saveReportBefore(String stuId) {
+        // 先查找该学生是否已经选题成功
+        Topic topic = topicDao.selectOne(new QueryWrapper<Topic>().eq("stu_id", stuId));
+        if (ObjectUtils.isEmpty(topic)) {
+            return R.error("请先进行选题！");
+        }
         Report report = this.getReportByQuery(stuId);
         if (!ObjectUtils.isEmpty(report)) {
             return R.error("已添加开题报告！");

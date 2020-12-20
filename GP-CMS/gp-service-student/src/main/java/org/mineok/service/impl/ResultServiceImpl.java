@@ -35,6 +35,8 @@ public class ResultServiceImpl extends ServiceImpl<ResultDao, Result> implements
     private TopicDao topicDao;
     @Resource
     private DirectorDao directorDao;
+    @Resource
+    private ReportDao reportDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -64,17 +66,14 @@ public class ResultServiceImpl extends ServiceImpl<ResultDao, Result> implements
     @Override
     public R queryResultsByApproval(Map<String, Object> params) {
         IPage<ResultVo> page = new Query<ResultVo>().getPage(params);
-        List<Result> resultList = null;
         String key = params.get("key").toString();
-        if (!StringUtils.isEmpty(key)) {
-            resultList = baseMapper.selectList(new QueryWrapper<Result>().eq("approval_status", 3)
-                    .like("result_name", key)
-                    .or()
-                    .like("stu_id", key)
-                    .orderByAsc("createtime"));
-        } else {
-            resultList = baseMapper.selectList(new QueryWrapper<Result>().eq("approval_status", 3).orderByAsc("createtime"));
-        }
+        List<Result> resultList = baseMapper.selectList(new QueryWrapper<Result>()
+                .eq("approval_status", 3)
+                .like(!StringUtils.isEmpty(key), "result_name", key)
+                .or()
+                .eq("approval_status", 3)
+                .like(!StringUtils.isEmpty(key), "stu_id", key)
+                .orderByAsc("createtime"));
         // 得到所有通过终审的毕设列表
         if (CollectionUtils.isEmpty(resultList)) {
             return R.error("系统异常！");
@@ -158,6 +157,19 @@ public class ResultServiceImpl extends ServiceImpl<ResultDao, Result> implements
 
     @Override
     public R saveResultBefore(String stuId) {
+//        // 先查找该学生是否已经选题成功
+//        Topic topic = topicDao.selectOne(new QueryWrapper<Topic>().eq("stu_id", stuId));
+//        if (ObjectUtils.isEmpty(topic)) {
+//            return R.error("请先进行选题！");
+//        }
+        Report report = reportDao.selectOne(new QueryWrapper<Report>().eq("stu_id", stuId));
+        // 先判断是否添加过开题报告
+        if (ObjectUtils.isEmpty(report)) {
+            return R.error("请先添加开题报告！");
+        }
+        if (report.getApprovalStatus() != 2) {
+            return R.error("开题报告未通过审批，暂不能添加毕设成果！");
+        }
         Result result = this.getResultByQuery(stuId);
         if (!ObjectUtils.isEmpty(result)) {
             return R.error("已添加毕设成果！");

@@ -69,13 +69,16 @@ public class DirectorServiceImpl extends ServiceImpl<DirectorDao, Director> impl
         }
         // 获取当前页面状态码,确认属于三种状态的哪一种状态页面
         int appStatus = Integer.parseInt(params.get("appStatus").toString());
+        String key = params.get("key").toString();
         List<Topic> topicList = topicDao.selectList(new QueryWrapper<Topic>().eq("dept_id", director.getDeptId()).
-                eq("approval_status", appStatus));
+                eq("approval_status", appStatus)
+                .like(!StringUtils.isEmpty(key), "topic_name", key));
         if (CollectionUtils.isEmpty(topicList)) {
             return R.error("系统异常:参数错误！");
         }
         IPage<Topic> page = new Query<Topic>().getPage(params);
         page.setRecords(topicList);
+        page.setTotal(topicList.size());
         return R.ok().put("page", new PageUtils(page));
     }
 
