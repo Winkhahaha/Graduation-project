@@ -51,6 +51,9 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherDao, Teacher> impleme
         if (student == null || topic == null) {
             return R.error(HttpStatus.SC_NOT_FOUND, "系统异常:参数错误！");
         }
+        if (topic.getStuId() != null) {
+            return R.error("该课题您已反选学生，请按照一题一人原则！");
+        }
         if (student.getTopicStatus() == 2) {
             return R.error(HttpStatus.SC_BAD_REQUEST, "已反选该学生，请勿重复操作！");
         }
@@ -174,7 +177,7 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherDao, Teacher> impleme
             return R.error("系统异常！");
         }
         // 当前已添加的课题数 < 最大数,则可以添加课题
-        if (teacher.getCurrentCount() + 1 > teacher.getTopicCount()) {
+        if (teacher.getCurrentCount().equals(teacher.getTopicCount())) {
             return R.error("您的课题数已达上限，不能添加！");
         }
         return R.ok();

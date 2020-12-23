@@ -106,15 +106,6 @@ public class TeacherController {
     }
 
     /**
-     * 删除
-     */
-    @RequestMapping("/delete")
-    public R delete(@RequestBody Integer[] ids) {
-        teacherService.removeByIds(Arrays.asList(ids));
-        return R.ok();
-    }
-
-    /**
      * 提交审批
      *
      * @param tid

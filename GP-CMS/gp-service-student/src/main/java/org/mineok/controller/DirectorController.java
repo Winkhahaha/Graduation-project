@@ -22,6 +22,11 @@ public class DirectorController {
     @Autowired
     private DirectorService directorService;
 
+    @RequestMapping("/info/{directorId}")
+    public R info(@PathVariable("directorId") String directorId) {
+        return directorService.dirInfoByDirId(directorId);
+    }
+
     /**
      * 获取当前审批列表
      */

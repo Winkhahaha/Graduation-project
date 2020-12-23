@@ -76,7 +76,7 @@ spring:
           filters:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
 
-        - id: admin_route    #路由的ID，没有固定规则但要求唯一，建议配合服务名
+        - id: renren_route    #路由的ID，没有固定规则但要求唯一，建议配合服务名
           #uri: http://localhost:8080/renren-fast          #匹配后提供服务的路由地址
           uri: lb://renren-fast #匹配后提供服务的路由地址
           predicates:
