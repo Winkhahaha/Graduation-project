@@ -10,7 +10,6 @@ import org.mineok.dao.*;
 import org.mineok.entity.*;
 import org.mineok.service.ResultService;
 import org.mineok.vo.ResultVo;
-import org.mineok.vo.TopicVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -117,9 +116,12 @@ public class ResultServiceImpl extends ServiceImpl<ResultDao, Result> implements
             return R.error("系统异常！");
         }
         Topic topic = topicDao.selectById(student.getTopicId());
+        if (ObjectUtils.isEmpty(topic)) {
+            return R.error("系统异常！");
+        }
         Teacher teacher = this.getTeacherByQuery(topic.getTid());
         Result result = this.getResultByQuery(stuId);
-        if (ObjectUtils.isEmpty(topic) || ObjectUtils.isEmpty(teacher) || ObjectUtils.isEmpty(result)) {
+        if (ObjectUtils.isEmpty(teacher) || ObjectUtils.isEmpty(result)) {
             return R.error("系统异常！");
         }
         ResultVo resultVo = new ResultVo();

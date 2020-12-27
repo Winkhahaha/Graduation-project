@@ -41,7 +41,7 @@ public class TopicTest {
         // System.out.println(topicDao.topicListCanChose());
         // 多表分页查询测试
         Page<TopicVo> page = new Page<TopicVo>(1, 10);
-        page.setRecords(topicDao.topicListCanChose(page,1,"张"));
+        page.setRecords(topicDao.topicListCanChose(page, 1, "张"));
         System.out.println(page.getRecords());
         System.out.println(page.getTotal());
     }
@@ -58,7 +58,7 @@ public class TopicTest {
     }
 
     @Test
-    public void test_topicInfo(){
+    public void test_topicInfo() {
         Object topicInfo = topicService.topicInfo(1).get("topicInfo");
         System.out.println(topicInfo);
     }

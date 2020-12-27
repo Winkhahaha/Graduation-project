@@ -59,9 +59,12 @@ public class ReportServiceImpl extends ServiceImpl<ReportDao, Report> implements
             return R.error("系统异常！");
         }
         Topic topic = topicDao.selectById(student.getTopicId());
+        if (ObjectUtils.isEmpty(topic)) {
+            return R.error("系统异常！");
+        }
         Teacher teacher = this.getTeacherByQuery(topic.getTid());
         Report report = this.getReportByQuery(stuId);
-        if (ObjectUtils.isEmpty(topic) || ObjectUtils.isEmpty(teacher) || ObjectUtils.isEmpty(report)) {
+        if (ObjectUtils.isEmpty(teacher) || ObjectUtils.isEmpty(report)) {
             return R.error("系统异常！");
         }
         ReportVo reportVo = new ReportVo();

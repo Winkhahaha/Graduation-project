@@ -94,7 +94,7 @@ public class TeacherController {
     /**
      * 根据当前课题审批状态进行修改
      */
-    @SysLog("修改课题")
+    @SysLog("教师修改课题")
     @RequestMapping("/topic/update")
     public R updateByStatus(@RequestBody Topic topic) {
         return teacherService.updateByStatus(topic);
@@ -112,6 +112,7 @@ public class TeacherController {
      * @param topicId
      * @return
      */
+    @SysLog("教师提交课题审批")
     @RequestMapping("/approval/submit/{tid}/{topicId}")
     public R submitApproval(@PathVariable("tid") String tid, @PathVariable("topicId") Integer topicId) {
         return teacherService.submitApproval(tid, topicId);
@@ -128,6 +129,7 @@ public class TeacherController {
      * @param topicId
      * @return
      */
+    @SysLog("教师取消课题审批")
     @RequestMapping("/approval/cancel/{topicId}")
     public R cancelApproval(@PathVariable("topicId") Integer topicId) {
         return teacherService.cancelApproval(topicId);
@@ -141,6 +143,7 @@ public class TeacherController {
     /**
      * 删除
      */
+    @SysLog("教师删除课题")
     @RequestMapping("/topic/delete/{tid}")
     public R deleteByTopicIds(@RequestBody Integer[] ids, @PathVariable("tid") String tid) {
         return teacherService.deleteNotApproval(ids,tid);

@@ -50,11 +50,10 @@ public class StudentController {
         return studentService.cancelTopic(stuId, topicId);
     }
 
-
+    @SysLog("学生：我的选题")
     @RequestMapping("/myTopic/{stuId}")
     public R myTopic(@PathVariable("stuId") String stuId) {
         return studentService.myTopic(stuId);
     }
-
 
 }

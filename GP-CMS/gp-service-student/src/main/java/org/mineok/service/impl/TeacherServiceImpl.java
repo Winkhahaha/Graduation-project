@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
@@ -51,7 +52,7 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherDao, Teacher> impleme
         if (student == null || topic == null) {
             return R.error(HttpStatus.SC_NOT_FOUND, "系统异常:参数错误！");
         }
-        if (topic.getStuId() != null) {
+        if (!StringUtils.isEmpty(topic.getStuId())) {
             return R.error("该课题您已反选学生，请按照一题一人原则！");
         }
         if (student.getTopicStatus() == 2) {
