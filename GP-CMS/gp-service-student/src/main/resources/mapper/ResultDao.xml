@@ -3,15 +3,23 @@
 
 <mapper namespace="org.mineok.dao.ResultDao">
 
-	<!-- 可根据自己的需求，是否要使用 -->
-<!--    <resultMap type="org.mineok.modules.test.entity.StudentEntity" id="studentMap">-->
-<!--        <result property="id" column="id"/>-->
-<!--        <result property="name" column="name"/>-->
-<!--        <result property="gender" column="gender"/>-->
-<!--        <result property="age" column="age"/>-->
-<!--        <result property="birthday" column="birthday"/>-->
-<!--        <result property="remarks" column="remarks"/>-->
-<!--    </resultMap>-->
 
-
+    <select id="resultList" resultType="org.mineok.vo.ResultVo">
+	SELECT
+	r.*,
+	t.topic_name,
+	s.stu_name,
+	te.tname
+	FROM
+	tb_result r
+	LEFT JOIN tb_topic t  ON r.topic_id = t.topic_id
+	LEFT JOIN tb_student s ON r.stu_id = s.stu_id
+	LEFT JOIN tb_teacher te ON r.tid = te.tid
+	WHERE r.approval_status = 3
+		<if test="key != null and key != ''">
+	AND CONCAT(`result_name`, `topic_name`,`stu_name`,`tname`) LIKE CONCAT('%',#{key},'%')
+		</if>
+	ORDER BY
+		r.createtime
+	</select>
 </mapper>

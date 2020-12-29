@@ -11,6 +11,7 @@ import org.mineok.entity.*;
 import org.mineok.service.ResultService;
 import org.mineok.vo.ResultVo;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
@@ -36,6 +37,8 @@ public class ResultServiceImpl extends ServiceImpl<ResultDao, Result> implements
     private DirectorDao directorDao;
     @Resource
     private ReportDao reportDao;
+    @Resource
+    private ResultDao resultDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -57,7 +60,7 @@ public class ResultServiceImpl extends ServiceImpl<ResultDao, Result> implements
         ResultVo resultVo = new ResultVo();
         BeanUtils.copyProperties(result, resultVo);
         resultVo.setTopicName(topic.getTopicName());
-        resultVo.setStuName(student.getName());
+        resultVo.setStuName(student.getStuName());
         resultVo.setTname(teacher.getTname());
         return resultVo;
     }
@@ -66,26 +69,11 @@ public class ResultServiceImpl extends ServiceImpl<ResultDao, Result> implements
     public R queryResultsByApproval(Map<String, Object> params) {
         IPage<ResultVo> page = new Query<ResultVo>().getPage(params);
         String key = params.get("key").toString();
-        List<Result> resultList = baseMapper.selectList(new QueryWrapper<Result>()
-                .eq("approval_status", 3)
-                .like(!StringUtils.isEmpty(key), "result_name", key)
-                .or()
-                .eq("approval_status", 3)
-                .like(!StringUtils.isEmpty(key), "stu_id", key)
-                .orderByAsc("createtime"));
-        // 得到所有通过终审的毕设列表
-        if (CollectionUtils.isEmpty(resultList)) {
+        List<ResultVo> resultVos = resultDao.resultList(page, key);
+        if (CollectionUtils.isEmpty(resultVos)) {
             return R.error("系统异常！");
         }
-        List<ResultVo> resultVos = new ArrayList<ResultVo>();
-        for (Result result : resultList) {
-            ResultVo vo = this.createResultVoByResult(result);
-            if (!ObjectUtils.isEmpty(vo)) {
-                resultVos.add(vo);
-            }
-        }
         page.setRecords(resultVos);
-        page.setTotal(resultVos.size());
         return R.ok().put("page", new PageUtils(page));
     }
 
@@ -127,7 +115,7 @@ public class ResultServiceImpl extends ServiceImpl<ResultDao, Result> implements
         ResultVo resultVo = new ResultVo();
         BeanUtils.copyProperties(result, resultVo);
         resultVo.setTopicName(topic.getTopicName());
-        resultVo.setStuName(student.getName());
+        resultVo.setStuName(student.getStuName());
         resultVo.setTname(teacher.getTname());
         return R.ok().put("stuResult", Collections.singletonList(resultVo));
     }
@@ -143,7 +131,7 @@ public class ResultServiceImpl extends ServiceImpl<ResultDao, Result> implements
         ResultVo resultVo = new ResultVo();
         BeanUtils.copyProperties(result, resultVo);
         resultVo.setTopicName(topic.getTopicName());
-        resultVo.setStuName(student.getName());
+        resultVo.setStuName(student.getStuName());
         resultVo.setTname(teacher.getTname());
         return resultVo;
     }

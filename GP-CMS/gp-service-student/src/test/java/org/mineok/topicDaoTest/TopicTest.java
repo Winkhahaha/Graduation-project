@@ -5,14 +5,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mineok.StudentApplication;
 import org.mineok.common.utils.R;
+import org.mineok.dao.ResultDao;
 import org.mineok.dao.TopicDao;
 import org.mineok.service.StudentService;
 import org.mineok.service.TopicService;
+import org.mineok.vo.ResultVo;
 import org.mineok.vo.TopicVo;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Author Gaoming
@@ -31,6 +34,8 @@ public class TopicTest {
     TopicService topicService;
     @Resource
     StudentService studentService;
+    @Resource
+    ResultDao resultDao;
 
     /**
      * 多表查询topic- techer
@@ -42,6 +47,16 @@ public class TopicTest {
         // 多表分页查询测试
         Page<TopicVo> page = new Page<TopicVo>(1, 10);
         page.setRecords(topicDao.topicListCanChose(page, 1, "张"));
+        System.out.println(page.getRecords());
+        System.out.println(page.getTotal());
+    }
+
+    @Test
+    public void test_resultVO_resultList() {
+        // 多表分页查询测试
+        Page<ResultVo> page = new Page<ResultVo>(1, 2);
+        List<ResultVo> list = resultDao.resultList(page, "王");
+        page.setRecords(list);
         System.out.println(page.getRecords());
         System.out.println(page.getTotal());
     }

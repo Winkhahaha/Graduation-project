@@ -70,7 +70,7 @@ public class ReportServiceImpl extends ServiceImpl<ReportDao, Report> implements
         ReportVo reportVo = new ReportVo();
         BeanUtils.copyProperties(report, reportVo);
         reportVo.setTopicName(topic.getTopicName());
-        reportVo.setStuName(student.getName());
+        reportVo.setStuName(student.getStuName());
         reportVo.setTname(teacher.getTname());
         return R.ok().put("stuReport", Collections.singletonList(reportVo));
     }
@@ -241,7 +241,7 @@ public class ReportServiceImpl extends ServiceImpl<ReportDao, Report> implements
             ReportVo reportVo = new ReportVo();
             BeanUtils.copyProperties(report, reportVo);
             reportVo.setTopicName(topic.getTopicName());
-            reportVo.setStuName(student.getName());
+            reportVo.setStuName(student.getStuName());
             reportVo.setTname(teacher.getTname());
             reportVos.add(reportVo);
             reportVo = null;

@@ -28,7 +28,7 @@ public class Student implements Serializable {
     /**
      *
      */
-    private String name;
+    private String stuName;
     /**
      * 0false:男,1true:女
      */
