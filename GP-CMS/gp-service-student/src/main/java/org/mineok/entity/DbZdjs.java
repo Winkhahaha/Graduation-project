@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 /**
@@ -66,8 +68,17 @@ public class DbZdjs implements Serializable {
 	 */
 	private Date createtime;
 	/**
-	 * 
+	 * 指导教师教师id
 	 */
 	private String tid;
+	/**
+	 * 答辩日期时间
+	 */
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="Asia/Shanghai")
+	private Date schedule;
+	/**
+	 * 答辩地点
+	 */
+	private String place;
 
 }

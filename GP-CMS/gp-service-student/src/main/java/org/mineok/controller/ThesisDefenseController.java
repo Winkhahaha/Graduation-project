@@ -39,4 +39,9 @@ public class ThesisDefenseController {
     public R ZDJS_Student_List(@PathVariable("tid") String tid) {
         return zdjsService.ZDJS_Student_List(tid);
     }
+
+    @RequestMapping("/zdjs/stu/{stuId}")
+    public R getZDJS_Score(@PathVariable("stuId") String stuId) {
+        return zdjsService.getZDJS_Score(stuId);
+    }
 }

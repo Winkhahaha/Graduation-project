@@ -29,5 +29,11 @@ public interface DbZdjsService extends IService<DbZdjs> {
         根据课题id获取指导教师评阅
      */
     R getDB_ZDJSByTopicId(Integer topicId);
+
+    /*
+     学生获取指导教师的答辩意见
+     */
+    R getZDJS_Score(String stuId);
+
 }
 

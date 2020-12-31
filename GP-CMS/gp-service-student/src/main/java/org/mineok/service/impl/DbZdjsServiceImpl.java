@@ -3,12 +3,15 @@ package org.mineok.service.impl;
 import io.swagger.models.auth.In;
 import org.mineok.common.utils.R;
 import org.mineok.dao.DbZdjsDao;
+import org.mineok.dao.StudentDao;
 import org.mineok.entity.DbZdjs;
+import org.mineok.entity.Student;
 import org.mineok.service.DbZdjsService;
 import org.mineok.vo.StuZDJSVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +31,8 @@ public class DbZdjsServiceImpl extends ServiceImpl<DbZdjsDao, DbZdjs> implements
 
     @Resource
     private DbZdjsDao zdjsDao;
+    @Resource
+    private StudentDao studentDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -72,6 +77,16 @@ public class DbZdjsServiceImpl extends ServiceImpl<DbZdjsDao, DbZdjs> implements
             return R.error("系统异常！");
         }
         return R.ok().put("dbList", list);
+    }
+
+    @Override
+    public R getZDJS_Score(String stuId) {
+        Student student = studentDao.selectOne(new QueryWrapper<Student>().eq("stu_id", stuId));
+        DbZdjs zdjs = zdjsDao.selectOne(new QueryWrapper<DbZdjs>().eq("topic_id", student.getTopicId()));
+        if (ObjectUtils.isEmpty(zdjs)) {
+            return R.error("系统异常！");
+        }
+        return R.ok().put("myZDJSScore", Collections.singletonList(zdjs));
     }
 
     // 计算总分
