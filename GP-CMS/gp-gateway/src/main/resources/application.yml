@@ -68,6 +68,14 @@ spring:
           filters:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
 
+        # 配置thesis-service服务
+        - id: result_route
+          uri: lb://gp-test-student-service
+          predicates:
+            - Path=/api/thesis/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+
         # 配置gp-fastDFS-service服务
         - id: result_route
           uri: lb://gp-fastDFS-service

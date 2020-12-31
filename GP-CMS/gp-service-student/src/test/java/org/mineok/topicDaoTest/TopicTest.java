@@ -5,11 +5,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mineok.StudentApplication;
 import org.mineok.common.utils.R;
+import org.mineok.dao.DbZdjsDao;
 import org.mineok.dao.ResultDao;
 import org.mineok.dao.TopicDao;
 import org.mineok.service.StudentService;
 import org.mineok.service.TopicService;
 import org.mineok.vo.ResultVo;
+import org.mineok.vo.StuZDJSVo;
 import org.mineok.vo.TopicVo;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -36,6 +38,8 @@ public class TopicTest {
     StudentService studentService;
     @Resource
     ResultDao resultDao;
+    @Resource
+    DbZdjsDao zdjsDao;
 
     /**
      * 多表查询topic- techer
@@ -76,5 +80,11 @@ public class TopicTest {
     public void test_topicInfo() {
         Object topicInfo = topicService.topicInfo(1).get("topicInfo");
         System.out.println(topicInfo);
+    }
+
+    @Test
+    public void ZDJS_Student_List() {
+        List<StuZDJSVo> list = zdjsDao.ZDJS_Student_List("1702");
+        System.out.println(list);
     }
 }

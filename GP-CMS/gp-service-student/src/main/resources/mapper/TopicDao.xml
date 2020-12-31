@@ -20,7 +20,7 @@
     </resultMap>
 
 
-    <select id="topicListCanChose" resultMap="topListMap" parameterType="int">
+    <select id="topicListCanChose" resultMap="topListMap">
         SELECT
         t.topic_id 序号,
         t.topic_name 课题名称,
