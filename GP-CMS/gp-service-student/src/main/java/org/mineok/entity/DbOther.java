@@ -48,7 +48,7 @@ public class DbOther implements Serializable {
 	/**
 	 * 总分
 	 */
-	private Integer sumScore;
+	private Integer sumScore2;
 	/**
 	 * 结论
 	 */

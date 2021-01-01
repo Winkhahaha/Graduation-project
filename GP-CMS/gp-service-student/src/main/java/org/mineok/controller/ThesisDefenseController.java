@@ -1,6 +1,7 @@
 package org.mineok.controller;
 
 import org.mineok.common.utils.R;
+import org.mineok.entity.DbOther;
 import org.mineok.entity.DbZdjs;
 import org.mineok.service.DbOtherService;
 import org.mineok.service.DbZdjsService;
@@ -43,5 +44,20 @@ public class ThesisDefenseController {
     @RequestMapping("/zdjs/stu/{stuId}")
     public R getZDJS_Score(@PathVariable("stuId") String stuId) {
         return zdjsService.getZDJS_Score(stuId);
+    }
+
+    @RequestMapping("/other/list/{tid}")
+    public R getOtherTeacherTopicList(@PathVariable("tid") String tid) {
+        return otherService.getOtherTeacherTopicList(tid);
+    }
+
+    @RequestMapping("/other/save")
+    public R save(@RequestBody DbOther other) {
+        return otherService.addDB_Other(other);
+    }
+
+    @RequestMapping("/other/info/{topicId}")
+    public R getDB_OtherByTopicId(@PathVariable("topicId") Integer topicId) {
+        return otherService.getDB_OtherByTopicId(topicId);
     }
 }

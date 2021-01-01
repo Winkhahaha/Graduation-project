@@ -1,5 +1,6 @@
 package org.mineok.topicDaoTest;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +8,10 @@ import org.mineok.StudentApplication;
 import org.mineok.common.utils.R;
 import org.mineok.dao.DbZdjsDao;
 import org.mineok.dao.ResultDao;
+import org.mineok.dao.TeacherDao;
 import org.mineok.dao.TopicDao;
+import org.mineok.entity.DbZdjs;
+import org.mineok.entity.Teacher;
 import org.mineok.service.StudentService;
 import org.mineok.service.TopicService;
 import org.mineok.vo.ResultVo;
@@ -40,6 +44,8 @@ public class TopicTest {
     ResultDao resultDao;
     @Resource
     DbZdjsDao zdjsDao;
+    @Resource
+    TeacherDao teacherDao;
 
     /**
      * 多表查询topic- techer
@@ -85,6 +91,23 @@ public class TopicTest {
     @Test
     public void ZDJS_Student_List() {
         List<StuZDJSVo> list = zdjsDao.ZDJS_Student_List("1702");
+        System.out.println(list);
+    }
+
+    @Test
+    public void Other_Group() {
+        zdjsDao.selectList(new QueryWrapper<DbZdjs>()
+                .groupBy(""));
+    }
+
+    @Test
+    public void teacher_Group() {
+        Teacher teacher = teacherDao.selectOne(new QueryWrapper<Teacher>()
+                .eq("tid", "1702"));
+        List<Teacher> list = teacherDao.selectList(new QueryWrapper<Teacher>()
+                .eq("group_id", 2)
+        );
+        list.remove(teacher);
         System.out.println(list);
     }
 }

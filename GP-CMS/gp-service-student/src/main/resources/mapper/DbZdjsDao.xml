@@ -5,7 +5,6 @@
 
 
 	<select id="ZDJS_Student_List" resultType="org.mineok.vo.StuZDJSVo">
-
 		SELECT
         s.stu_name,
         s.stu_id,
@@ -20,7 +19,9 @@
         tb_student s
         LEFT JOIN tb_topic t ON s.topic_id = t.topic_id
 		LEFT JOIN tb_db_zdjs z ON s.topic_id = z.topic_id
-		WHERE s.topic_status = 2
+		LEFT JOIN tb_result r ON s.topic_id = r.topic_id
+		WHERE
+		r.approval_status >= 1
 		<if test="_parameter !=null and _parameter!=''">
 			AND t.tid = #{tid}
 		</if>

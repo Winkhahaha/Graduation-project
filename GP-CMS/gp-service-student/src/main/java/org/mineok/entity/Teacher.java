@@ -60,5 +60,9 @@ public class Teacher implements Serializable {
 	 *当前已设置的题目数(只能小于等于topicCount)
 	 */
 	private Integer currentCount;
+	/**
+	 * 答辩分组Id
+	 */
+	private Integer groupId;
 
 }

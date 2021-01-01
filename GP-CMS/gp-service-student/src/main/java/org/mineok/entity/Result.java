@@ -33,7 +33,7 @@ public class Result implements Serializable {
 	 */
 	private Integer topicId;
 	/**
-	 * 成果审批状态:0待提交/-1初审不通过/1初审中/2终审中/3终审通过/4终审不通过
+	 * 成果审批状态:0待提交/-1初审不通过/1初审中/2终审中/3终审通过/-2终审不通过
 	 */
 	private Integer approvalStatus;
 	/**

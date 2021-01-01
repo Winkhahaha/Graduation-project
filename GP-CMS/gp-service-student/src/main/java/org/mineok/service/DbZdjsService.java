@@ -23,6 +23,9 @@ public interface DbZdjsService extends IService<DbZdjs> {
      */
     R ZDJS_Student_List(String tid);
 
+    /*
+       指导教师填写评分表
+     */
     R addDB_ZDJS(DbZdjs zdjs);
 
     /*

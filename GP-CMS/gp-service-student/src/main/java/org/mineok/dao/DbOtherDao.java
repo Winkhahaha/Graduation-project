@@ -3,6 +3,9 @@ package org.mineok.dao;
 import org.mineok.entity.DbOther;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.mineok.vo.StuOtherVo;
+
+import java.util.List;
 
 /**
  * 
@@ -13,5 +16,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface DbOtherDao extends BaseMapper<DbOther> {
-	
+
+    List<StuOtherVo> other_student_list(String tid);
+
 }

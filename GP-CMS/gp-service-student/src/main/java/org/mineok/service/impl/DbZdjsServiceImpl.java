@@ -65,7 +65,7 @@ public class DbZdjsServiceImpl extends ServiceImpl<DbZdjsDao, DbZdjs> implements
     public R getDB_ZDJSByTopicId(Integer topicId) {
         DbZdjs zdjs = baseMapper.selectOne(new QueryWrapper<DbZdjs>().eq("topic_id", topicId));
         if (ObjectUtils.isEmpty(zdjs)) {
-            return R.error("系统异常！");
+            return R.error("暂无数据！");
         }
         return R.ok().put("dbZdjs", zdjs);
     }
@@ -74,7 +74,7 @@ public class DbZdjsServiceImpl extends ServiceImpl<DbZdjsDao, DbZdjs> implements
     public R ZDJS_Student_List(String tid) {
         List<StuZDJSVo> list = zdjsDao.ZDJS_Student_List(tid);
         if (CollectionUtils.isEmpty(list)) {
-            return R.error("系统异常！");
+            return R.error("暂无数据！请督促学生尽快提交毕设成果！");
         }
         return R.ok().put("dbList", list);
     }
@@ -84,7 +84,7 @@ public class DbZdjsServiceImpl extends ServiceImpl<DbZdjsDao, DbZdjs> implements
         Student student = studentDao.selectOne(new QueryWrapper<Student>().eq("stu_id", stuId));
         DbZdjs zdjs = zdjsDao.selectOne(new QueryWrapper<DbZdjs>().eq("topic_id", student.getTopicId()));
         if (ObjectUtils.isEmpty(zdjs)) {
-            return R.error("系统异常！");
+            return R.error("暂无数据！请提交毕设成果获联系指导教师！");
         }
         return R.ok().put("myZDJSScore", Collections.singletonList(zdjs));
     }
