@@ -1,6 +1,9 @@
 package org.mineok.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+
+import java.util.Date;
 
 /**
  * @Author Gaoming
@@ -27,4 +30,11 @@ public class StuZDJSVo {
 
     // 总分
     private Integer sumScore;
+
+    // 答辩时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm",timezone="Asia/Shanghai")
+    private Date schedule;
+
+    // 答辩地点
+    private String place;
 }

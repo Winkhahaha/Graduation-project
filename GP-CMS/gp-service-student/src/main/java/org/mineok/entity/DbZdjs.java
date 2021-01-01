@@ -74,7 +74,7 @@ public class DbZdjs implements Serializable {
 	/**
 	 * 答辩日期时间
 	 */
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="Asia/Shanghai")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm",timezone="Asia/Shanghai")
 	private Date schedule;
 	/**
 	 * 答辩地点

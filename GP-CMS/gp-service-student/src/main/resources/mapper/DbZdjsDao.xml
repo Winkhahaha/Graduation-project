@@ -13,7 +13,9 @@
         t.topic_name,
 		z.id,
 		z.conclusion,
-		z.sum_score
+		z.sum_score,
+		z.schedule,
+		z.place
         FROM
         tb_student s
         LEFT JOIN tb_topic t ON s.topic_id = t.topic_id
