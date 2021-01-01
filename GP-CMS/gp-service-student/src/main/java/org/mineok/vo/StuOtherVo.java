@@ -22,13 +22,13 @@ public class StuOtherVo {
 
     private String topicName;
 
-    // otherId
-    private Integer id;
+//    // otherId
+//    private Integer id;
 
     // 指导教师评分
     private Integer sumScore;
 
     // 教师综合表评分
-    private Integer sumScore2;
+//    private Integer sumScore2;
 
 }

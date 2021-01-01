@@ -56,8 +56,8 @@ public class ThesisDefenseController {
         return otherService.addDB_Other(other);
     }
 
-    @RequestMapping("/other/info/{topicId}")
-    public R getDB_OtherByTopicId(@PathVariable("topicId") Integer topicId) {
-        return otherService.getDB_OtherByTopicId(topicId);
+    @RequestMapping("/other/info/{tid}")
+    public R getDB_OtherByTopicId(@PathVariable("tid") String tid) {
+        return otherService.getDB_OtherBytid(tid);
     }
 }

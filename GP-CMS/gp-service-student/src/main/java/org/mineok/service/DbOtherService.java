@@ -25,6 +25,6 @@ public interface DbOtherService extends IService<DbOther> {
     R addDB_Other(DbOther other);
 
     // 获取评审小组评分表详情
-    R getDB_OtherByTopicId(Integer topicId);
+    R getDB_OtherBytid(String tid);
 }
 

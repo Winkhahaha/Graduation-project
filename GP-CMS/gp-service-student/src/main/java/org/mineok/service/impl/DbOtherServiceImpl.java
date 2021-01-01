@@ -80,8 +80,8 @@ public class DbOtherServiceImpl extends ServiceImpl<DbOtherDao, DbOther> impleme
     }
 
     @Override
-    public R getDB_OtherByTopicId(Integer topicId) {
-        DbOther other = otherDao.selectOne(new QueryWrapper<DbOther>().eq("topic_id", topicId));
+    public R getDB_OtherBytid(String tid) {
+        DbOther other = otherDao.selectOne(new QueryWrapper<DbOther>().eq("tid", tid));
         if (ObjectUtils.isEmpty(other)) {
             return R.error("暂无数据！");
         }
