@@ -22,7 +22,13 @@ public interface DbOtherService extends IService<DbOther> {
     // 添加评审小组教师评分表
     R addDB_Other(DbOther other);
 
-    // 获取评审小组评分表详情
-    R getDB_OtherBytid(String tid);
+    // 获取评审小组教师对应某一个课题的评分表
+    R getDB_OtherBytid(String tid,Integer topicId);
+
+    // 学生查看评阅小组教师评分列表
+    R getOtherScoreList(String stuId);
+
+    // 平均值最终分数
+    R getFinalScore(String stuId);
 }
 

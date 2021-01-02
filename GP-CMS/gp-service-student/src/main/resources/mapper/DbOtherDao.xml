@@ -25,4 +25,16 @@
 		</if>
 		ORDER BY z.`schedule`
 	</select>
+
+	<select id="other_teacher_list" resultType="org.mineok.vo.TeacherOtherVo">
+		SELECT
+		ot.*,
+		te.tname
+		FROM
+		tb_db_other ot
+		LEFT JOIN tb_teacher te ON ot.tid = te.tid
+		WHERE
+		ot.topic_id = #{topicId}
+		ORDER BY ot.createtime
+	</select>
 </mapper>

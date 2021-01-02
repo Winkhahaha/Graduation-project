@@ -45,7 +45,7 @@ public class ThesisDefenseController {
 
     @RequestMapping("/other/list/{tid}")
     public R getOtherTeacherTopicList(@RequestParam("key") String key, @PathVariable("tid") String tid) {
-        return otherService.getOtherTeacherTopicList(key,tid);
+        return otherService.getOtherTeacherTopicList(key, tid);
     }
 
     @RequestMapping("/other/save")
@@ -53,8 +53,18 @@ public class ThesisDefenseController {
         return otherService.addDB_Other(other);
     }
 
-    @RequestMapping("/other/info/{tid}")
-    public R getDB_OtherByTopicId(@PathVariable("tid") String tid) {
-        return otherService.getDB_OtherBytid(tid);
+    @RequestMapping("/other/info/{tid}/{topicId}")
+    public R getDB_OtherByTopicId(@PathVariable("tid") String tid, @PathVariable("topicId") Integer topicId) {
+        return otherService.getDB_OtherBytid(tid, topicId);
+    }
+
+    @RequestMapping("/other/stu/{stuId}")
+    public R getOther_ScoreList(@PathVariable("stuId") String stuId) {
+        return otherService.getOtherScoreList(stuId);
+    }
+
+    @RequestMapping("/stu/score/{stuId}")
+    public R getFinalScore(@PathVariable("stuId") String stuId) {
+        return otherService.getFinalScore(stuId);
     }
 }

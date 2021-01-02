@@ -2,15 +2,20 @@ package org.mineok.service.impl;
 
 import org.mineok.common.utils.R;
 import org.mineok.dao.DbOtherDao;
+import org.mineok.dao.DbZdjsDao;
+import org.mineok.dao.StudentDao;
 import org.mineok.dao.TeacherDao;
 import org.mineok.entity.DbOther;
 import org.mineok.entity.DbZdjs;
+import org.mineok.entity.Student;
 import org.mineok.entity.Teacher;
 import org.mineok.service.DbOtherService;
 import org.mineok.vo.StuOtherVo;
+import org.mineok.vo.TeacherOtherVo;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +37,10 @@ public class DbOtherServiceImpl extends ServiceImpl<DbOtherDao, DbOther> impleme
     private TeacherDao teacherDao;
     @Resource
     private DbOtherDao otherDao;
+    @Resource
+    private StudentDao studentDao;
+    @Resource
+    private DbZdjsDao zdjsDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -80,12 +89,39 @@ public class DbOtherServiceImpl extends ServiceImpl<DbOtherDao, DbOther> impleme
     }
 
     @Override
-    public R getDB_OtherBytid(String tid) {
-        DbOther other = otherDao.selectOne(new QueryWrapper<DbOther>().eq("tid", tid));
+    public R getDB_OtherBytid(String tid, Integer topicId) {
+        DbOther other = otherDao.selectOne(new QueryWrapper<DbOther>()
+                .eq("tid", tid).eq("topic_id", topicId));
         if (ObjectUtils.isEmpty(other)) {
             return R.error("暂无数据！");
         }
         return R.ok().put("dbOther", other);
+    }
+
+    @Override
+    public R getOtherScoreList(String stuId) {
+        Student student = studentDao.selectOne(new QueryWrapper<Student>().eq("stu_id", stuId));
+        List<TeacherOtherVo> list = otherDao.other_teacher_list(student.getTopicId());
+        if (CollectionUtils.isEmpty(list)) {
+            return R.error("暂无数据！");
+        }
+        return R.ok().put("otherScoreList", list);
+    }
+
+    @Override
+    public R getFinalScore(String stuId) {
+        Student student = studentDao.selectOne(new QueryWrapper<Student>().eq("stu_id", stuId));
+        DbZdjs zdjs = zdjsDao.selectOne(new QueryWrapper<DbZdjs>().eq("topic_id", student.getTopicId()));
+        List<DbOther> others = otherDao.selectList(new QueryWrapper<DbOther>().eq("topic_id", student.getTopicId()));
+        Integer sum = zdjs.getSumScore();
+        for (DbOther other : others) {
+            sum += other.getSumScore2();
+        }
+        sum /= (others.size() + 1);
+        // 喝多了写的
+        DbZdjs dbZdjs = new DbZdjs();
+        dbZdjs.setSumScore(sum);
+        return R.ok().put("score", Collections.singletonList(dbZdjs));
     }
 
     private Integer sumScore(DbOther dbOther) {
