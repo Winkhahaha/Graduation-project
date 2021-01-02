@@ -148,4 +148,14 @@ public class DirectorServiceImpl extends ServiceImpl<DirectorDao, Director> impl
         return R.ok("审批意见添加成功！");
     }
 
+    @Override
+    public R setgroupId(Integer groupId, String tid) {
+        Teacher teacher = teacherDao.selectOne(new QueryWrapper<Teacher>().eq("tid", tid));
+        if (ObjectUtils.isEmpty(teacher)) {
+            return R.error("系统异常:参数错误！");
+        }
+        teacher.setGroupId(groupId);
+        teacherDao.updateById(teacher);
+        return R.ok("设置成功！");
+    }
 }

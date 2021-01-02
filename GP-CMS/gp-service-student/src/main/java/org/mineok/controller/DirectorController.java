@@ -69,6 +69,14 @@ public class DirectorController {
         return directorService.setTopicCount(topicCount, tid);
     }
 
+    /**
+       设置教师分组
+     */
+    @RequestMapping("/set/groupId/{tid}")
+    public R setgroupId(@RequestParam("groupId") Integer groupId, @PathVariable("tid") String tid) {
+        return directorService.setgroupId(groupId, tid);
+    }
+
     @RequestMapping("/add/opinions/{topicId}")
     public R setTopicCount(@RequestParam("opinions") String opinions, @PathVariable("topicId") Integer topicId) {
         return directorService.addOpinions(opinions, topicId);

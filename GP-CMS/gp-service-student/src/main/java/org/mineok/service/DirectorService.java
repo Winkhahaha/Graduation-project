@@ -36,5 +36,7 @@ public interface DirectorService extends IService<Director> {
     // 添加审批意见
     R addOpinions(String opinions, Integer topicId);
 
+    // 设置教师分组
+    R setgroupId(Integer groupId, String tid);
 }
 

@@ -1,9 +1,6 @@
 package org.mineok.vo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-
-import java.util.Date;
 
 /**
  * @Author Gaoming
