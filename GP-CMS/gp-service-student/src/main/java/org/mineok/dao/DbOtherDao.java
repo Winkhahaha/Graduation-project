@@ -1,5 +1,6 @@
 package org.mineok.dao;
 
+import org.apache.ibatis.annotations.Param;
 import org.mineok.entity.DbOther;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
@@ -8,8 +9,6 @@ import org.mineok.vo.StuOtherVo;
 import java.util.List;
 
 /**
- * 
- * 
  * @author GaoMing
  * @email mineok@foxmail.com
  * @date 2020-12-31 14:41:34
@@ -17,6 +16,6 @@ import java.util.List;
 @Mapper
 public interface DbOtherDao extends BaseMapper<DbOther> {
 
-    List<StuOtherVo> other_student_list(String tid);
+    List<StuOtherVo> other_student_list(@Param("key") String key, @Param("tid") String tid);
 
 }

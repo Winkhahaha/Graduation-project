@@ -114,12 +114,22 @@ public class DirectorServiceImpl extends ServiceImpl<DirectorDao, Director> impl
     }
 
     @Override
-    public R teacherList(String directorId) {
+    public R teacherList(String key, String directorId) {
         Director director = baseMapper.selectOne(new QueryWrapper<Director>().eq("director_id", directorId));
         if (ObjectUtils.isEmpty(director)) {
             return R.error("系统异常:参数错误！");
         }
-        List<Teacher> list = teacherDao.selectList(new QueryWrapper<Teacher>().eq("dept_id", director.getDeptId()));
+        Integer deptId = director.getDeptId();
+        List<Teacher> list = teacherDao.selectList(new QueryWrapper<Teacher>()
+                .eq("dept_id", deptId)
+                .like(!StringUtils.isEmpty(key), "tname", key)
+                .or()
+                .eq("dept_id", deptId)
+                .eq(!StringUtils.isEmpty(key), "tid", key)
+                .or()
+                .eq("dept_id", deptId)
+                .eq(!StringUtils.isEmpty(key), "group_id", key)
+                .orderByAsc("group_id"));
         if (CollectionUtils.isEmpty(list)) {
             return R.error("系统异常:参数错误！");
         }

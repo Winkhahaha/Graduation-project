@@ -44,7 +44,7 @@ public class DbOtherServiceImpl extends ServiceImpl<DbOtherDao, DbOther> impleme
     }
 
     @Override
-    public R getOtherTeacherTopicList(String tid) {
+    public R getOtherTeacherTopicList(String key, String tid) {
         Teacher teacher = teacherDao.selectOne(new QueryWrapper<Teacher>()
                 .eq("tid", tid));
         List<Teacher> list = teacherDao.selectList(new QueryWrapper<Teacher>()
@@ -57,7 +57,7 @@ public class DbOtherServiceImpl extends ServiceImpl<DbOtherDao, DbOther> impleme
         List<StuOtherVo> vos = new ArrayList<StuOtherVo>();
         // 获取每一个教师所带学生进行综合答辩的vo
         for (Teacher t : list) {
-            List<StuOtherVo> stuOtherVos = otherDao.other_student_list(t.getTid());
+            List<StuOtherVo> stuOtherVos = otherDao.other_student_list(key, t.getTid());
             vos.addAll(stuOtherVos);
             // 清空 防止内存泄漏
             stuOtherVos.clear();

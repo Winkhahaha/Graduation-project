@@ -17,8 +17,11 @@
 		LEFT JOIN tb_db_zdjs z ON s.topic_id = z.topic_id
 		WHERE
 		z.conclusion = 1
-		<if test="_parameter !=null and _parameter!=''">
+		<if test="tid !=null and tid !=''">
 			AND t.tid = #{tid}
+		</if>
+		<if test="key != null and key != ''">
+			AND CONCAT(t.topic_name, s.stu_name,s.stu_id) LIKE CONCAT('%',#{key},'%')
 		</if>
 		ORDER BY z.`schedule`
 	</select>

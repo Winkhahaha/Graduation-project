@@ -56,8 +56,8 @@ public class DirectorController {
      */
 
     @RequestMapping("/teacher/list/{directorId}")
-    public R teacherList(@PathVariable("directorId") String directorId) {
-        return directorService.teacherList(directorId);
+    public R teacherList(@RequestParam("key") String key, @PathVariable("directorId") String directorId) {
+        return directorService.teacherList(key, directorId);
     }
 
     /**
@@ -70,7 +70,7 @@ public class DirectorController {
     }
 
     /**
-       设置教师分组
+     * 设置教师分组
      */
     @RequestMapping("/set/groupId/{tid}")
     public R setgroupId(@RequestParam("groupId") Integer groupId, @PathVariable("tid") String tid) {

@@ -6,10 +6,7 @@ import org.mineok.entity.DbZdjs;
 import org.mineok.service.DbOtherService;
 import org.mineok.service.DbZdjsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author Gaoming
@@ -47,8 +44,8 @@ public class ThesisDefenseController {
     }
 
     @RequestMapping("/other/list/{tid}")
-    public R getOtherTeacherTopicList(@PathVariable("tid") String tid) {
-        return otherService.getOtherTeacherTopicList(tid);
+    public R getOtherTeacherTopicList(@RequestParam("key") String key, @PathVariable("tid") String tid) {
+        return otherService.getOtherTeacherTopicList(key,tid);
     }
 
     @RequestMapping("/other/save")
