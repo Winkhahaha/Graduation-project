@@ -26,6 +26,7 @@ import org.mineok.common.utils.PageUtils;
 import org.mineok.common.utils.Query;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 
@@ -79,7 +80,7 @@ public class DbOtherServiceImpl extends ServiceImpl<DbOtherDao, DbOther> impleme
         if (ObjectUtils.isEmpty(other)) {
             return R.error("系统异常！");
         }
-        other.setSumScore2(sumScore(other));
+//        other.setSumScore2(sumScore(other));
         if (other.getId() != null) {
             otherDao.updateById(other);
         } else {
@@ -93,7 +94,7 @@ public class DbOtherServiceImpl extends ServiceImpl<DbOtherDao, DbOther> impleme
         DbOther other = otherDao.selectOne(new QueryWrapper<DbOther>()
                 .eq("tid", tid).eq("topic_id", topicId));
         if (ObjectUtils.isEmpty(other)) {
-            return R.error("暂无数据！");
+            return R.error("暂无数据！").put("dbOther", new DbOther());
         }
         return R.ok().put("dbOther", other);
     }

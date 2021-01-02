@@ -52,7 +52,7 @@ public class DbZdjsServiceImpl extends ServiceImpl<DbZdjsDao, DbZdjs> implements
         if (ObjectUtils.isEmpty(zdjs)) {
             return R.error("系统异常！");
         }
-        zdjs.setSumScore(sumScore(zdjs));
+//        zdjs.setSumScore(sumScore(zdjs));
         if (zdjs.getId() != null) {
             zdjsDao.updateById(zdjs);
         } else {
@@ -65,7 +65,7 @@ public class DbZdjsServiceImpl extends ServiceImpl<DbZdjsDao, DbZdjs> implements
     public R getDB_ZDJSByTopicId(Integer topicId) {
         DbZdjs zdjs = baseMapper.selectOne(new QueryWrapper<DbZdjs>().eq("topic_id", topicId));
         if (ObjectUtils.isEmpty(zdjs)) {
-            return R.error("暂无数据！");
+            return R.error("暂无数据！").put("dbZdjs", new DbZdjs());
         }
         return R.ok().put("dbZdjs", zdjs);
     }
