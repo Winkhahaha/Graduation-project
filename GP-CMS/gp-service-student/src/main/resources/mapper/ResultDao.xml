@@ -44,4 +44,14 @@
 		ORDER BY
 		r.createtime
 	</select>
+	<select id="scoreFilingList" resultType="java.lang.Integer">
+		SELECT
+		r.final_score
+		FROM
+		tb_result r
+		LEFT JOIN tb_student s ON s.stu_id = r.stu_id
+		WHERE CONCAT(s.edudate) LIKE CONCAT('%',#{enrollmentYear},'%')
+		AND r.final_score IS NOT NULL
+		ORDER BY r.final_score
+	</select>
 </mapper>

@@ -144,4 +144,10 @@ public class TopicTest {
         System.out.println(vo5.getScore() + " " + vo5.getLevel());
     }
 
+    @Test
+    public void finalScoreList() {
+        List<Integer> list = resultDao.scoreFilingList("2017");
+        System.out.println(list);
+    }
+
 }
