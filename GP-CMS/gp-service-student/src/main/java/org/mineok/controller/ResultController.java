@@ -140,4 +140,10 @@ public class ResultController {
     public R approvalList(@RequestParam Map<String, Object> params) {
         return resultService.queryResultsByApproval(params);
     }
+
+    // 获取按入学日期归档的优秀毕设成果
+    @RequestMapping("/filing/list")
+    public R filingList(@RequestParam Map<String, Object> params) {
+        return resultService.queryFilingList(params);
+    }
 }

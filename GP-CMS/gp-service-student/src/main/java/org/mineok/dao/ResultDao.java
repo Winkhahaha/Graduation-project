@@ -18,4 +18,8 @@ import java.util.List;
 public interface ResultDao extends BaseMapper<Result> {
 
     List<ResultVo> resultList(IPage<ResultVo> page, @Param("key") String key);
+
+    // 归档
+    List<ResultVo> filingList(IPage<ResultVo> page, @Param("key") String key,
+                              @Param("enrollmentYear") String enrollmentYear);
 }

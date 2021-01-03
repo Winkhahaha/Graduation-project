@@ -1,15 +1,10 @@
 package org.mineok.service.impl;
 
 import org.mineok.common.utils.R;
-import org.mineok.dao.DbOtherDao;
-import org.mineok.dao.DbZdjsDao;
-import org.mineok.dao.StudentDao;
-import org.mineok.dao.TeacherDao;
-import org.mineok.entity.DbOther;
-import org.mineok.entity.DbZdjs;
-import org.mineok.entity.Student;
-import org.mineok.entity.Teacher;
+import org.mineok.dao.*;
+import org.mineok.entity.*;
 import org.mineok.service.DbOtherService;
+import org.mineok.vo.FinalScoreVo;
 import org.mineok.vo.StuOtherVo;
 import org.mineok.vo.TeacherOtherVo;
 import org.springframework.stereotype.Service;
@@ -42,6 +37,8 @@ public class DbOtherServiceImpl extends ServiceImpl<DbOtherDao, DbOther> impleme
     private StudentDao studentDao;
     @Resource
     private DbZdjsDao zdjsDao;
+    @Resource
+    private ResultDao resultDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -119,10 +116,12 @@ public class DbOtherServiceImpl extends ServiceImpl<DbOtherDao, DbOther> impleme
             sum += other.getSumScore2();
         }
         sum /= (others.size() + 1);
-        // 喝多了写的
-        DbZdjs dbZdjs = new DbZdjs();
-        dbZdjs.setSumScore(sum);
-        return R.ok().put("score", Collections.singletonList(dbZdjs));
+        // 将总评成绩存入Result
+        Result result = resultDao.selectOne(new QueryWrapper<Result>().eq("stu_id", stuId));
+        result.setFinalScore(sum);
+        resultDao.updateById(result);
+        FinalScoreVo score = FinalScoreVo.getScore(sum);
+        return R.ok().put("score", Collections.singletonList(score));
     }
 
     private Integer sumScore(DbOther dbOther) {

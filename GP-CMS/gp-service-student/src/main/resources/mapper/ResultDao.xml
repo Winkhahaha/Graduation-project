@@ -22,4 +22,26 @@
 	ORDER BY
 		r.createtime
 	</select>
+
+	<select id="filingList" resultType="org.mineok.vo.ResultVo">
+		SELECT
+		r.*,
+		t.topic_name,
+		s.stu_name,
+		s.science,
+		te.tname
+		FROM
+		tb_result r
+		LEFT JOIN tb_topic t  ON r.topic_id = t.topic_id
+		LEFT JOIN tb_student s ON r.stu_id = s.stu_id
+		LEFT JOIN tb_teacher te ON r.tid = te.tid
+		WHERE r.approval_status = 3
+		AND CONCAT(s.edudate) LIKE CONCAT('%',#{enrollmentYear},'%')
+		AND r.final_score >= 90
+		<if test="key != null and key != ''">
+			AND CONCAT(`result_name`, `topic_name`,`stu_name`,`tname`) LIKE CONCAT('%',#{key},'%')
+		</if>
+		ORDER BY
+		r.createtime
+	</select>
 </mapper>

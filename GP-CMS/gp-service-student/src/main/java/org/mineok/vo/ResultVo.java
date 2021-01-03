@@ -20,4 +20,8 @@ public class ResultVo extends Result {
     private String stuName;
 
     private String tname;
+
+    // 所属专业
+    private String science;
+
 }

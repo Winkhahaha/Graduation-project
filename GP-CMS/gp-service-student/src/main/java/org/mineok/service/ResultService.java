@@ -78,5 +78,8 @@ public interface ResultService extends IService<Result> {
     // 负责人:驳回成果终审
     R rejectFinalApproval(Integer resultId);
 
+    // 获取按入学日期归档的优秀毕设成果
+    R queryFilingList(Map<String, Object> params);
+
 }
 

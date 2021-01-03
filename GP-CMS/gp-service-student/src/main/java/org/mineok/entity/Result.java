@@ -56,5 +56,9 @@ public class Result implements Serializable {
 	 * 教师审批意见
 	 */
 	private String opinions;
+	/**
+	 * 最终得分
+	 */
+	private Integer finalScore;
 
 }

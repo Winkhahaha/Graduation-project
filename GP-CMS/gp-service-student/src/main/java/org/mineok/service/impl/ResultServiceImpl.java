@@ -77,9 +77,22 @@ public class ResultServiceImpl extends ServiceImpl<ResultDao, Result> implements
         return R.ok().put("page", new PageUtils(page));
     }
 
+    @Override
+    public R queryFilingList(Map<String, Object> params) {
+        IPage<ResultVo> page = new Query<ResultVo>().getPage(params);
+        String key = params.get("key").toString();
+        String enrollmentYear = params.get("enrollmentYear").toString();
+        List<ResultVo> resultVos = resultDao.filingList(page, key, enrollmentYear);
+        if (CollectionUtils.isEmpty(resultVos)) {
+            return R.error("系统异常！");
+        }
+        page.setRecords(resultVos);
+        return R.ok().put("page", new PageUtils(page));
+    }
+
     /*
-            补充方法
-         */
+                补充方法
+             */
     private Student getStuByQuery(String stuId) {
         return studentDao.selectOne(new QueryWrapper<Student>().eq("stu_id", stuId));
     }

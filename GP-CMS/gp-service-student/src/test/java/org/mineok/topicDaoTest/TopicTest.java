@@ -6,14 +6,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mineok.StudentApplication;
 import org.mineok.common.utils.R;
-import org.mineok.dao.DbZdjsDao;
-import org.mineok.dao.ResultDao;
-import org.mineok.dao.TeacherDao;
-import org.mineok.dao.TopicDao;
+import org.mineok.dao.*;
 import org.mineok.entity.DbZdjs;
+import org.mineok.entity.Student;
 import org.mineok.entity.Teacher;
 import org.mineok.service.StudentService;
 import org.mineok.service.TopicService;
+import org.mineok.vo.FinalScoreVo;
 import org.mineok.vo.ResultVo;
 import org.mineok.vo.StuZDJSVo;
 import org.mineok.vo.TopicVo;
@@ -46,6 +45,8 @@ public class TopicTest {
     DbZdjsDao zdjsDao;
     @Resource
     TeacherDao teacherDao;
+    @Resource
+    StudentDao studentDao;
 
     /**
      * 多表查询topic- techer
@@ -66,6 +67,17 @@ public class TopicTest {
         // 多表分页查询测试
         Page<ResultVo> page = new Page<ResultVo>(1, 2);
         List<ResultVo> list = resultDao.resultList(page, "王");
+        page.setRecords(list);
+        System.out.println(page.getRecords());
+        System.out.println(page.getTotal());
+    }
+
+    // 归档
+    @Test
+    public void test_resultVO_resultList2() {
+        // 多表分页查询测试
+        Page<ResultVo> page = new Page<ResultVo>(1, 5);
+        List<ResultVo> list = resultDao.filingList(page,null,"2017");
         page.setRecords(list);
         System.out.println(page.getRecords());
         System.out.println(page.getTotal());
@@ -110,4 +122,26 @@ public class TopicTest {
         list.remove(teacher);
         System.out.println(list);
     }
+
+    @Test
+    public void student_date_2017() {
+        List<Student> list = studentDao.selectList(new QueryWrapper<Student>()
+                .like("edudate", "2017"));
+        System.out.println(list);
+    }
+
+    @Test
+    public void scoreLevel() {
+        FinalScoreVo vo = FinalScoreVo.getScore(66);
+        System.out.println(vo.getScore() + " " + vo.getLevel());
+        FinalScoreVo vo2 = FinalScoreVo.getScore(76);
+        System.out.println(vo2.getScore() + " " + vo2.getLevel());
+        FinalScoreVo vo3 = FinalScoreVo.getScore(86);
+        System.out.println(vo3.getScore() + " " + vo3.getLevel());
+        FinalScoreVo vo4 = FinalScoreVo.getScore(96);
+        System.out.println(vo4.getScore() + " " + vo4.getLevel());
+        FinalScoreVo vo5 = FinalScoreVo.getScore(100);
+        System.out.println(vo5.getScore() + " " + vo5.getLevel());
+    }
+
 }
