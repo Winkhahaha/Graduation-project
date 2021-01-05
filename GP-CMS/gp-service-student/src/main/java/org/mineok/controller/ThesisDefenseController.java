@@ -5,6 +5,7 @@ import org.mineok.entity.DbOther;
 import org.mineok.entity.DbZdjs;
 import org.mineok.service.DbOtherService;
 import org.mineok.service.DbZdjsService;
+import org.mineok.service.FilingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,8 @@ public class ThesisDefenseController {
     private DbZdjsService zdjsService;
     @Autowired
     private DbOtherService otherService;
+    @Autowired
+    private FilingService filingService;
 
     @RequestMapping("/zdjs/info/{topicId}")
     public R getDB_ZDJSByTopicId(@PathVariable("topicId") Integer topicId) {
@@ -35,7 +38,7 @@ public class ThesisDefenseController {
 
     @RequestMapping("/zdjs/list/{tid}")
     public R ZDJS_Student_List(@RequestParam("defenceStatus") Integer defenceStatus, @PathVariable("tid") String tid) {
-        return zdjsService.ZDJS_Student_List(defenceStatus,tid);
+        return zdjsService.ZDJS_Student_List(defenceStatus, tid);
     }
 
     @RequestMapping("/zdjs/stu/{stuId}")
@@ -86,5 +89,21 @@ public class ThesisDefenseController {
     @RequestMapping("/stu/cancel/defence/{stuId}")
     public R stuCancelDefenceStatus(@PathVariable("stuId") String stuId) {
         return zdjsService.stuCancelDefenceStatus(stuId);
+    }
+
+    /**
+     * 归档数据分析
+     */
+
+    // 饼图
+    @RequestMapping("/filing/level")
+    public R getScoreLevel(@RequestParam("enrollmentYear") String enrollmentYear) {
+        return filingService.getScoreLevel(enrollmentYear);
+    }
+
+    // 条形图
+    @RequestMapping("/filing/level/line")
+    public R getScoreLevel2(@RequestParam("enrollmentYear") String enrollmentYear) {
+        return filingService.getScoreLevel2(enrollmentYear);
     }
 }

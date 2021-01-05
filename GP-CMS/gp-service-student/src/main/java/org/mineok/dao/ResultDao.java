@@ -19,10 +19,8 @@ public interface ResultDao extends BaseMapper<Result> {
 
     List<ResultVo> resultList(IPage<ResultVo> page, @Param("key") String key);
 
-    // 归档
+    // 归档:优秀成果列表
     List<ResultVo> filingList(IPage<ResultVo> page, @Param("key") String key,
                               @Param("enrollmentYear") String enrollmentYear);
 
-    // 归档:获取同一届学生的分数情况
-    List<Integer> scoreFilingList(@Param("enrollmentYear") String enrollmentYear);
 }

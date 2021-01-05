@@ -20,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -144,10 +145,14 @@ public class TopicTest {
         System.out.println(vo5.getScore() + " " + vo5.getLevel());
     }
 
+    @Resource
+    private FilingDao filingDao;
     @Test
     public void finalScoreList() {
-        List<Integer> list = resultDao.scoreFilingList("2017");
-        System.out.println(list);
+//        List<Integer> list = filingDao.scoreFilingList("2017");
+//        System.out.println(list);
+        new BigDecimal((float) 1 / 3).setScale(2,BigDecimal.ROUND_HALF_UP).floatValue();
+
     }
 
 }

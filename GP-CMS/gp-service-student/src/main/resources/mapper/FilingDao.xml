@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.mineok.dao.FilingDao">
+
+	<select id="scoreFilingList" resultType="java.lang.Integer">
+		SELECT
+		r.final_score
+		FROM
+		tb_result r
+		LEFT JOIN tb_student s ON s.stu_id = r.stu_id
+		WHERE CONCAT(s.edudate) LIKE CONCAT('%',#{enrollmentYear},'%')
+		AND r.final_score IS NOT NULL
+		ORDER BY r.final_score
+	</select>
+</mapper>
