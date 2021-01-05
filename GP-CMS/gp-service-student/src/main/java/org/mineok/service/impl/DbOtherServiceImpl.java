@@ -54,6 +54,9 @@ public class DbOtherServiceImpl extends ServiceImpl<DbOtherDao, DbOther> impleme
     public R getOtherTeacherTopicList(String key, String tid) {
         Teacher teacher = teacherDao.selectOne(new QueryWrapper<Teacher>()
                 .eq("tid", tid));
+        if (teacher.getGroupId().equals(0) || teacher.getGroupId() == null) {
+            return R.error("教师暂未分组！");
+        }
         List<Teacher> list = teacherDao.selectList(new QueryWrapper<Teacher>()
                 .eq("group_id", teacher.getGroupId())
         );
@@ -77,7 +80,6 @@ public class DbOtherServiceImpl extends ServiceImpl<DbOtherDao, DbOther> impleme
         if (ObjectUtils.isEmpty(other)) {
             return R.error("系统异常！");
         }
-//        other.setSumScore2(sumScore(other));
         if (other.getId() != null) {
             otherDao.updateById(other);
         } else {

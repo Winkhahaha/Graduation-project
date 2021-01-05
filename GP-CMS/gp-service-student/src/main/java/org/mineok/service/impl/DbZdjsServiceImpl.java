@@ -91,11 +91,10 @@ public class DbZdjsServiceImpl extends ServiceImpl<DbZdjsDao, DbZdjs> implements
         Student student = studentDao.selectOne(new QueryWrapper<Student>().eq("stu_id", stuId));
         DbZdjs zdjs = zdjsDao.selectOne(new QueryWrapper<DbZdjs>().eq("topic_id", student.getTopicId()));
         StudefenceVo vo = new StudefenceVo();
-        BeanUtils.copyProperties(zdjs, vo);
-        vo.setDefenceStatus(student.getDefenceStatus());
-        if (ObjectUtils.isEmpty(zdjs)) {
-            return R.error("暂无数据！请提交毕设成果获联系指导教师！");
+        if (!ObjectUtils.isEmpty(zdjs)) {
+            BeanUtils.copyProperties(zdjs, vo);
         }
+        vo.setDefenceStatus(student.getDefenceStatus());
         return R.ok().put("myZDJSScore", Collections.singletonList(vo));
     }
 
