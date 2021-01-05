@@ -34,8 +34,8 @@ public class ThesisDefenseController {
     }
 
     @RequestMapping("/zdjs/list/{tid}")
-    public R ZDJS_Student_List(@PathVariable("tid") String tid) {
-        return zdjsService.ZDJS_Student_List(tid);
+    public R ZDJS_Student_List(@RequestParam("defenceStatus") Integer defenceStatus, @PathVariable("tid") String tid) {
+        return zdjsService.ZDJS_Student_List(defenceStatus,tid);
     }
 
     @RequestMapping("/zdjs/stu/{stuId}")
@@ -66,5 +66,25 @@ public class ThesisDefenseController {
     @RequestMapping("/stu/score/{stuId}")
     public R getFinalScore(@PathVariable("stuId") String stuId) {
         return otherService.getFinalScore(stuId);
+    }
+
+    @RequestMapping("/stu/apply/defence/before/{stuId}")
+    public R stuSetDefenceStatusBefore(@PathVariable("stuId") String stuId) {
+        return zdjsService.stuSetDefenceStatusBefore(stuId);
+    }
+
+    @RequestMapping("/stu/apply/defence/{stuId}")
+    public R stuSetDefenceStatus(@RequestParam("defenceStatus") Integer defenceStatus, @PathVariable("stuId") String stuId) {
+        return zdjsService.stuSetDefenceStatus(defenceStatus, stuId);
+    }
+
+    @RequestMapping("/stu/cancel/defence/before/{stuId}")
+    public R stuCancelDefenceStatusBefore(@PathVariable("stuId") String stuId) {
+        return zdjsService.stuCancelDefenceStatusBefore(stuId);
+    }
+
+    @RequestMapping("/stu/cancel/defence/{stuId}")
+    public R stuCancelDefenceStatus(@PathVariable("stuId") String stuId) {
+        return zdjsService.stuCancelDefenceStatus(stuId);
     }
 }

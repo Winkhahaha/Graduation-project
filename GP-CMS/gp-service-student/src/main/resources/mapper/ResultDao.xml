@@ -44,6 +44,7 @@
 		ORDER BY
 		r.createtime
 	</select>
+
 	<select id="scoreFilingList" resultType="java.lang.Integer">
 		SELECT
 		r.final_score

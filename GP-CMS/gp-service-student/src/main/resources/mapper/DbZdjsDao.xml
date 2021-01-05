@@ -21,10 +21,8 @@
 		LEFT JOIN tb_db_zdjs z ON s.topic_id = z.topic_id
 		LEFT JOIN tb_result r ON s.topic_id = r.topic_id
 		WHERE
-		r.approval_status >= 1
-		<if test="_parameter !=null and _parameter!=''">
-			AND t.tid = #{tid}
-		</if>
+		s.defence_status = #{defenceStatus}
+		AND t.tid = #{tid}
         ORDER BY t.topic_id
 	</select>
 </mapper>

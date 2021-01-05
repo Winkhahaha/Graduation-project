@@ -102,8 +102,8 @@ public class TopicTest {
 
     @Test
     public void ZDJS_Student_List() {
-        List<StuZDJSVo> list = zdjsDao.ZDJS_Student_List("1702");
-        System.out.println(list);
+//        List<StuZDJSVo> list = zdjsDao.ZDJS_Student_List("1702");
+//        System.out.println(list);
     }
 
     @Test

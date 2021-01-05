@@ -57,4 +57,7 @@ public class Student implements Serializable {
      * 学生所在院系
      */
     private Integer deptId;
+
+    // 学生提交的答辩状态:0待提交1线下2线上
+    private Integer defenceStatus;
 }

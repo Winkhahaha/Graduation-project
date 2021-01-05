@@ -3,11 +3,15 @@ package org.mineok.service.impl;
 import io.swagger.models.auth.In;
 import org.mineok.common.utils.R;
 import org.mineok.dao.DbZdjsDao;
+import org.mineok.dao.ResultDao;
 import org.mineok.dao.StudentDao;
 import org.mineok.entity.DbZdjs;
+import org.mineok.entity.Result;
 import org.mineok.entity.Student;
 import org.mineok.service.DbZdjsService;
 import org.mineok.vo.StuZDJSVo;
+import org.mineok.vo.StudefenceVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +37,8 @@ public class DbZdjsServiceImpl extends ServiceImpl<DbZdjsDao, DbZdjs> implements
     private DbZdjsDao zdjsDao;
     @Resource
     private StudentDao studentDao;
+    @Resource
+    private ResultDao resultDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -71,8 +77,9 @@ public class DbZdjsServiceImpl extends ServiceImpl<DbZdjsDao, DbZdjs> implements
     }
 
     @Override
-    public R ZDJS_Student_List(String tid) {
-        List<StuZDJSVo> list = zdjsDao.ZDJS_Student_List(tid);
+    public R ZDJS_Student_List(Integer defenceStatus, String tid) {
+        // 根据defenceStatus区别线上2/线下1学生
+        List<StuZDJSVo> list = zdjsDao.ZDJS_Student_List(defenceStatus, tid);
         if (CollectionUtils.isEmpty(list)) {
             return R.error("暂无数据！请督促学生尽快提交毕设成果！");
         }
@@ -83,10 +90,66 @@ public class DbZdjsServiceImpl extends ServiceImpl<DbZdjsDao, DbZdjs> implements
     public R getZDJS_Score(String stuId) {
         Student student = studentDao.selectOne(new QueryWrapper<Student>().eq("stu_id", stuId));
         DbZdjs zdjs = zdjsDao.selectOne(new QueryWrapper<DbZdjs>().eq("topic_id", student.getTopicId()));
+        StudefenceVo vo = new StudefenceVo();
+        BeanUtils.copyProperties(zdjs, vo);
+        vo.setDefenceStatus(student.getDefenceStatus());
         if (ObjectUtils.isEmpty(zdjs)) {
             return R.error("暂无数据！请提交毕设成果获联系指导教师！");
         }
-        return R.ok().put("myZDJSScore", Collections.singletonList(zdjs));
+        return R.ok().put("myZDJSScore", Collections.singletonList(vo));
+    }
+
+    @Override
+    public R stuSetDefenceStatus(Integer defenceStatus, String stuId) {
+        Student student = studentDao.selectOne(new QueryWrapper<Student>().eq("stu_id", stuId));
+        if (ObjectUtils.isEmpty(student)) {
+            return R.error("系统异常:参数错误！");
+        }
+        student.setDefenceStatus(defenceStatus);
+        studentDao.updateById(student);
+        return R.ok("申请答辩成功！");
+    }
+
+    @Override
+    public R stuSetDefenceStatusBefore(String stuId) {
+        Student student = studentDao.selectOne(new QueryWrapper<Student>().eq("stu_id", stuId));
+        Result result = resultDao.selectOne(new QueryWrapper<Result>().eq("stu_id", stuId));
+        if (ObjectUtils.isEmpty(result)) {
+            return R.error("请先添加毕设成果，并提交给指导教师进行审批！");
+        }
+        if (!ObjectUtils.isEmpty(result) && result.getApprovalStatus() < 2) {
+            return R.error("毕设成果尚未审批完成！");
+        }
+        if (student.getDefenceStatus() > 0) {
+            return R.error("请勿重复申请，若要修改答辩方式请先取消此次申请！");
+        }
+        return R.ok();
+    }
+
+    @Override
+    public R stuCancelDefenceStatus(String stuId) {
+        Student student = studentDao.selectOne(new QueryWrapper<Student>().eq("stu_id", stuId));
+        if (ObjectUtils.isEmpty(student)) {
+            return R.error("系统异常:参数错误！");
+        }
+        student.setDefenceStatus(0);
+        studentDao.updateById(student);
+        return R.ok("取消成功！");
+    }
+
+    @Override
+    public R stuCancelDefenceStatusBefore(String stuId) {
+        Student student = studentDao.selectOne(new QueryWrapper<Student>().eq("stu_id", stuId));
+        DbZdjs zdjs = zdjsDao.selectOne(new QueryWrapper<DbZdjs>().eq("topic_id", student.getTopicId()));
+        if (student.getDefenceStatus().equals(0)) {
+            return R.error("您还未提交答辩申请！");
+        }
+        if (student.getDefenceStatus() > 0 && !ObjectUtils.isEmpty(zdjs)) {
+            if (zdjs.getConclusion() > -1) {
+                return R.error("当前答辩申请已获批准不可取消！");
+            }
+        }
+        return R.ok();
     }
 
     // 计算总分
