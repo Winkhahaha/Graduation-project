@@ -84,7 +84,7 @@ public class ResultServiceImpl extends ServiceImpl<ResultDao, Result> implements
         String enrollmentYear = params.get("enrollmentYear").toString();
         List<ResultVo> resultVos = resultDao.filingList(page, key, enrollmentYear);
         if (CollectionUtils.isEmpty(resultVos)) {
-            return R.error("系统异常！");
+            return R.error("暂无数据！");
         }
         page.setRecords(resultVos);
         return R.ok().put("page", new PageUtils(page));

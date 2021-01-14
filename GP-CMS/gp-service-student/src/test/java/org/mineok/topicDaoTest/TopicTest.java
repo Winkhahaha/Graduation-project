@@ -149,10 +149,17 @@ public class TopicTest {
     private FilingDao filingDao;
     @Test
     public void finalScoreList() {
-//        List<Integer> list = filingDao.scoreFilingList("2017");
-//        System.out.println(list);
-        new BigDecimal((float) 1 / 3).setScale(2,BigDecimal.ROUND_HALF_UP).floatValue();
-
+        List<Integer> list = filingDao.scoreFilingList("2017");
+        System.out.println(list);
+//        new BigDecimal((float) 1 / 3).setScale(2,BigDecimal.ROUND_HALF_UP).floatValue();
     }
 
+    @Test
+    public void test20() {
+        // 匹配单个汉字 [\u4e00-\u9fa5]
+        // 匹配多个汉字 [\u4e00-\u9fa5]*
+        String regex = "[\\u4e00-\\u9fa5]*.";
+        String str = "你好吗。";
+        System.out.println(str.matches(regex));     // true
+    }
 }
