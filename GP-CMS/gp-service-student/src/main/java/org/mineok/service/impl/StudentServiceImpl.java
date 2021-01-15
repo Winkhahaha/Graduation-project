@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.mineok.common.utils.PageUtils;
 import org.mineok.common.utils.Query;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -55,7 +56,6 @@ public class StudentServiceImpl extends ServiceImpl<StudentDao, Student> impleme
 
     /**
      * 选题
-     *
      * @param stuId
      * @param topicId
      * @return
@@ -83,7 +83,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentDao, Student> impleme
     public R choseTopicBefore(String stuId, Integer topicId) {
         Student student = this.findByStuId(stuId);
         Topic topic = topicDao.selectById(topicId);
-        if (student == null || topic == null) {
+        if (ObjectUtils.isEmpty(student) || ObjectUtils.isEmpty(topic)) {
             return R.error(HttpStatus.SC_NOT_FOUND, "系统异常:暂无数据！");
         }
         if (student.getTopicStatus() < 0) {
@@ -134,7 +134,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentDao, Student> impleme
     public R cancelTopicBefore(String stuId, Integer topicId) {
         Student student = this.findByStuId(stuId);
         Topic topic = topicDao.selectById(topicId);
-        if (student == null || topic == null) {
+        if (ObjectUtils.isEmpty(student) || ObjectUtils.isEmpty(topic)) {
             return R.error(HttpStatus.SC_NOT_FOUND, "系统异常:暂无数据！");
         }
         // 教师已反选成功,不可取消选题
@@ -155,8 +155,8 @@ public class StudentServiceImpl extends ServiceImpl<StudentDao, Student> impleme
             // 未反选成功,tb_topic还不会存在学生id,所以间接查询
             topic = topicDao.selectById(student.getTopicId());
         }
-        if (topic == null) {
-            return R.error(HttpStatus.SC_NOT_FOUND, "系统异常:参数错误！");
+        if (ObjectUtils.isEmpty(topic)) {
+            return R.error(HttpStatus.SC_NOT_FOUND, "系统异常:暂无数据！");
         }
         Teacher teacher = teacherDao.selectOne(new QueryWrapper<Teacher>().eq("tid", topic.getTid()));
         // 创建Vo
