@@ -24,8 +24,14 @@ public interface StudentService extends IService<Student> {
     // 学生:选题
     R choseTopic(String stuId, Integer topicId);
 
+    // 学生:选题之前
+    R choseTopicBefore(String stuId, Integer topicId);
+
     // 学生:取消选题
-    R cancelTopic(String stuId,Integer topicId);
+    R cancelTopic(String stuId, Integer topicId);
+
+    // 取消选题之前
+    R cancelTopicBefore(String stuId, Integer topicId);
 
     // 学生:我的选题
     R myTopic(String stuId);

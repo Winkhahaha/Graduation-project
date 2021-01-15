@@ -45,9 +45,19 @@ public class StudentController {
         return studentService.choseTopic(stuId, topicId);
     }
 
+    @RequestMapping("/chose/topic/before/{stuId}/{topicId}")
+    public R choseTopicBefore(@PathVariable("stuId") String stuId, @PathVariable("topicId") Integer topicId) {
+        return studentService.choseTopicBefore(stuId, topicId);
+    }
+
     @RequestMapping("/cancel/topic/{stuId}/{topicId}")
     public R cancelTopic(@PathVariable("stuId") String stuId, @PathVariable("topicId") Integer topicId) {
         return studentService.cancelTopic(stuId, topicId);
+    }
+
+    @RequestMapping("/cancel/topic/before/{stuId}/{topicId}")
+    public R cancelTopicBefore(@PathVariable("stuId") String stuId, @PathVariable("topicId") Integer topicId) {
+        return studentService.cancelTopicBefore(stuId, topicId);
     }
 
     @SysLog("学生：我的选题")

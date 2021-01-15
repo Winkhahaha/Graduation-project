@@ -64,21 +64,6 @@ public class StudentServiceImpl extends ServiceImpl<StudentDao, Student> impleme
     public R choseTopic(String stuId, Integer topicId) {
         Student student = this.findByStuId(stuId);
         Topic topic = topicDao.selectById(topicId);
-        if (student == null || topic == null) {
-            return R.error(HttpStatus.SC_NOT_FOUND, "系统异常:参数错误！");
-        }
-        if (student.getTopicStatus() < 0) {
-            return R.error(HttpStatus.SC_BAD_REQUEST, "存在反选失败的题目，请前往我的选题进行查看！");
-        }
-        if (student.getTopicStatus() > 0) {
-            return R.error(HttpStatus.SC_BAD_REQUEST, "存在已选择的题目，请前往我的选题进行查看！");
-        }
-        if (topic.getSelected() >= topic.getToplimit()) {
-            return R.error(HttpStatus.SC_BAD_REQUEST, "选题人数已达上限！");
-        }
-        if (!StringUtils.isEmpty(topic.getStuId())) {
-            return R.error(HttpStatus.SC_BAD_REQUEST, "该课题已被反选，不可选择！");
-        }
         // 学生选择该题目,等待老师反选
         // 选择后不能再选其他题目,并且等待反选期间也不可选择其他题目
         student.setTopicId(topicId);
@@ -94,6 +79,28 @@ public class StudentServiceImpl extends ServiceImpl<StudentDao, Student> impleme
         return R.ok("选题成功！");
     }
 
+    @Override
+    public R choseTopicBefore(String stuId, Integer topicId) {
+        Student student = this.findByStuId(stuId);
+        Topic topic = topicDao.selectById(topicId);
+        if (student == null || topic == null) {
+            return R.error(HttpStatus.SC_NOT_FOUND, "系统异常:暂无数据！");
+        }
+        if (student.getTopicStatus() < 0) {
+            return R.error(HttpStatus.SC_BAD_REQUEST, "存在反选失败的题目，请前往我的选题进行查看！");
+        }
+        if (student.getTopicStatus() > 0) {
+            return R.error(HttpStatus.SC_BAD_REQUEST, "存在已选择的题目，请前往我的选题进行查看！");
+        }
+        if (topic.getSelected() >= topic.getToplimit()) {
+            return R.error(HttpStatus.SC_BAD_REQUEST, "选题人数已达上限！");
+        }
+        if (!StringUtils.isEmpty(topic.getStuId())) {
+            return R.error(HttpStatus.SC_BAD_REQUEST, "该课题已被反选，不可选择！");
+        }
+        return R.ok();
+    }
+
     /**
      * 取消选题
      *
@@ -105,13 +112,6 @@ public class StudentServiceImpl extends ServiceImpl<StudentDao, Student> impleme
     public R cancelTopic(String stuId, Integer topicId) {
         Student student = this.findByStuId(stuId);
         Topic topic = topicDao.selectById(topicId);
-        if (student == null || topic == null) {
-            return R.error(HttpStatus.SC_NOT_FOUND, "系统异常:参数错误！");
-        }
-        // 教师已反选成功,不可取消选题
-        if (student.getTopicStatus() == 2) {
-            return R.error(HttpStatus.SC_NOT_FOUND, "老师已反选，不可取消选题！");
-        }
         // 等待反选/反选失败
         if (student.getTopicStatus() == 1 || student.getTopicStatus() == -1) {
             // 学生选题状态重置为待选题
@@ -128,6 +128,20 @@ public class StudentServiceImpl extends ServiceImpl<StudentDao, Student> impleme
             topicDao.updateById(topic);
         }
         return R.ok("取消选题成功！");
+    }
+
+    @Override
+    public R cancelTopicBefore(String stuId, Integer topicId) {
+        Student student = this.findByStuId(stuId);
+        Topic topic = topicDao.selectById(topicId);
+        if (student == null || topic == null) {
+            return R.error(HttpStatus.SC_NOT_FOUND, "系统异常:暂无数据！");
+        }
+        // 教师已反选成功,不可取消选题
+        if (student.getTopicStatus() == 2) {
+            return R.error(HttpStatus.SC_NOT_FOUND, "教师已反选，不可取消选题！");
+        }
+        return R.ok();
     }
 
     @Override
