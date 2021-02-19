@@ -48,9 +48,6 @@ public class TopicServiceImpl extends ServiceImpl<TopicDao, Topic> implements To
 
     @Override
     public R getTopics(Map<String, Object> params, String stuId) {
-//        Page<TopicVO> page = new Page<TopicVO>(
-//                Long.parseLong(params.get("page").toString())
-//                , Long.parseLong(params.get("limit").toString()));
         String key = params.get("key").toString();
         IPage<TopicVo> page = new Query<TopicVo>().getPage(params);
         Student student = studentDao.selectOne(new QueryWrapper<Student>().eq("stu_id", stuId));

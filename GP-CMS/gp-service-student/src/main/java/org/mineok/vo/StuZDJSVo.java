@@ -32,7 +32,7 @@ public class StuZDJSVo {
     private Integer sumScore;
 
     // 答辩时间
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm",timezone="Asia/Shanghai")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
     private Date schedule;
 
     // 答辩地点

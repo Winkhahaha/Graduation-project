@@ -2,16 +2,13 @@ package org.mineok.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
-
 /**
- * 
- * 
  * @author GaoMing
  * @email mineok@foxmail.com
  * @date 2020-12-31 14:41:35
@@ -23,7 +20,7 @@ public class DbZdjs implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 
+	 *
 	 */
 	@TableId
 	private Integer id;
@@ -74,7 +71,7 @@ public class DbZdjs implements Serializable {
 	/**
 	 * 答辩日期时间
 	 */
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm",timezone="Asia/Shanghai")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
 	private Date schedule;
 	/**
 	 * 答辩地点

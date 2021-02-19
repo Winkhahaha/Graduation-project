@@ -40,7 +40,7 @@ public class SysLogInfo implements Serializable {
 	//IP地址
 	private String ip;
 	//创建时间
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="Asia/Shanghai")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date createDate;
 
 }
