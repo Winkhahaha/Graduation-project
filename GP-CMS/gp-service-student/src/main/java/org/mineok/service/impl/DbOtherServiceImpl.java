@@ -1,5 +1,10 @@
 package org.mineok.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.mineok.common.utils.PageUtils;
+import org.mineok.common.utils.Query;
 import org.mineok.common.utils.R;
 import org.mineok.dao.*;
 import org.mineok.entity.*;
@@ -8,22 +13,14 @@ import org.mineok.vo.FinalScoreVo;
 import org.mineok.vo.StuOtherVo;
 import org.mineok.vo.TeacherOtherVo;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.mineok.common.utils.PageUtils;
-import org.mineok.common.utils.Query;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
-
-import javax.annotation.Resource;
 
 
 @Service("dbOtherService")

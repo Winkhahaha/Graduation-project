@@ -23,7 +23,10 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 
 @Service("reportService")
@@ -260,6 +263,17 @@ public class ReportServiceImpl extends ServiceImpl<ReportDao, Report> implements
         report.setOpinions(opinions);
         baseMapper.updateById(report);
         return R.ok("审批意见添加成功！");
+    }
+
+    @Override
+    public R addReportScore(Integer reportScore, Integer reportId) {
+        Report report = baseMapper.selectById(reportId);
+        if (ObjectUtils.isEmpty(report)) {
+            return R.error("系统异常:参数错误！");
+        }
+        report.setReportScore(reportScore);
+        baseMapper.updateById(report);
+        return R.ok("开题评分成功！");
     }
 
     @Override

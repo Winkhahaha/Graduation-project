@@ -2,13 +2,13 @@ package org.mineok.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
- * 
+ *
  * 开题报告 - 实体
  * @author GaoMing
  * @email mineok@foxmail.com
@@ -20,7 +20,7 @@ public class Report implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 
+	 *
 	 */
 	@TableId
 	private Integer reportId;
@@ -56,4 +56,8 @@ public class Report implements Serializable {
 	 * 报告对应的课题id
 	 */
 	private Integer topicId;
+	/**
+	 * 开题报告得分
+	 */
+	private Integer reportScore;
 }

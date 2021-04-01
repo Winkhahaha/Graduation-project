@@ -1,14 +1,10 @@
 package org.mineok.controller;
 
-import org.mineok.common.utils.PageUtils;
 import org.mineok.common.utils.R;
 import org.mineok.entity.Report;
 import org.mineok.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Arrays;
-import java.util.Map;
 
 
 /**
@@ -102,6 +98,11 @@ public class ReportController {
     @RequestMapping("/teacher/add/opinions/{reportId}")
     public R addopinions(@RequestParam("opinions") String opinions, @PathVariable("reportId") Integer reportId) {
         return reportService.addOpinions(opinions, reportId);
+    }
+
+    @RequestMapping("/teacher/add/score/{reportId}")
+    public R addReportScore(@RequestParam("reportScore") Integer reportScore, @PathVariable("reportId") Integer reportId) {
+        return reportService.addReportScore(reportScore, reportId);
     }
 
     @RequestMapping("/teacher/commit/approval/{reportId}")

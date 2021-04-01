@@ -59,6 +59,8 @@ public interface ReportService extends IService<Report> {
     // 教师:设置开题报告的审批意见
     R addOpinions(String opinions, Integer reportId);
 
+    R addReportScore(Integer reportScore, Integer reportId);
+
     // 教师:确认报告审批
     R commitApproval(Integer reportId);
 

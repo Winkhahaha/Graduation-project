@@ -1,6 +1,10 @@
 package org.mineok.service.impl;
 
-import io.swagger.models.auth.In;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.mineok.common.utils.PageUtils;
+import org.mineok.common.utils.Query;
 import org.mineok.common.utils.R;
 import org.mineok.dao.DbZdjsDao;
 import org.mineok.dao.ResultDao;
@@ -12,22 +16,14 @@ import org.mineok.service.DbZdjsService;
 import org.mineok.vo.StuZDJSVo;
 import org.mineok.vo.StudefenceVo;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.mineok.common.utils.PageUtils;
-import org.mineok.common.utils.Query;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 
 @Service("dbZdjsService")
@@ -58,7 +54,6 @@ public class DbZdjsServiceImpl extends ServiceImpl<DbZdjsDao, DbZdjs> implements
         if (ObjectUtils.isEmpty(zdjs)) {
             return R.error("系统异常！");
         }
-//        zdjs.setSumScore(sumScore(zdjs));
         if (zdjs.getId() != null) {
             zdjsDao.updateById(zdjs);
         } else {
