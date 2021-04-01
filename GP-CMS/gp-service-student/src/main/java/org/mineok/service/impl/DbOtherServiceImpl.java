@@ -36,6 +36,8 @@ public class DbOtherServiceImpl extends ServiceImpl<DbOtherDao, DbOther> impleme
     private DbZdjsDao zdjsDao;
     @Resource
     private ResultDao resultDao;
+    @Resource
+    private ReportDao reportDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -121,6 +123,12 @@ public class DbOtherServiceImpl extends ServiceImpl<DbOtherDao, DbOther> impleme
         resultDao.updateById(result);
         FinalScoreVo score = FinalScoreVo.getScore(sum);
         return R.ok().put("score", Collections.singletonList(score));
+    }
+
+    @Override
+    public R getReportScore(String stuId) {
+        Report report = reportDao.selectOne(new QueryWrapper<Report>().eq("stu_id", stuId));
+        return R.ok().put("reportScore", Collections.singletonList(FinalScoreVo.getScore(report.getReportScore())));
     }
 
     private Integer sumScore(DbOther dbOther) {

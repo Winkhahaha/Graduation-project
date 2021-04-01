@@ -30,5 +30,8 @@ public interface DbOtherService extends IService<DbOther> {
 
     // 平均值最终分数
     R getFinalScore(String stuId);
+
+    // 获取开题分数
+    R getReportScore(String stuId);
 }
 

@@ -71,6 +71,11 @@ public class ThesisDefenseController {
         return otherService.getFinalScore(stuId);
     }
 
+    @RequestMapping("/stu/report/score/{stuId}")
+    public R getReportScore(@PathVariable("stuId") String stuId) {
+        return otherService.getReportScore(stuId);
+    }
+
     @RequestMapping("/stu/apply/defence/before/{stuId}")
     public R stuSetDefenceStatusBefore(@PathVariable("stuId") String stuId) {
         return zdjsService.stuSetDefenceStatusBefore(stuId);

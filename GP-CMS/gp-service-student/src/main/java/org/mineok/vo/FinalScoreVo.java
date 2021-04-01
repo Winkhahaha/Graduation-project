@@ -23,25 +23,19 @@ public class FinalScoreVo {
     }
 
     private static String getLevelByScore(Integer score) {
-        String level;
         score /= 10;
         switch (score) {
             case 10:
             case 9:
-                level = "优秀";
-                break;
+                return "优秀";
             case 8:
-                level = "良";
-                break;
+                return "良";
             case 7:
-                level = "中";
-                break;
+                return "中";
             case 6:
-                level = "及格";
-                break;
+                return "及格";
             default:
-                level = "不及格";
+                return "不及格";
         }
-        return level;
     }
 }
