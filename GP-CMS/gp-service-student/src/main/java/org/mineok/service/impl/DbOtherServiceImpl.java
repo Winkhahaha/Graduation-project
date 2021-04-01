@@ -109,20 +109,24 @@ public class DbOtherServiceImpl extends ServiceImpl<DbOtherDao, DbOther> impleme
 
     @Override
     public R getFinalScore(String stuId) {
+        Result result = resultDao.selectOne(new QueryWrapper<Result>().eq("stu_id", stuId));
+        if (result.getFinalScore() != null) {
+            return R.ok().put("score", Collections.singletonList(FinalScoreVo.getScore(result.getFinalScore())));
+        }
         Student student = studentDao.selectOne(new QueryWrapper<Student>().eq("stu_id", stuId));
         DbZdjs zdjs = zdjsDao.selectOne(new QueryWrapper<DbZdjs>().eq("topic_id", student.getTopicId()));
         List<DbOther> others = otherDao.selectList(new QueryWrapper<DbOther>().eq("topic_id", student.getTopicId()));
+        Report report = reportDao.selectOne(new QueryWrapper<Report>().eq("stu_id", stuId));
         Integer sum = zdjs.getSumScore();
         for (DbOther other : others) {
             sum += other.getSumScore2();
         }
         sum /= (others.size() + 1);
         // 将总评成绩存入Result
-        Result result = resultDao.selectOne(new QueryWrapper<Result>().eq("stu_id", stuId));
-        result.setFinalScore(sum);
+        Integer finalScore = calculateFinalScore(report.getReportScore(), 85, sum);
+        result.setFinalScore(finalScore);
         resultDao.updateById(result);
-        FinalScoreVo score = FinalScoreVo.getScore(sum);
-        return R.ok().put("score", Collections.singletonList(score));
+        return R.ok().put("score", Collections.singletonList(FinalScoreVo.getScore(finalScore)));
     }
 
     @Override
@@ -131,7 +135,7 @@ public class DbOtherServiceImpl extends ServiceImpl<DbOtherDao, DbOther> impleme
         return R.ok().put("reportScore", Collections.singletonList(FinalScoreVo.getScore(report.getReportScore())));
     }
 
-    private Integer sumScore(DbOther dbOther) {
-        return dbOther.getQuality() + dbOther.getContent() + dbOther.getSituation() + dbOther.getStandard();
+    private Integer calculateFinalScore(Integer reportScore, Integer midScore, Integer dbScore) {
+        return (int) Math.round((reportScore + midScore) / 2 * 0.3 + dbScore * 0.7);
     }
 }
