@@ -38,6 +38,9 @@ public class DbOtherServiceImpl extends ServiceImpl<DbOtherDao, DbOther> impleme
     private ResultDao resultDao;
     @Resource
     private ReportDao reportDao;
+    @Resource
+    private MidDao midDao;
+
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -117,13 +120,14 @@ public class DbOtherServiceImpl extends ServiceImpl<DbOtherDao, DbOther> impleme
         DbZdjs zdjs = zdjsDao.selectOne(new QueryWrapper<DbZdjs>().eq("topic_id", student.getTopicId()));
         List<DbOther> others = otherDao.selectList(new QueryWrapper<DbOther>().eq("topic_id", student.getTopicId()));
         Report report = reportDao.selectOne(new QueryWrapper<Report>().eq("stu_id", stuId));
+        Mid mid = midDao.selectOne(new QueryWrapper<Mid>().eq("stu_id", stuId));
         Integer sum = zdjs.getSumScore();
         for (DbOther other : others) {
             sum += other.getSumScore2();
         }
-        sum /= (others.size() + 1);
+        sum = Math.round((float) sum / (others.size() + 1));
         // 将总评成绩存入Result
-        Integer finalScore = calculateFinalScore(report.getReportScore(), 85, sum);
+        Integer finalScore = calculateFinalScore(report.getReportScore(), mid.getMidScore(), sum);
         result.setFinalScore(finalScore);
         resultDao.updateById(result);
         return R.ok().put("score", Collections.singletonList(FinalScoreVo.getScore(finalScore)));
@@ -135,7 +139,13 @@ public class DbOtherServiceImpl extends ServiceImpl<DbOtherDao, DbOther> impleme
         return R.ok().put("reportScore", Collections.singletonList(FinalScoreVo.getScore(report.getReportScore())));
     }
 
+    @Override
+    public R getMidScore(String stuId) {
+        Mid mid = midDao.selectOne(new QueryWrapper<Mid>().eq("stu_id", stuId));
+        return R.ok().put("midScore", Collections.singletonList(FinalScoreVo.getScore(mid.getMidScore())));
+    }
+
     private Integer calculateFinalScore(Integer reportScore, Integer midScore, Integer dbScore) {
-        return (int) Math.round((reportScore + midScore) / 2 * 0.3 + dbScore * 0.7);
+        return (int) Math.round((float) (reportScore + midScore) / 2 * 0.3) + (int) Math.round((float) dbScore * 0.7);
     }
 }
