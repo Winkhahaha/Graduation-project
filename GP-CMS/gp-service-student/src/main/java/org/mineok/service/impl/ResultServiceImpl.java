@@ -11,7 +11,6 @@ import org.mineok.entity.*;
 import org.mineok.service.ResultService;
 import org.mineok.vo.ResultVo;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
@@ -39,6 +38,8 @@ public class ResultServiceImpl extends ServiceImpl<ResultDao, Result> implements
     private ReportDao reportDao;
     @Resource
     private ResultDao resultDao;
+    @Resource
+    private MidDao midDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -46,7 +47,6 @@ public class ResultServiceImpl extends ServiceImpl<ResultDao, Result> implements
                 new Query<Result>().getPage(params),
                 new QueryWrapper<Result>()
         );
-
         return new PageUtils(page);
     }
 
@@ -160,22 +160,17 @@ public class ResultServiceImpl extends ServiceImpl<ResultDao, Result> implements
 
     @Override
     public R saveResultBefore(String stuId) {
-//        // 先查找该学生是否已经选题成功
-//        Topic topic = topicDao.selectOne(new QueryWrapper<Topic>().eq("stu_id", stuId));
-//        if (ObjectUtils.isEmpty(topic)) {
-//            return R.error("请先进行选题！");
-//        }
-        Report report = reportDao.selectOne(new QueryWrapper<Report>().eq("stu_id", stuId));
-        // 先判断是否添加过开题报告
-        if (ObjectUtils.isEmpty(report)) {
-            return R.error("请先添加开题报告！");
+        Mid mid = midDao.selectOne(new QueryWrapper<Mid>().eq("stu_id", stuId));
+        // 先判断是否添加过中期资料
+        if (ObjectUtils.isEmpty(mid)) {
+            return R.error("请先上传中期成果进行查验！");
         }
-        if (report.getApprovalStatus() != 2) {
-            return R.error("开题报告未通过审批，暂不能添加毕设成果！");
+        if (mid.getApprovalStatus() != 2) {
+            return R.error("中期成果未通过查验，暂不能添加毕设成果！");
         }
         Result result = this.getResultByQuery(stuId);
         if (!ObjectUtils.isEmpty(result)) {
-            return R.error("已添加毕设成果！");
+            return R.error("已添加毕设成果请勿重复操作！");
         }
         return R.ok();
     }

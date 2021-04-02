@@ -96,7 +96,7 @@ public class ReportServiceImpl extends ServiceImpl<ReportDao, Report> implements
         }
         Report report = this.getReportByQuery(stuId);
         if (!ObjectUtils.isEmpty(report)) {
-            return R.error("已添加开题报告！");
+            return R.error("已添加开题报告请勿重复操作！");
         }
         return R.ok();
     }
@@ -281,6 +281,9 @@ public class ReportServiceImpl extends ServiceImpl<ReportDao, Report> implements
         Report report = baseMapper.selectById(reportId);
         if (ObjectUtils.isEmpty(report)) {
             return R.error("系统异常:参数错误！");
+        }
+        if (report.getReportScore() == null) {
+            return R.error("请先填写开题评分表！");
         }
         // 设置审批通过状态
         report.setApprovalStatus(2);

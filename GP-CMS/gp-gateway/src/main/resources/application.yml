@@ -52,6 +52,14 @@ spring:
           filters:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
 
+        # 配置mid-service服务
+        - id: report_route
+          uri: lb://gp-test-student-service
+          predicates:
+            - Path=/api/mid/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+
         # 配置result-service服务
         - id: result_route
           uri: lb://gp-test-student-service
