@@ -8,7 +8,7 @@ import org.mineok.entity.Mid;
 import java.util.Map;
 
 /**
- * 开题报告
+ * 中期资料
  *
  * @author GaoMing
  * @email mineok@foxmail.com
@@ -18,33 +18,33 @@ public interface MidService extends IService<Mid> {
 
     PageUtils queryPage(Map<String, Object> params);
 
-    // 获取当前学生的开题报告
+    // 获取当前学生的中期资料
     R getStuMid(String stuId);
 
     R getMidInfo(Integer midId);
 
-    // 添加开题报告前判断
+    // 添加中期资料前判断
     R saveMidBefore(String stuId);
 
-    // 添加开题报告
+    // 添加中期资料
     R saveMid(Mid mid, String stuId);
 
-    // 更新开题报告前判断
+    // 更新中期资料前判断
     R updateMidBefore(Integer midId);
 
-    // 更新开题报告
+    // 更新中期资料
     R updateMid(Mid mid);
 
     // 删除前判断
     R deleteMidBefore(Integer midId);
 
-    // 删除开题报告
+    // 删除中期资料
     R deleteMid(Integer midId);
 
-    // 学生:提交开题报告审批
+    // 学生:提交中期资料审批
     R submitMidApproval(Integer midId);
 
-    // 学生:提交开题报告审批之前
+    // 学生:提交中期资料审批之前
     R beforeSubmitMidApproval(Integer midId);
 
     // 学生:取消审批
@@ -53,18 +53,18 @@ public interface MidService extends IService<Mid> {
     // 学生:取消审批之前
     R beforeCancelMidApproval(Integer midId);
 
-    // 教师:得到所指导学生的报告列表
+    // 教师:得到所指导学生的中期资料列表
     R getStuMidList(Integer appStatus, String tid);
 
-    // 教师:设置开题报告的审批意见
+    // 教师:设置中期资料的审批意见
     R addOpinions(String opinions, Integer midId);
 
     R addMidScore(Integer midScore, Integer midId);
 
-    // 教师:确认报告审批
+    // 教师:确认中期资料审批
     R commitApproval(Integer midId);
 
-    // 教师:驳回报告审批
+    // 教师:驳回中期资料审批
     R rejectApproval(Integer midId);
 }
 

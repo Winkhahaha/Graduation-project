@@ -19,7 +19,7 @@ public class MidController {
     private MidService midService;
 
     /*
-        报告详情
+        中期资料详情
      */
     @RequestMapping("/info/{midId}")
     public R getStuMid(@PathVariable("midId") Integer midId) {
@@ -27,7 +27,7 @@ public class MidController {
     }
 
     /*
-        学生开题报告列表:Vo展示数据
+        学生中期资料列表:Vo展示数据
      */
     @RequestMapping("/stu/{stuId}")
     public R getStuMid(@PathVariable("stuId") String stuId) {
@@ -65,7 +65,7 @@ public class MidController {
     }
 
     /**
-     * 学生:提交/取消报告审批
+     * 学生:提交/取消中期资料审批
      */
     @RequestMapping("/stu/approval/submit/before/{midId}")
     public R submitApprovalBefore(@PathVariable("midId") Integer midId) {
@@ -88,7 +88,7 @@ public class MidController {
     }
 
     /**
-     * 教师:查看报告列表/审批/驳回/添加审批意见
+     * 教师:查看中期资料列表/审批/驳回/添加审批意见
      */
     @RequestMapping("/teacher/approval/list/{tid}")
     public R approvalList(@RequestParam("appStatus") Integer appStatus, @PathVariable("tid") String tid) {
