@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author Gaoming
@@ -28,7 +26,7 @@ public class FilingServiceImpl implements FilingService {
     @Override
     public R getScoreLevel(String enrollmentYear) {
         List<Integer> scoreList = filingDao.scoreFilingList(enrollmentYear);
-        List levelList = levelList(scoreList);
+        List<EchartsVo> levelList = levelList(scoreList);
         return R.ok().put("levelList", levelList);
     }
 
