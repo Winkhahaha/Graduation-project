@@ -80,7 +80,6 @@ public class FilingServiceImpl implements FilingService {
                 ++countE;
             }
         }
-        new BigDecimal((float) countA / total).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
         list.add(new EchartsVo("优秀", floatOnlyTwo((float) countA / total)));
         list.add(new EchartsVo("良", floatOnlyTwo((float) countB / total)));
         list.add(new EchartsVo("中", floatOnlyTwo((float) countC / total)));
