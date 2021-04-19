@@ -54,12 +54,11 @@ public class TopicServiceImpl extends ServiceImpl<TopicDao, Topic> implements To
         if (ObjectUtils.isEmpty(student)) {
             return R.error("系统异常！");
         }
-        List<TopicVo> topicVos = topicDao.topicListCanChose(page, student.getDeptId(), key);
-        if (CollectionUtils.isEmpty(topicVos)) {
+        IPage<TopicVo> topicVos = topicDao.topicListCanChose(page, student.getDeptId(), key);
+        if (ObjectUtils.isEmpty(topicVos)) {
             return R.error("系统异常！");
         }
-        page.setRecords(topicVos);
-        return R.ok().put("page", new PageUtils(page));
+        return R.ok().put("page", new PageUtils(topicVos));
     }
 
     @Override

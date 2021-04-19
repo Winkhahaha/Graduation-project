@@ -18,9 +18,9 @@ import java.util.List;
 @Mapper
 public interface TopicDao extends BaseMapper<Topic> {
 
-    List<TopicVo> topicListCanChose(IPage<TopicVo> page,
-                                    @Param("deptId") Integer deptId,
-                                    @Param("key") String key);
+    IPage<TopicVo> topicListCanChose(IPage<TopicVo> page,
+                                     @Param("deptId") Integer deptId,
+                                     @Param("key") String key);
 
     List<InvertTopicVo> invertTopicList(String tid);
 

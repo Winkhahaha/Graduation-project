@@ -1,6 +1,7 @@
 package org.mineok.topicDaoTest;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,13 +15,11 @@ import org.mineok.service.StudentService;
 import org.mineok.service.TopicService;
 import org.mineok.vo.FinalScoreVo;
 import org.mineok.vo.ResultVo;
-import org.mineok.vo.StuZDJSVo;
 import org.mineok.vo.TopicVo;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -55,12 +54,11 @@ public class TopicTest {
      */
     @Test
     public void test_topicVO_topicList() {
-        // System.out.println(topicDao.topicListCanChose());
         // 多表分页查询测试
         Page<TopicVo> page = new Page<TopicVo>(1, 10);
-        page.setRecords(topicDao.topicListCanChose(page, 1, "张"));
-        System.out.println(page.getRecords());
-        System.out.println(page.getTotal());
+        IPage<TopicVo> page1 = topicDao.topicListCanChose(page, 1, "张");
+        System.out.println(page1.getRecords());
+        System.out.println(page1.getTotal());
     }
 
     @Test
